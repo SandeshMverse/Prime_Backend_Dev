@@ -49,6 +49,48 @@ namespace PrimeMaritime_API.Helpers
             }
         }
 
+        //added new mverse
+        public static void ExecuteProcedureBulkInserts(SqlConnection sqlConnection, SqlTransaction transaction, DataTable dataTable, string tblName, string[] columns)
+        {
+            // No need to open a new connection since we're reusing the passed-in connection
+            using (SqlBulkCopy objbulk = new SqlBulkCopy(sqlConnection, SqlBulkCopyOptions.Default, transaction))  // Use the transaction here
+            {
+                objbulk.DestinationTableName = tblName;
+                foreach (var i in columns)
+                {
+                    objbulk.ColumnMappings.Add(i, i);
+                }
+
+                objbulk.WriteToServer(dataTable);  // Bulk insert
+            }
+        }
+
+
+        public static string ExecuteProcedureReturnStrings(SqlConnection sqlConnection, SqlTransaction transaction, string procName, params SqlParameter[] parameters)
+        {
+            string result = "";
+
+            // No need to open a new connection since we're reusing the passed-in connection
+            using (var command = sqlConnection.CreateCommand())
+            {
+                command.CommandType = System.Data.CommandType.StoredProcedure;
+                command.CommandText = procName;
+                command.Transaction = transaction;  // Attach the transaction to the command
+                if (parameters != null)
+                {
+                    command.Parameters.AddRange(parameters);
+                }
+
+                var ret = command.ExecuteScalar();  // Execute the procedure
+                if (ret != null)
+                    result = Convert.ToString(ret);  // Return the result as a string
+            }
+
+            return result;
+        }
+
+        //end
+
         public static void UpdateContainerDataForBL<T>(List<T> list, string TableName, string connString, string[] columns)
         {
             DataTable dt = new DataTable("TB_CONTAINER");

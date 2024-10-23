@@ -19,10 +19,14 @@ namespace PrimeMaritime_API.Repository
         #region "PARTY MASTER"
         public string InsertPartyMaster(string connstring, PARTY_MASTER master)
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connstring))
             {
-                SqlParameter[] parameters =
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
+                try
                 {
+                    SqlParameter[] parameters =
+                    {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_CUSTOMER" },
                   new SqlParameter("@CUST_NAME", SqlDbType.VarChar,500) { Value = master.CUST_NAME},
                   new SqlParameter("@CUST_ADDRESS", SqlDbType.VarChar, 500) { Value = master.CUST_ADDRESS },
@@ -34,7 +38,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
                   new SqlParameter("@REMARKS", SqlDbType.VarChar, 200) { Value = master.REMARKS },
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 100) { Value = master.AGENT_CODE },
-                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar,100) { Value = master.CREATED_BY },
+                  //new SqlParameter("@CREATED_BY", SqlDbType.VarChar,100) { Value = master.CREATED_BY },
                   new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
                   new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
                   new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
@@ -50,108 +54,235 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@IS_VENDOR", SqlDbType.Bit) { Value = master.IS_VENDOR },
                 };
 
-                var ID = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
+                    var ID = SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters);
 
-                DataTable tbl = new DataTable();
-                tbl.Columns.Add(new DataColumn("CUST_ID", typeof(int)));
-                tbl.Columns.Add(new DataColumn("BRANCH_NAME", typeof(string)));
-                tbl.Columns.Add(new DataColumn("BRANCH_CODE", typeof(string)));
-                tbl.Columns.Add(new DataColumn("COUNTRY", typeof(string)));
-                tbl.Columns.Add(new DataColumn("STATE", typeof(string)));
-                tbl.Columns.Add(new DataColumn("CITY", typeof(string)));
-                tbl.Columns.Add(new DataColumn("TAN", typeof(string)));
-                tbl.Columns.Add(new DataColumn("TAX_NO", typeof(string)));
-                tbl.Columns.Add(new DataColumn("TAX_TYPE", typeof(string)));
-                tbl.Columns.Add(new DataColumn("PIC_NAME", typeof(string)));
-                tbl.Columns.Add(new DataColumn("PIC_CONTACT", typeof(string)));
-                tbl.Columns.Add(new DataColumn("PIC_EMAIL", typeof(string)));
-                tbl.Columns.Add(new DataColumn("ADDRESS", typeof(string)));
-                tbl.Columns.Add(new DataColumn("IS_SEZ", typeof(bool)));
-                tbl.Columns.Add(new DataColumn("IS_TAX_APPLICABLE", typeof(bool)));
+                    DataTable tbl = new DataTable();
+                    tbl.Columns.Add(new DataColumn("CUST_ID", typeof(int)));
+                    tbl.Columns.Add(new DataColumn("BRANCH_NAME", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("BRANCH_CODE", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("COUNTRY", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("STATE", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("CITY", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("TAN", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("TAX_NO", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("TAX_TYPE", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("PIC_NAME", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("PIC_CONTACT", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("PIC_EMAIL", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("ADDRESS", typeof(string)));
+                    tbl.Columns.Add(new DataColumn("IS_SEZ", typeof(bool)));
+                    tbl.Columns.Add(new DataColumn("IS_TAX_APPLICABLE", typeof(bool)));
 
-                foreach (var i in master.BRANCH_LIST)
-                {
-                    DataRow dr = tbl.NewRow();
+                    foreach (var i in master.BRANCH_LIST)
+                    {
+                        DataRow dr = tbl.NewRow();
 
-                    dr["CUST_ID"] = Convert.ToInt32(ID);
-                    dr["BRANCH_NAME"] = i.BRANCH_NAME;
-                    dr["BRANCH_CODE"] = i.BRANCH_CODE;
-                    dr["COUNTRY"] = i.COUNTRY;
-                    dr["STATE"] = i.STATE;
-                    dr["CITY"] = i.CITY;
-                    dr["TAN"] = i.TAN;
-                    dr["PIC_NAME"] = i.PIC_NAME;
-                    dr["PIC_CONTACT"] = i.PIC_CONTACT;
-                    dr["PIC_EMAIL"] = i.PIC_EMAIL;
-                    dr["ADDRESS"] = i.ADDRESS;
-                    dr["TAX_NO"] = i.TAX_NO;
-                    dr["TAX_TYPE"] = i.TAX_TYPE;
-                    dr["IS_SEZ"] = i.IS_SEZ;
-                    dr["IS_TAX_APPLICABLE"] = i.IS_TAX_APPLICABLE;
+                        dr["CUST_ID"] = Convert.ToInt32(ID);
+                        dr["BRANCH_NAME"] = i.BRANCH_NAME;
+                        dr["BRANCH_CODE"] = i.BRANCH_CODE;
+                        dr["COUNTRY"] = i.COUNTRY;
+                        dr["STATE"] = i.STATE;
+                        dr["CITY"] = i.CITY;
+                        dr["TAN"] = i.TAN;
+                        dr["PIC_NAME"] = i.PIC_NAME;
+                        dr["PIC_CONTACT"] = i.PIC_CONTACT;
+                        dr["PIC_EMAIL"] = i.PIC_EMAIL;
+                        dr["ADDRESS"] = i.ADDRESS;
+                        dr["TAX_NO"] = i.TAX_NO;
+                        dr["TAX_TYPE"] = i.TAX_TYPE;
+                        dr["IS_SEZ"] = i.IS_SEZ;
+                        dr["IS_TAX_APPLICABLE"] = i.IS_TAX_APPLICABLE;
 
-                    tbl.Rows.Add(dr);
+                        tbl.Rows.Add(dr);
+                    }
+
+                    string[] columns = new string[15];
+                    columns[0] = "CUST_ID";
+                    columns[1] = "BRANCH_NAME";
+                    columns[2] = "COUNTRY";
+                    columns[3] = "STATE";
+                    columns[4] = "CITY";
+                    columns[5] = "TAN";
+                    columns[6] = "PIC_NAME";
+                    columns[7] = "PIC_CONTACT";
+                    columns[8] = "PIC_EMAIL";
+                    columns[9] = "ADDRESS";
+                    columns[10] = "TAX_NO";
+                    columns[11] = "TAX_TYPE";
+                    columns[12] = "IS_SEZ";
+                    columns[13] = "IS_TAX_APPLICABLE";
+                    columns[14] = "BRANCH_CODE";
+
+                    SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, tbl, "MST_CUSTOMER_BRANCH", columns);
+
+                    DataTable tbl1 = new DataTable();
+                    tbl1.Columns.Add(new DataColumn("CUST_ID", typeof(int)));
+                    tbl1.Columns.Add(new DataColumn("BRANCH_CODE", typeof(string)));
+                    tbl1.Columns.Add(new DataColumn("BANK_NAME", typeof(string)));
+                    tbl1.Columns.Add(new DataColumn("BANK_ACC_NO", typeof(string)));
+                    tbl1.Columns.Add(new DataColumn("BANK_IFSC", typeof(string)));
+                    tbl1.Columns.Add(new DataColumn("BANK_SWIFT", typeof(string)));
+                    tbl1.Columns.Add(new DataColumn("BANK_REMARKS", typeof(string)));
+
+                    foreach (var i in master.BANK_LIST)
+                    {
+                        DataRow dr = tbl1.NewRow();
+
+                        dr["CUST_ID"] = Convert.ToInt32(ID);
+                        dr["BRANCH_CODE"] = i.BRANCH_CODE;
+                        dr["BANK_NAME"] = i.BANK_NAME;
+                        dr["BANK_ACC_NO"] = i.BANK_ACC_NO;
+                        dr["BANK_IFSC"] = i.BANK_IFSC;
+                        dr["BANK_SWIFT"] = i.BANK_SWIFT;
+                        dr["BANK_REMARKS"] = i.BANK_REMARKS;
+
+                        tbl1.Rows.Add(dr);
+                    }
+
+                    string[] columns1 = new string[7];
+                    columns1[0] = "CUST_ID";
+                    columns1[1] = "BANK_NAME";
+                    columns1[2] = "BANK_ACC_NO";
+                    columns1[3] = "BANK_IFSC";
+                    columns1[4] = "BANK_SWIFT";
+                    columns1[5] = "BANK_REMARKS";
+                    columns1[6] = "BRANCH_CODE";
+
+                    SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, tbl1, "MST_CUSTOMER_BANK", columns1);
+
+
+                    //vednor agreement list
+                    foreach (var agreement in master.VENDOR_AGREEMENT_LIST)
+                    {
+
+                        SqlParameter[] vendorParams =
+                     {
+                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_VENDOR_AGREEMENT" },
+                    new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = agreement.AGREEMENT_NO },
+                    new SqlParameter("@vendor_id", SqlDbType.Int) { Value = Convert.ToInt32(ID) },
+                    new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = agreement.PROCUREMENT_DATE },
+                    new SqlParameter("@start_date", SqlDbType.DateTime) { Value = agreement.START_DATE },
+                    new SqlParameter("@end_date", SqlDbType.DateTime) { Value = agreement.END_DATE },
+                    new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_TYPE_ID },
+                    new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_SIZE_ID },
+                    new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = agreement.ON_HIRE_HANDLING },
+                    new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = agreement.OFF_HIRE_HANDLING },
+                    new SqlParameter("@dpp", SqlDbType.Decimal) { Value = agreement.DPP },
+                    new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = agreement.PICKUP_CREDIT },
+                    new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = agreement.DROP_OFF_CHARGE },
+                    new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = agreement.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
+                    new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = agreement.RE_DELIVERY_CAP },
+                    new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = agreement.DEPRECIATED_REPLACEMENT_VALUE },
+                    new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = agreement.INSPECTION_CHARGES },
+                    new SqlParameter("@currency_id", SqlDbType.Int) { Value = agreement.CURRENCY_ID },
+                    new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = agreement.MIN_RENTAL_PERIOD_IN_DAYS },
+                    new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = agreement.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
+                    new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.PRE_TRIP_INSPECTION_CHARGE },
+                    new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.POST_TRIP_INSPECTION_CHARGE },
+                    new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = agreement.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
+                    new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = agreement.PICKUP_CHARGE },
+                    new SqlParameter("@is_active", SqlDbType.Bit) { Value = agreement.IS_ACTIVE },
+                    new SqlParameter("@created_by", SqlDbType.Int) { Value = agreement.CREATED_BY },
+                    new SqlParameter("@created_at", SqlDbType.DateTime) { Value = agreement.CREATED_AT },
+                    new SqlParameter("@modified_by", SqlDbType.Int) { Value = agreement.MODIFIED_BY },
+                    new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = agreement.MODIFIED_AT },
+
+                };
+
+                        var vendorAgreementId = SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
+
+                        DataTable portTable = new DataTable();
+                        portTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
+                        portTable.Columns.Add(new DataColumn("port_id", typeof(int)));
+                        portTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
+                        portTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                        portTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
+                        portTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
+                        portTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
+                        portTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
+                        portTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
+
+                        foreach (var port in agreement.VENDOR_PORT_LIST)
+                        {
+                            DataRow portRow = portTable.NewRow();
+                            portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
+                            portRow["port_id"] = port.PORT_ID;
+                            portRow["is_active"] = port.IS_ACTIVE;
+                            portRow["created_by"] = port.CREATED_BY.HasValue ? port.CREATED_BY.Value : (object)DBNull.Value;
+                            portRow["created_at"] = port.CREATED_AT.HasValue ? port.CREATED_AT.Value : (object)DBNull.Value;
+                            portRow["modified_by"] = port.MODIFIED_BY.HasValue ? port.MODIFIED_BY.Value : (object)DBNull.Value;
+                            portRow["modified_at"] = port.MODIFIED_AT.HasValue ? port.MODIFIED_AT.Value : (object)DBNull.Value;
+                            portRow["deleted_by"] = port.DELETED_BY.HasValue ? port.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
+                            portRow["deleted_at"] = port.DELETED_AT.HasValue ? port.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+
+                            portTable.Rows.Add(portRow);
+                        }
+                        string[] columns2 = new string[9];
+                        columns2[0] = "vendor_agreement_id";
+                        columns2[1] = "port_id";
+                        columns2[2] = "is_active";
+                        columns2[3] = "created_by";
+                        columns2[4] = "created_at";
+                        columns2[5] = "modified_by";
+                        columns2[6] = "modified_at";
+                        columns2[7] = "deleted_by";
+                        columns2[8] = "deleted_at";
+
+                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_port", columns2);
+
+                        DataTable locationTable = new DataTable();
+                        locationTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("location_id", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
+                        locationTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
+                        locationTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
+                        locationTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
+
+
+                        foreach (var location in agreement.VENDOR_PICKUP_LOCATION_LIST)
+                        {
+                            DataRow locationRow = locationTable.NewRow();
+                            locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
+                            locationRow["location_id"] = location.LOCATION_ID;
+                            locationRow["is_active"] = location.IS_ACTIVE;
+                            locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
+                            locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
+                            locationRow["modified_by"] = location.MODIFIED_BY.HasValue ? location.MODIFIED_BY.Value : (object)DBNull.Value;
+                            locationRow["modified_at"] = location.MODIFIED_AT.HasValue ? location.MODIFIED_AT.Value : (object)DBNull.Value;
+                            locationRow["deleted_by"] = location.DELETED_BY.HasValue ? location.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
+                            locationRow["deleted_at"] = location.DELETED_AT.HasValue ? location.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+
+
+                            locationTable.Rows.Add(locationRow);
+                        }
+
+                        string[] columns3 = new string[9];
+                        columns3[0] = "vendor_agreement_id";
+                        columns3[1] = "location_id";
+                        columns3[2] = "is_active";
+                        columns3[3] = "created_by";
+                        columns3[4] = "created_at";
+                        columns3[5] = "modified_by";
+                        columns3[6] = "modified_at";
+                        columns3[7] = "deleted_by";
+                        columns3[8] = "deleted_at";
+
+                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_pickup_location", columns3);
+                    }
+                    transaction.Commit();
+                    return ID;
                 }
 
-                string[] columns = new string[15];
-                columns[0] = "CUST_ID";
-                columns[1] = "BRANCH_NAME";
-                columns[2] = "COUNTRY";
-                columns[3] = "STATE";
-                columns[4] = "CITY";
-                columns[5] = "TAN";
-                columns[6] = "PIC_NAME";
-                columns[7] = "PIC_CONTACT";
-                columns[8] = "PIC_EMAIL";
-                columns[9] = "ADDRESS";
-                columns[10] = "TAX_NO";
-                columns[11] = "TAX_TYPE";
-                columns[12] = "IS_SEZ";
-                columns[13] = "IS_TAX_APPLICABLE";
-                columns[14] = "BRANCH_CODE";
-
-                SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "MST_CUSTOMER_BRANCH", columns);
-
-                DataTable tbl1 = new DataTable();
-                tbl1.Columns.Add(new DataColumn("CUST_ID", typeof(int)));
-                tbl1.Columns.Add(new DataColumn("BRANCH_CODE", typeof(string)));
-                tbl1.Columns.Add(new DataColumn("BANK_NAME", typeof(string)));
-                tbl1.Columns.Add(new DataColumn("BANK_ACC_NO", typeof(string)));
-                tbl1.Columns.Add(new DataColumn("BANK_IFSC", typeof(string)));
-                tbl1.Columns.Add(new DataColumn("BANK_SWIFT", typeof(string)));
-                tbl1.Columns.Add(new DataColumn("BANK_REMARKS", typeof(string)));
-
-                foreach (var i in master.BANK_LIST)
+                catch (Exception ex)
                 {
-                    DataRow dr = tbl1.NewRow();
 
-                    dr["CUST_ID"] = Convert.ToInt32(ID);
-                    dr["BRANCH_CODE"] = i.BRANCH_CODE;
-                    dr["BANK_NAME"] = i.BANK_NAME;
-                    dr["BANK_ACC_NO"] = i.BANK_ACC_NO;
-                    dr["BANK_IFSC"] = i.BANK_IFSC;
-                    dr["BANK_SWIFT"] = i.BANK_SWIFT;
-                    dr["BANK_REMARKS"] = i.BANK_REMARKS;
-
-                    tbl1.Rows.Add(dr);
+                    // Rollback the transaction on error
+                    transaction.Rollback();
+                    throw new Exception("An error occurred while inserting the party master: " + ex.Message);
                 }
-
-                string[] columns1 = new string[7];
-                columns1[0] = "CUST_ID";
-                columns1[1] = "BANK_NAME";
-                columns1[2] = "BANK_ACC_NO";
-                columns1[3] = "BANK_IFSC";
-                columns1[4] = "BANK_SWIFT";
-                columns1[5] = "BANK_REMARKS";
-                columns1[6] = "BRANCH_CODE";
-
-                SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl1, "MST_CUSTOMER_BANK", columns1);
-
-                return ID;
-            }
-            catch (Exception)
-            {
-
-                throw;
             }
         }
         public List<PARTY_MASTER> GetPartyMasterList(string dbConn, string AgentCode, string CustName, string CustType, bool Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
@@ -221,11 +352,16 @@ namespace PrimeMaritime_API.Repository
         }
         public void UpdatePartyMasterDetails(string connstring, PARTY_MASTER master)
         {
-            try
+            using (SqlConnection conn = new SqlConnection(connstring))
             {
-                SqlParameter[] parameters =
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
+                try
                 {
+                    SqlParameter[] parameters =
+                    {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER" },
+                  new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
                   new SqlParameter("@CUST_NAME", SqlDbType.VarChar,50) { Value = master.CUST_NAME},
                   new SqlParameter("@CUST_ADDRESS", SqlDbType.VarChar, 100) { Value = master.CUST_ADDRESS },
                   new SqlParameter("@CUST_EMAIL", SqlDbType.VarChar, 50) { Value = master.CUST_EMAIL },
@@ -234,7 +370,6 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@GSTIN", SqlDbType.VarChar,15) { Value = master.GSTIN },
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = master.AGENT_CODE },
-                  new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
                   new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
                   new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
                   new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
@@ -249,18 +384,18 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? null : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)  },
                 };
 
-                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
+                    SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters);
 
-                foreach (var items in master.BRANCH_LIST)
-                {
-                    SqlParameter[] parameters1 =
+                    foreach (var items in master.BRANCH_LIST)
                     {
+                        SqlParameter[] parameters1 =
+                        {
                       new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BRANCH" },
                       new SqlParameter("@BRANCH_ID", SqlDbType.Int) { Value = items.ID},
                       new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
                       new SqlParameter("@BRANCH_NAME", SqlDbType.VarChar, 255) { Value = items.BRANCH_NAME },
                       new SqlParameter("@BRANCH_CODE", SqlDbType.VarChar, 20) { Value = items.BRANCH_CODE },
-                      new SqlParameter("@COUNTRY", SqlDbType.VarChar, 50) { Value = items.COUNTRY },                      
+                      new SqlParameter("@COUNTRY", SqlDbType.VarChar, 50) { Value = items.COUNTRY },
                       new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = items.STATE },
                       new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = items.CITY },
                       new SqlParameter("@TAN", SqlDbType.VarChar,50) { Value = items.TAN },
@@ -274,13 +409,13 @@ namespace PrimeMaritime_API.Repository
                       new SqlParameter("@IS_TAX_APPLICABLE", SqlDbType.Bit) { Value = items.IS_TAX_APPLICABLE },
                     };
 
-                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters1);
-                }
+                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters1);
+                    }
 
-                foreach (var items in master.BANK_LIST)
-                {
-                    SqlParameter[] parameters2 =
+                    foreach (var items in master.BANK_LIST)
                     {
+                        SqlParameter[] parameters2 =
+                        {
                       new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BANK" },
                       new SqlParameter("@BANK_ID", SqlDbType.Int) { Value = items.ID},
                       new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
@@ -292,13 +427,88 @@ namespace PrimeMaritime_API.Repository
                       new SqlParameter("@BANK_REMARKS", SqlDbType.VarChar,255) { Value = items.BANK_REMARKS },
                     };
 
-                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters2);
-                }
-            }
-            catch (Exception)
-            {
+                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters2);
+                    }
 
-                throw;
+                    //vednor agreement list
+                    foreach (var agreement in master.VENDOR_AGREEMENT_LIST)
+                    {
+
+                        SqlParameter[] vendorParams =
+                     {
+                        new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_AGREEMENT" },
+                        new SqlParameter("@vendor_agreement_id", SqlDbType.VarChar, 50) { Value = agreement.vendor_agreement_id },
+                        new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = agreement.AGREEMENT_NO },
+                        new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = agreement.PROCUREMENT_DATE },
+                        new SqlParameter("@start_date", SqlDbType.DateTime) { Value = agreement.START_DATE },
+                        new SqlParameter("@end_date", SqlDbType.DateTime) { Value = agreement.END_DATE },
+                        new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_TYPE_ID },
+                        new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_SIZE_ID },
+                        new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = agreement.ON_HIRE_HANDLING },
+                        new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = agreement.OFF_HIRE_HANDLING },
+                        new SqlParameter("@dpp", SqlDbType.Decimal) { Value = agreement.DPP },
+                        new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = agreement.PICKUP_CREDIT },
+                        new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = agreement.DROP_OFF_CHARGE },
+                        new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = agreement.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
+                        new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = agreement.RE_DELIVERY_CAP },
+                        new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = agreement.DEPRECIATED_REPLACEMENT_VALUE },
+                        new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = agreement.INSPECTION_CHARGES },
+                        new SqlParameter("@currency_id", SqlDbType.Int) { Value = agreement.CURRENCY_ID },
+                        new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = agreement.MIN_RENTAL_PERIOD_IN_DAYS },
+                        new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = agreement.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
+                        new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.PRE_TRIP_INSPECTION_CHARGE },
+                        new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.POST_TRIP_INSPECTION_CHARGE },
+                        new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = agreement.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
+                        new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = agreement.PICKUP_CHARGE },
+                        new SqlParameter("@modified_by", SqlDbType.Int) { Value = agreement.MODIFIED_BY },
+                        new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = agreement.MODIFIED_AT },
+                    };
+
+                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
+
+
+                        foreach (var items in agreement.VENDOR_PORT_LIST)
+                        {
+                            SqlParameter[] vendorparameters =
+                             {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PORT_LIST" },
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.vendor_agreement_id},
+                              new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.vendor_agr_port_id},
+                              new SqlParameter("@port_id", SqlDbType.Int) { Value = items.PORT_ID},
+                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
+                         };
+
+                            SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorparameters);
+
+                        }
+
+
+
+                        foreach (var items in agreement.VENDOR_PICKUP_LOCATION_LIST)
+                        {
+                            SqlParameter[] vendor_pickup_parameters =
+                                     {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_LOCATION" },
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.vendor_agreement_id},
+                              new SqlParameter("@vendor_pickup_location_id", SqlDbType.Int) { Value = items.vendor_pickup_location_id},
+                              new SqlParameter("@location_id", SqlDbType.Int) { Value = items.LOCATION_ID},
+                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
+                         };
+
+                            SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendor_pickup_parameters);
+                        }
+                        transaction.Commit();
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Rollback the transaction on error
+                    transaction.Rollback();
+                    throw new Exception("An error occurred while inserting the party master: " + ex.Message);
+                }
             }
         }
         #endregion

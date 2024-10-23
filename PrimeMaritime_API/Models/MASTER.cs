@@ -34,6 +34,7 @@ namespace PrimeMaritime_API.Models
         public bool IS_VENDOR { get; set; }
         public List<CUSTOMER_BRANCH> BRANCH_LIST { get; set; } = new List<CUSTOMER_BRANCH>();
         public List<CUSTOMER_BANK> BANK_LIST { get; set; } = new List<CUSTOMER_BANK>();
+        public List<VENDOR_AGREEMENT_LIST> VENDOR_AGREEMENT_LIST { get; set; } = new List<VENDOR_AGREEMENT_LIST>();
     }
     public class CUSTOMER_BRANCH
     {
@@ -755,5 +756,71 @@ namespace PrimeMaritime_API.Models
         public decimal TOTAL_GROSS_WT { get; set; }
         public decimal GROSS_WT_PER_REQ_QUANTITY { get; set; }
 
+    }
+
+    public class VENDOR_AGREEMENT_LIST
+    {
+        public int vendor_agreement_id { get; set; }
+        public string AGREEMENT_NO { get; set; }
+        public int VENDOR_ID { get; set; }
+        public DateTime PROCUREMENT_DATE { get; set; }
+        public DateTime START_DATE { get; set; }
+        public DateTime END_DATE { get; set; }
+        public int EQUIPMENT_TYPE_ID { get; set; }
+        public int EQUIPMENT_SIZE_ID { get; set; }
+        public decimal ON_HIRE_HANDLING { get; set; }
+        public decimal OFF_HIRE_HANDLING { get; set; }
+        public decimal DPP { get; set; }
+        public decimal PICKUP_CREDIT { get; set; }
+        public decimal DROP_OFF_CHARGE { get; set; }
+        public decimal ANNUAL_DEPRECIATION_IN_PERCENTAGE { get; set; }
+        public int RE_DELIVERY_CAP { get; set; }
+        public decimal DEPRECIATED_REPLACEMENT_VALUE { get; set; }
+        public decimal INSPECTION_CHARGES { get; set; }
+        public int CURRENCY_ID { get; set; }
+        public int MIN_RENTAL_PERIOD_IN_DAYS { get; set; }
+        public decimal MIN_RESIDUAL_VALUE_IN_PERCENTAGE { get; set; }
+        public decimal PRE_TRIP_INSPECTION_CHARGE { get; set; }
+        public decimal POST_TRIP_INSPECTION_CHARGE { get; set; }
+        public int REDELIVERY_NOTICE_PERIOD_IN_DAYS { get; set; }
+        public decimal PICKUP_CHARGE { get; set; }
+        public Boolean IS_ACTIVE { get; set; }
+        public int? CREATED_BY { get; set; }
+        public DateTime? CREATED_AT { get; set; }
+        public int? MODIFIED_BY { get; set; }
+        public DateTime? MODIFIED_AT { get; set; }
+        public int? DELETED_BY { get; set; }
+        public DateTime? DELETED_AT { get; set; }
+
+        public List<VENDOR_PORT_LIST> VENDOR_PORT_LIST { get; set; } = new List<VENDOR_PORT_LIST>();
+        public List<VENDOR_PICKUP_LOCATION_LIST> VENDOR_PICKUP_LOCATION_LIST { get; set; } = new List<VENDOR_PICKUP_LOCATION_LIST>();
+    }
+
+    public class VENDOR_PORT_LIST
+    {
+        public int vendor_agreement_id { get; set; }
+        public int vendor_agr_port_id { get; set; }
+        public int PORT_ID { get; set; }
+        public Boolean IS_ACTIVE { get; set; }
+        public int? CREATED_BY { get; set; }
+        public DateTime? CREATED_AT { get; set; }
+        public int? MODIFIED_BY { get; set; }
+        public DateTime? MODIFIED_AT { get; set; }
+        public int? DELETED_BY { get; set; }
+        public DateTime? DELETED_AT { get; set; }
+    }
+
+    public class VENDOR_PICKUP_LOCATION_LIST
+    {
+        public int vendor_agreement_id { get; set; }
+        public int vendor_pickup_location_id { get; set; }
+        public int LOCATION_ID { get; set; }
+        public Boolean IS_ACTIVE { get; set; }
+        public int? CREATED_BY { get; set; }
+        public DateTime? CREATED_AT { get; set; }
+        public int? MODIFIED_BY { get; set; }
+        public DateTime? MODIFIED_AT { get; set; }
+        public int? DELETED_BY { get; set; }
+        public DateTime? DELETED_AT { get; set; }
     }
 }
