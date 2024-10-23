@@ -60,13 +60,13 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<PARTY_MASTER> GetPartyMasterDetails(string Agent_code, int CUSTOMER_ID)
+        public Response<PARTY_MASTER> GetPartyMasterDetails(string Agent_code, int CUSTOMER_ID, int VENDOR_AGREEMENT_ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<PARTY_MASTER> response = new Response<PARTY_MASTER>();
  
-            var data = DbClientFactory<MasterRepo>.Instance.GetPartyMasterDetails(dbConn, Agent_code, CUSTOMER_ID);
+            var data = DbClientFactory<MasterRepo>.Instance.GetPartyMasterDetails(dbConn, Agent_code, CUSTOMER_ID, VENDOR_AGREEMENT_ID);
 
             if (data != null)
             {
@@ -83,6 +83,18 @@ namespace PrimeMaritime_API.Services
                 if (data.Tables.Contains("Table2"))
                 {
                     response.Data.BANK_LIST = MasterRepo.GetListFromDataSet<CUSTOMER_BANK>(data.Tables[2]);
+                }
+                if (data.Tables.Contains("Table3"))
+                {
+                    response.Data.VENDOR_AGREEMENT_LIST = MasterRepo.GetListFromDataSet<VENDOR_AGREEMENT_LIST>(data.Tables[3]);
+                }
+                if (data.Tables.Contains("Table4"))
+                {
+                    response.Data.VENDOR_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_PORT_LIST>(data.Tables[4]);
+                }
+                if (data.Tables.Contains("Table5"))
+                {
+                    response.Data.VENDOR_PICKUP_LOCATION_LIST = MasterRepo.GetListFromDataSet<VENDOR_PICKUP_LOCATION_LIST>(data.Tables[5]);
                 }
             }
             else

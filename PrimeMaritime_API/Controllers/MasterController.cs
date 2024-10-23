@@ -68,9 +68,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetPartyMasterDetails")]
-        public ActionResult<Response<PARTY_MASTER>> GetPartyMasterDetails(string AGENT_CODE, int CUSTOMER_ID)
+        public ActionResult<Response<PARTY_MASTER>> GetPartyMasterDetails(string AGENT_CODE, int CUSTOMER_ID, int VENDOR_AGREEMENT_ID)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetPartyMasterDetails(AGENT_CODE, CUSTOMER_ID)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetPartyMasterDetails(AGENT_CODE, CUSTOMER_ID, VENDOR_AGREEMENT_ID)));
         }
 
         [HttpDelete("DeletePartyMasterDetails")]

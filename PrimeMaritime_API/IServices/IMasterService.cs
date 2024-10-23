@@ -14,7 +14,7 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> InsertPartyMaster(PARTY_MASTER request);
         Response<List<PARTY_MASTER>> GetPartyMasterList(string Agent_code, string CustName, string CustType, bool Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR);
 
-        Response<PARTY_MASTER> GetPartyMasterDetails(string Agent_code, int CUSTOMER_ID);
+        Response<PARTY_MASTER> GetPartyMasterDetails(string Agent_code, int CUSTOMER_ID, int VENDOR_AGREEMENT_ID);
 
         Response<CommonResponse> DeletePartyMasterDetails(int CUSTOMER_ID);
 

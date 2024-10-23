@@ -35,6 +35,8 @@ namespace PrimeMaritime_API.Models
         public List<CUSTOMER_BRANCH> BRANCH_LIST { get; set; } = new List<CUSTOMER_BRANCH>();
         public List<CUSTOMER_BANK> BANK_LIST { get; set; } = new List<CUSTOMER_BANK>();
         public List<VENDOR_AGREEMENT_LIST> VENDOR_AGREEMENT_LIST { get; set; } = new List<VENDOR_AGREEMENT_LIST>();
+        public List<VENDOR_PORT_LIST> VENDOR_PORT_LIST { get; set; } = new List<VENDOR_PORT_LIST>();
+        public List<VENDOR_PICKUP_LOCATION_LIST> VENDOR_PICKUP_LOCATION_LIST { get; set; } = new List<VENDOR_PICKUP_LOCATION_LIST>();
     }
     public class CUSTOMER_BRANCH
     {
@@ -760,7 +762,7 @@ namespace PrimeMaritime_API.Models
 
     public class VENDOR_AGREEMENT_LIST
     {
-        public int vendor_agreement_id { get; set; }
+        public int VENDOR_AGREEMENT_ID { get; set; }
         public string AGREEMENT_NO { get; set; }
         public int VENDOR_ID { get; set; }
         public DateTime PROCUREMENT_DATE { get; set; }
@@ -792,14 +794,14 @@ namespace PrimeMaritime_API.Models
         public int? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
 
-        public List<VENDOR_PORT_LIST> VENDOR_PORT_LIST { get; set; } = new List<VENDOR_PORT_LIST>();
-        public List<VENDOR_PICKUP_LOCATION_LIST> VENDOR_PICKUP_LOCATION_LIST { get; set; } = new List<VENDOR_PICKUP_LOCATION_LIST>();
+        //public List<VENDOR_PORT_LIST> VENDOR_PORT_LIST { get; set; } = new List<VENDOR_PORT_LIST>();
+        //public List<VENDOR_PICKUP_LOCATION_LIST> VENDOR_PICKUP_LOCATION_LIST { get; set; } = new List<VENDOR_PICKUP_LOCATION_LIST>();
     }
 
     public class VENDOR_PORT_LIST
     {
-        public int vendor_agreement_id { get; set; }
-        public int vendor_agr_port_id { get; set; }
+        public int VENDOR_AGREEMENT_ID { get; set; }
+        public int VENDOR_AGR_PORT_ID { get; set; }
         public int PORT_ID { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }
@@ -812,8 +814,8 @@ namespace PrimeMaritime_API.Models
 
     public class VENDOR_PICKUP_LOCATION_LIST
     {
-        public int vendor_agreement_id { get; set; }
-        public int vendor_pickup_location_id { get; set; }
+        public int VENDOR_AGREEMENT_ID { get; set; }
+        public int VENDOR_PICKUP_LOCATION_ID { get; set; }
         public int LOCATION_ID { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }
