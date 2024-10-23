@@ -3996,7 +3996,7 @@ namespace PrimeMaritime_API.Repository
             {
                 SqlParameter[] parameters =
                 {
-                   new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@EQUIPMENT_TYPE_ID", SqlDbType.Int) { Value = ID },
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTDETAILS" }
                 };
 
@@ -4036,7 +4036,7 @@ namespace PrimeMaritime_API.Repository
             {
                 SqlParameter[] parameters =
                 {
-                  new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                  new SqlParameter("@EQUIPMENT_TYPE_ID", SqlDbType.Int) { Value = ID },
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "DELETE_EQUIPMENT" }
                 };
 
