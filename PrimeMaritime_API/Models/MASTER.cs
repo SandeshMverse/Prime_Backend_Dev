@@ -78,6 +78,16 @@ namespace PrimeMaritime_API.Models
         public string ONHIRE_LOCATION { get; set; }      
         public string LEASED_FROM { get; set; }      
         public bool STATUS { get; set; }
+
+        //add new field
+        public string AGREEMENT_NO { get; set; }
+        public DateTime OFFHIRE_DATE { get; set; }
+        public DateTime YEAR_OF_MANUFACTURE { get; set; }
+        public decimal TARE_WEIGHT { get; set; }
+        public decimal PAYLOAD_CAPACITY { get; set; }
+        public decimal GROSS_WEIGHT { get; set; }
+        public string CSC_DETAILS { get; set; }
+ 
     }
     public class COUNTRY_MASTER
     {
@@ -769,7 +779,9 @@ namespace PrimeMaritime_API.Models
         public DateTime START_DATE { get; set; }
         public DateTime END_DATE { get; set; }
         public int EQUIPMENT_TYPE_ID { get; set; }
+        public string EQUIPMENT_TYPE { get; set; }
         public int EQUIPMENT_SIZE_ID { get; set; }
+        public string CONTAINER_TYPE { get; set; }
         public decimal ON_HIRE_HANDLING { get; set; }
         public decimal OFF_HIRE_HANDLING { get; set; }
         public decimal DPP { get; set; }
@@ -780,6 +792,7 @@ namespace PrimeMaritime_API.Models
         public decimal DEPRECIATED_REPLACEMENT_VALUE { get; set; }
         public decimal INSPECTION_CHARGES { get; set; }
         public int CURRENCY_ID { get; set; }
+        public string CURRENCY_CODE { get; set; }
         public int MIN_RENTAL_PERIOD_IN_DAYS { get; set; }
         public decimal MIN_RESIDUAL_VALUE_IN_PERCENTAGE { get; set; }
         public decimal PRE_TRIP_INSPECTION_CHARGE { get; set; }
@@ -803,6 +816,7 @@ namespace PrimeMaritime_API.Models
         public int VENDOR_AGREEMENT_ID { get; set; }
         public int VENDOR_AGR_PORT_ID { get; set; }
         public int PORT_ID { get; set; }
+        public string PORT_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
@@ -817,9 +831,24 @@ namespace PrimeMaritime_API.Models
         public int VENDOR_AGREEMENT_ID { get; set; }
         public int VENDOR_PICKUP_LOCATION_ID { get; set; }
         public int LOCATION_ID { get; set; }
+        public string LOCATION_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
+        public int? MODIFIED_BY { get; set; }
+        public DateTime? MODIFIED_AT { get; set; }
+        public int? DELETED_BY { get; set; }
+        public DateTime? DELETED_AT { get; set; }
+    }
+
+    public class EQUIPMENT_TYPE_MASTER
+    {
+        public int EQUIPMENT_TYPE_ID { get; set; }
+        public string EQUIPMENT_TYPE { get; set; }
+        public string DESCRIPTION { get; set; }
+        public Boolean IS_ACTIVE { get; set; }
+        public int? CREATED_BY { get; set; }
+        public DateTime? CREATED_DATE { get; set; }
         public int? MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
         public int? DELETED_BY { get; set; }

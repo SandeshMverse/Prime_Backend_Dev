@@ -2987,5 +2987,101 @@ namespace PrimeMaritime_API.Services
             return response;
         }
         #endregion
+
+        #region "EQUIPMENT_TYPE"
+        public Response<CommonResponse> InsertEquipmentType(EQUIPMENT_TYPE_MASTER request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<MasterRepo>.Instance.InsertEquipmentType(dbConn, request);
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Equipment Type saved Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+        public Response<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<EQUIPMENT_TYPE_MASTER> response = new Response<EQUIPMENT_TYPE_MASTER>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeDetails(dbConn, ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+        public Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.UpdatEquipmentTypeList(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Equipment Type updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+        public Response<CommonResponse> DeleteEquipmentTypeList(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+
+            if ((ID == 0) || (ID == 0))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide ID ";
+                return response;
+            }
+
+            DbClientFactory<MasterRepo>.Instance.DeleteEquipmentTypeList(dbConn, ID);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Equipment deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+        #endregion
     }
 }

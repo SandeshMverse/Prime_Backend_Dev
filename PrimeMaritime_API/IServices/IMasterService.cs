@@ -364,5 +364,19 @@ namespace PrimeMaritime_API.IServices
         #region "SERVICE-DETAILS"
         Response<List<VESSEL_VOYAGE>> GetServices(string LOCATION, string SERVICE);
         #endregion
+
+        #region "EQUIPMENT_TYPE"
+
+        Response<CommonResponse> InsertEquipmentType(EQUIPMENT_TYPE_MASTER request);
+
+        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList();
+
+        Response<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(int ID);
+
+        Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
+
+        Response<CommonResponse> DeleteEquipmentTypeList(int ID);
+
+        #endregion
     }
 }

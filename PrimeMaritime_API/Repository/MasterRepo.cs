@@ -529,6 +529,16 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@ONHIRE_DATE", SqlDbType.DateTime) { Value = master.ONHIRE_DATE },
                   new SqlParameter("@ONHIRE_LOCATION", SqlDbType.VarChar, 255) { Value = master.ONHIRE_LOCATION },
                   new SqlParameter("@LEASED_FROM", SqlDbType.VarChar,255) { Value = master.LEASED_FROM },
+
+                //ADD NEW FIELD
+
+                  new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar,100) { Value = master.AGREEMENT_NO },
+                  new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
+                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
+                  new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
+                  new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
+                  new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
+                  new SqlParameter("@CSC_DETAILS", SqlDbType.VarChar,100) { Value = master.CSC_DETAILS },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -602,6 +612,16 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@ONHIRE_DATE", SqlDbType.DateTime) { Value = master.ONHIRE_DATE },
                   new SqlParameter("@ONHIRE_LOCATION", SqlDbType.VarChar, 255) { Value = master.ONHIRE_LOCATION },
                   new SqlParameter("@LEASED_FROM", SqlDbType.VarChar,255) { Value = master.LEASED_FROM },
+                  
+                //ADD NEW FIELD
+
+                  new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar,100) { Value = master.AGREEMENT_NO },
+                  new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
+                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
+                  new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
+                  new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
+                  new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
+                  new SqlParameter("@CSC_DETAILS", SqlDbType.VarChar,100) { Value = master.CSC_DETAILS },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -3915,6 +3935,112 @@ namespace PrimeMaritime_API.Repository
                 List<VESSEL_VOYAGE> result = SqlHelper.CreateListFromTable<VESSEL_VOYAGE>(dataTable);
 
                 return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        #endregion
+
+        #region "EQUIPMENT_TYPE"
+        public void InsertEquipmentType(string connstring, EQUIPMENT_TYPE_MASTER master)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_EQUIPMENT" },
+                  new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE },
+                  new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
+                  new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
+                  new SqlParameter("@CREATED_BY", SqlDbType.Int) { Value = master.CREATED_BY },
+                  new SqlParameter("@CREATED_DATE", SqlDbType.DateTime) { Value = master.CREATED_DATE },
+                  new SqlParameter("@MODIFIED_BY", SqlDbType.Int) { Value = master.MODIFIED_BY },
+                  new SqlParameter("@MODIFIED_AT", SqlDbType.DateTime) { Value = master.MODIFIED_AT },
+                  new SqlParameter("@DELETED_BY", SqlDbType.Int) { Value = master.DELETED_BY },
+                  new SqlParameter("@DELETED_AT", SqlDbType.DateTime) { Value = master.DELETED_AT },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_EQUIPMENT", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeList(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTLIST" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_EQUIPMENT", parameters);
+                List<EQUIPMENT_TYPE_MASTER> master = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        public EQUIPMENT_TYPE_MASTER GetEquipmentTypeDetails(string connstring, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTDETAILS" }
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<EQUIPMENT_TYPE_MASTER>(connstring, "SP_CRUD_EQUIPMENT", r => r.TranslateAsEQUIPMENT(), parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdatEquipmentTypeList(string connstring, EQUIPMENT_TYPE_MASTER master)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_EQUIPMENT" },
+                  new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE },
+                  new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
+                  new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
+                  new SqlParameter("@MODIFIED_BY", SqlDbType.Int) { Value = master.MODIFIED_BY },
+                  new SqlParameter("@MODIFIED_AT", SqlDbType.DateTime) { Value = master.MODIFIED_AT },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_EQUIPMENT", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DeleteEquipmentTypeList(string connstring, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "DELETE_EQUIPMENT" }
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_EQUIPMENT", parameters);
             }
             catch (Exception)
             {

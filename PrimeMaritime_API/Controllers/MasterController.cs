@@ -1024,5 +1024,40 @@ namespace PrimeMaritime_API.Controllers
         }
         #endregion
 
+        #region "EQUIPMENT_TYPE"
+
+        [HttpPost("InsertEquipmentType")]
+        public ActionResult<Response<CommonResponse>> InsertEquipmentType(EQUIPMENT_TYPE_MASTER request)
+        {
+            return Ok(_masterService.InsertEquipmentType(request));
+        }
+
+        [HttpGet("GetEquipmentTypeList")]
+        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeList()));
+        }
+
+        [HttpGet("GetEquipmentTypeDetails")]
+        public ActionResult<Response<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeDetails(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeDetails(ID)));
+        }
+
+
+        [HttpPost("UpdatEquipmentTypeList")]
+        public ActionResult<Response<CommonResponse>> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request)
+        {
+            return Ok(_masterService.UpdatEquipmentTypeList(request));
+        }
+
+        [HttpDelete("DeleteEquipmentTypeList")]
+        public ActionResult<Response<CommonResponse>> DeleteEquipmentTypeList(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.DeleteEquipmentTypeList(ID)));
+        }
+
+        #endregion
+
     }
 }
