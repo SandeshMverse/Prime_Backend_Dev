@@ -202,7 +202,7 @@ namespace PrimeMaritime_API.Repository
                         portTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
                         portTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
 
-                        foreach (var port in master.VENDOR_PORT_LIST)
+                        foreach (var port in master.VENDOR_PICKUP_PORT_LIST)
                         {
                             DataRow portRow = portTable.NewRow();
                             portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
@@ -228,11 +228,13 @@ namespace PrimeMaritime_API.Repository
                         columns2[7] = "deleted_by";
                         columns2[8] = "deleted_at";
 
-                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_port", columns2);
+                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_pickup_port", columns2);
 
+
+                        //redelivery
                         DataTable locationTable = new DataTable();
                         locationTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("location_id", typeof(int)));
+                        locationTable.Columns.Add(new DataColumn("redelivery_port_id", typeof(int)));
                         locationTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
                         locationTable.Columns.Add(new DataColumn("created_by", typeof(int)));
                         locationTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
@@ -242,11 +244,11 @@ namespace PrimeMaritime_API.Repository
                         locationTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
 
 
-                        foreach (var location in master.VENDOR_PICKUP_LOCATION_LIST)
+                        foreach (var location in master.VENDOR_REDELIVERY_PORT_LIST)
                         {
                             DataRow locationRow = locationTable.NewRow();
                             locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
-                            locationRow["location_id"] = location.LOCATION_ID;
+                            locationRow["redelivery_port_id"] = location.REDELIVERY_PORT_ID;
                             locationRow["is_active"] = location.IS_ACTIVE;
                             locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
                             locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
@@ -261,7 +263,7 @@ namespace PrimeMaritime_API.Repository
 
                         string[] columns3 = new string[9];
                         columns3[0] = "vendor_agreement_id";
-                        columns3[1] = "location_id";
+                        columns3[1] = "redelivery_port_id";
                         columns3[2] = "is_active";
                         columns3[3] = "created_by";
                         columns3[4] = "created_at";
@@ -270,7 +272,7 @@ namespace PrimeMaritime_API.Repository
                         columns3[7] = "deleted_by";
                         columns3[8] = "deleted_at";
 
-                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_pickup_location", columns3);
+                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_redelivery_port", columns3);
                     }
                     transaction.Commit();
                     return ID;
@@ -468,11 +470,11 @@ namespace PrimeMaritime_API.Repository
                         SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
 
 
-                        foreach (var items in master.VENDOR_PORT_LIST)
+                        foreach (var items in master.VENDOR_PICKUP_PORT_LIST)
                         {
                             SqlParameter[] vendorparameters =
                              {
-                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PORT_LIST" },
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_PORT" },
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
                               new SqlParameter("@port_id", SqlDbType.Int) { Value = items.PORT_ID},
@@ -486,14 +488,14 @@ namespace PrimeMaritime_API.Repository
 
 
 
-                        foreach (var items in master.VENDOR_PICKUP_LOCATION_LIST)
+                        foreach (var items in master.VENDOR_REDELIVERY_PORT_LIST)
                         {
                             SqlParameter[] vendor_pickup_parameters =
                                      {
-                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_LOCATION" },
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_REDELIVERY_PORT" },
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
-                              new SqlParameter("@vendor_pickup_location_id", SqlDbType.Int) { Value = items.VENDOR_PICKUP_LOCATION_ID},
-                              new SqlParameter("@location_id", SqlDbType.Int) { Value = items.LOCATION_ID},
+                              new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
+                              new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.REDELIVERY_PORT_ID},
                               new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
                               new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
                          };
@@ -4048,6 +4050,31 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public List<EQUIPMENT_TYPE_MASTER> SearchEquipment(string connstring, Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "SEARCH_EQUIPMENT_LIST" },
+                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
+                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar, 100) { Value = EQUIPMENT_TYPE },
+                   new SqlParameter("@CREATED_AT", SqlDbType.VarChar, 100) { Value = FROM_DATE },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_EQUIPMENT", parameters);
+                List<EQUIPMENT_TYPE_MASTER> result = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
+
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         #endregion
 
     }

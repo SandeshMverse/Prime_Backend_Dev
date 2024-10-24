@@ -376,6 +376,7 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
 
         Response<CommonResponse> DeleteEquipmentTypeList(int ID);
+        Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
 
         #endregion
     }

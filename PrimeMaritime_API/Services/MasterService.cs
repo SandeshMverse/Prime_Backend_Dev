@@ -90,11 +90,11 @@ namespace PrimeMaritime_API.Services
                 }
                 if (data.Tables.Contains("Table4"))
                 {
-                    response.Data.VENDOR_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_PORT_LIST>(data.Tables[4]);
+                    response.Data.VENDOR_PICKUP_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_PICKUP_PORT_LIST>(data.Tables[4]);
                 }
                 if (data.Tables.Contains("Table5"))
                 {
-                    response.Data.VENDOR_PICKUP_LOCATION_LIST = MasterRepo.GetListFromDataSet<VENDOR_PICKUP_LOCATION_LIST>(data.Tables[5]);
+                    response.Data.VENDOR_REDELIVERY_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_REDELIVERY_PORT_LIST>(data.Tables[5]);
                 }
             }
             else
@@ -3082,6 +3082,31 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+         public Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
+            var data = DbClientFactory<MasterRepo>.Instance.SearchEquipment(dbConn, IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
         #endregion
     }
 }

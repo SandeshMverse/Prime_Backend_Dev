@@ -1057,6 +1057,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteEquipmentTypeList(ID)));
         }
 
+        [HttpGet("SearchEquipment")]
+        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.SearchEquipment(IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE)));
+        }
+
         #endregion
 
     }
