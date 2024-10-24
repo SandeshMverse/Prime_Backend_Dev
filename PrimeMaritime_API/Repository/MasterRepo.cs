@@ -534,7 +534,7 @@ namespace PrimeMaritime_API.Repository
 
                 //ADD NEW FIELD
 
-                  new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar,100) { Value = master.AGREEMENT_NO },
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
                   new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
@@ -617,7 +617,7 @@ namespace PrimeMaritime_API.Repository
                   
                 //ADD NEW FIELD
 
-                  new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar,100) { Value = master.AGREEMENT_NO },
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
                   new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },

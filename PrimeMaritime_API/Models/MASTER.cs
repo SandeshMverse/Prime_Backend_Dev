@@ -80,7 +80,7 @@ namespace PrimeMaritime_API.Models
         public bool STATUS { get; set; }
 
         //add new field
-        public string AGREEMENT_NO { get; set; }
+        public int vendor_agreement_id { get; set; }
         public DateTime OFFHIRE_DATE { get; set; }
         public DateTime YEAR_OF_MANUFACTURE { get; set; }
         public decimal TARE_WEIGHT { get; set; }
