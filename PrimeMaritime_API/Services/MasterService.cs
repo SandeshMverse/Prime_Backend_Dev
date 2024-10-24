@@ -3025,12 +3025,12 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeDetails(int ID)
+        public Response<EQUIPMENT_TYPE_MASTER> GetEquipmentByID(int ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeDetails(dbConn, ID);
+            Response<EQUIPMENT_TYPE_MASTER> response = new Response<EQUIPMENT_TYPE_MASTER>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentByID(dbConn, ID);
 
             if (data != null)
             {
@@ -3048,6 +3048,7 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
         public Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -3106,6 +3107,7 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+           
 
         #endregion
     }

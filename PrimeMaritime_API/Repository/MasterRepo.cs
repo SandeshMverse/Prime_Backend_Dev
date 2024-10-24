@@ -3992,8 +3992,8 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-     
-        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(string connstring, int ID)
+
+        public EQUIPMENT_TYPE_MASTER GetEquipmentByID(string connstring, int ID)
         {
             try
             {
@@ -4003,10 +4003,7 @@ namespace PrimeMaritime_API.Repository
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTDETAILS" }
                 };
 
-                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_EQUIPMENT", parameters);
-                List<EQUIPMENT_TYPE_MASTER> result = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
-
-                return result;
+                return SqlHelper.ExtecuteProcedureReturnData<EQUIPMENT_TYPE_MASTER>(connstring, "SP_CRUD_EQUIPMENT", r => r.TranslateAsEQUIPMENT(), parameters);
             }
             catch (Exception)
             {
@@ -4081,6 +4078,7 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
 
         #endregion
 

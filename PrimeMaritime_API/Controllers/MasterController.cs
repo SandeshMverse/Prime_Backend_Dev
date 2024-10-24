@@ -1038,12 +1038,11 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeList()));
         }
 
-        [HttpGet("GetEquipmentTypeDetails")]
-        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeDetails(int ID)
+        [HttpGet("GetEquipmentByID")]
+        public ActionResult<Response<EQUIPMENT_TYPE_MASTER>> GetEquipmentByID(int ID)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeDetails(ID)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentByID(ID)));
         }
-
 
         [HttpPost("UpdatEquipmentTypeList")]
         public ActionResult<Response<CommonResponse>> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request)
