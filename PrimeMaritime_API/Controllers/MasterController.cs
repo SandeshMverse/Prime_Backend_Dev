@@ -1039,7 +1039,7 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetEquipmentTypeDetails")]
-        public ActionResult<Response<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeDetails(int ID)
+        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeDetails(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeDetails(ID)));
         }

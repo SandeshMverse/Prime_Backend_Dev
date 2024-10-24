@@ -944,19 +944,19 @@ namespace PrimeMaritime_API.Translators
                 item.IS_ACTIVE = SqlHelper.GetBoolean(reader, "IS_ACTIVE");
 
             if (reader.IsColumnExists("CREATED_BY"))
-                item.CREATED_BY = SqlHelper.GetNullableInt32(reader, "CREATED_BY");
+                item.CREATED_BY = SqlHelper.GetNullableString(reader, "CREATED_BY");
 
             if (reader.IsColumnExists("CREATED_DATE"))
                 item.CREATED_DATE = SqlHelper.GetDateTime(reader, "CREATED_DATE");
 
             if (reader.IsColumnExists("MODIFIED_BY"))
-                item.MODIFIED_BY = SqlHelper.GetNullableInt32(reader, "MODIFIED_BY");
+                item.MODIFIED_BY = SqlHelper.GetNullableString(reader, "MODIFIED_BY");
 
             if (reader.IsColumnExists("MODIFIED_AT"))
                 item.MODIFIED_AT = SqlHelper.GetDateTime(reader, "MODIFIED_AT");
 
             if (reader.IsColumnExists("DELETED_BY"))
-                item.DELETED_BY = SqlHelper.GetNullableInt32(reader, "DELETED_BY");
+                item.DELETED_BY = SqlHelper.GetNullableString(reader, "DELETED_BY");
 
             if (reader.IsColumnExists("DELETED_AT"))
                 item.DELETED_AT = SqlHelper.GetDateTime(reader, "DELETED_AT");

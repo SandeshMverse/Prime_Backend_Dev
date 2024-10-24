@@ -3025,11 +3025,11 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(int ID)
+        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeDetails(int ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            Response<EQUIPMENT_TYPE_MASTER> response = new Response<EQUIPMENT_TYPE_MASTER>();
+            Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
             var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeDetails(dbConn, ID);
 
             if (data != null)

@@ -847,11 +847,11 @@ namespace PrimeMaritime_API.Models
         public string EQUIPMENT_TYPE { get; set; }
         public string DESCRIPTION { get; set; }
         public Boolean IS_ACTIVE { get; set; }
-        public int? CREATED_BY { get; set; }
+        public string CREATED_BY { get; set; }
         public DateTime? CREATED_DATE { get; set; }
-        public int? MODIFIED_BY { get; set; }
+        public string MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
-        public int? DELETED_BY { get; set; }
+        public string DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
     }
 }

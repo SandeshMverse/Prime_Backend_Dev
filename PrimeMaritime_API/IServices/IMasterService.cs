@@ -371,7 +371,7 @@ namespace PrimeMaritime_API.IServices
 
         Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList();
 
-        Response<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(int ID);
+        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeDetails(int ID);
 
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
 

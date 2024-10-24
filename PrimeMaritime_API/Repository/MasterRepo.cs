@@ -3957,11 +3957,11 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE },
                   new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
-                  new SqlParameter("@CREATED_BY", SqlDbType.Int) { Value = master.CREATED_BY },
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar,50) { Value = master.CREATED_BY },
                   new SqlParameter("@CREATED_DATE", SqlDbType.DateTime) { Value = master.CREATED_DATE },
-                  new SqlParameter("@MODIFIED_BY", SqlDbType.Int) { Value = master.MODIFIED_BY },
+                  new SqlParameter("@MODIFIED_BY", SqlDbType.VarChar,50) { Value = master.MODIFIED_BY },
                   new SqlParameter("@MODIFIED_AT", SqlDbType.DateTime) { Value = master.MODIFIED_AT },
-                  new SqlParameter("@DELETED_BY", SqlDbType.Int) { Value = master.DELETED_BY },
+                  new SqlParameter("@DELETED_BY", SqlDbType.VarChar,50) { Value = master.DELETED_BY },
                   new SqlParameter("@DELETED_AT", SqlDbType.DateTime) { Value = master.DELETED_AT },
                 };
 
@@ -3992,7 +3992,8 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-        public EQUIPMENT_TYPE_MASTER GetEquipmentTypeDetails(string connstring, int ID)
+     
+        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeDetails(string connstring, int ID)
         {
             try
             {
@@ -4002,13 +4003,19 @@ namespace PrimeMaritime_API.Repository
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTDETAILS" }
                 };
 
-                return SqlHelper.ExtecuteProcedureReturnData<EQUIPMENT_TYPE_MASTER>(connstring, "SP_CRUD_EQUIPMENT", r => r.TranslateAsEQUIPMENT(), parameters);
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_EQUIPMENT", parameters);
+                List<EQUIPMENT_TYPE_MASTER> result = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
+
+                return result;
             }
             catch (Exception)
             {
+
                 throw;
             }
         }
+
+
 
         public void UpdatEquipmentTypeList(string connstring, EQUIPMENT_TYPE_MASTER master)
         {
@@ -4020,7 +4027,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE },
                   new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
-                  new SqlParameter("@MODIFIED_BY", SqlDbType.Int) { Value = master.MODIFIED_BY },
+                  new SqlParameter("@MODIFIED_BY", SqlDbType.VarChar,50) { Value = master.MODIFIED_BY },
                   new SqlParameter("@MODIFIED_AT", SqlDbType.DateTime) { Value = master.MODIFIED_AT },
                 };
 
