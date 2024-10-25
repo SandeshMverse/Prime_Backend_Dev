@@ -64,7 +64,7 @@ namespace PrimeMaritime_API.Controllers
         [HttpGet("GetPartyMasterList")]
         public ActionResult<Response<List<PARTY_MASTER>>> GetPartyMasterList(string AGENT_CODE, string CUST_NAME, string CUST_TYPE, bool STATUS, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetPartyMasterList(AGENT_CODE, CUST_NAME, CUST_TYPE, STATUS, FROM_DATE, TO_DATE,IS_VENDOR)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetPartyMasterList(AGENT_CODE, CUST_NAME, CUST_TYPE, STATUS, FROM_DATE, TO_DATE, IS_VENDOR)));
         }
 
         [HttpGet("GetPartyMasterDetails")]
@@ -129,7 +129,7 @@ namespace PrimeMaritime_API.Controllers
         [HttpGet("GetMasterList")]
         public ActionResult<Response<List<MASTER>>> GetMasterList(string key, string FROM_DATE, string TO_DATE, string STATUS)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetMasterList(key,FROM_DATE,TO_DATE,STATUS)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetMasterList(key, FROM_DATE, TO_DATE, STATUS)));
         }
 
         [HttpGet("GetMasterDetails")]
@@ -161,7 +161,7 @@ namespace PrimeMaritime_API.Controllers
         [HttpGet("GetVesselMasterList")]
         public ActionResult<Response<List<VESSEL_MASTER>>> GetVesselMasterList(string VESSEL_NAME, string IMO_NO, string STATUS, string FROM_DATE, string TO_DATE)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetVesselMasterList(VESSEL_NAME,IMO_NO,STATUS,FROM_DATE,TO_DATE)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVesselMasterList(VESSEL_NAME, IMO_NO, STATUS, FROM_DATE, TO_DATE)));
         }
 
         [HttpGet("GetVesselMasterDetails")]
@@ -312,13 +312,13 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpPost("UpdateLinerList")]
-        public ActionResult<Response<CommonResponse>>UpdateLinerList(LINER request)
+        public ActionResult<Response<CommonResponse>> UpdateLinerList(LINER request)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.UpdateLinerList(request)));
         }
 
         [HttpDelete("DeleteLinerList")]
-        public ActionResult<Response<CommonResponse>>DeleteLinerList(int ID)
+        public ActionResult<Response<CommonResponse>> DeleteLinerList(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteLinerList(ID)));
         }
@@ -326,7 +326,7 @@ namespace PrimeMaritime_API.Controllers
         [HttpGet("GetLinerDetails")]
         public ActionResult<Response<LINER>> GetLinerDetails(int ID)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetLinerDetails( ID)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetLinerDetails(ID)));
         }
 
         #endregion
@@ -339,9 +339,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetServiceList")]
-        public ActionResult<Response<List<CommonResponse>>> GetServiceList(bool STATUS,string FROM_DATE,string TO_DATE)
+        public ActionResult<Response<List<CommonResponse>>> GetServiceList(bool STATUS, string FROM_DATE, string TO_DATE)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetServiceList(STATUS,FROM_DATE,TO_DATE)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetServiceList(STATUS, FROM_DATE, TO_DATE)));
         }
 
         [HttpGet("GetServiceDetails")]
@@ -374,9 +374,9 @@ namespace PrimeMaritime_API.Controllers
 
         [HttpGet("GetScheduleList")]
 
-        public ActionResult<Response<List<CommonResponse>>> GetScheduleList(string VESSEL_NAME, string PORT_CODE,bool STATUS,string ETA,string ETD)
+        public ActionResult<Response<List<CommonResponse>>> GetScheduleList(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetScheduleList(VESSEL_NAME,PORT_CODE,STATUS,ETA,ETD)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetScheduleList(VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD)));
         }
 
         [HttpGet("GetScheduleDetails")]
@@ -437,7 +437,7 @@ namespace PrimeMaritime_API.Controllers
         [HttpGet("GetLocationMasterList")]
         public ActionResult<Response<List<LOCATION_MASTER>>> GetLocationMasterList(string LOC_NAME, string LOC_TYPE, bool STATUS, string FROM_DATE, string TO_DATE)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetLocationMasterList(LOC_NAME, LOC_TYPE, STATUS, FROM_DATE,TO_DATE)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetLocationMasterList(LOC_NAME, LOC_TYPE, STATUS, FROM_DATE, TO_DATE)));
         }
 
         [HttpGet("GetLocationMasterDetails")]
@@ -918,7 +918,7 @@ namespace PrimeMaritime_API.Controllers
         #region "DOCS REPORTS"
 
         [HttpGet("GetDOCSList")]
-        public ActionResult<Response<List<DOCS_LIST>>> GetDOCSLIST(string LOCATION,  string MONTH, string YEAR)
+        public ActionResult<Response<List<DOCS_LIST>>> GetDOCSLIST(string LOCATION, string MONTH, string YEAR)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetDOCSLIST(LOCATION, MONTH, YEAR)));
         }
@@ -1060,6 +1060,25 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.SearchEquipment(IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE)));
+        }
+
+        #endregion
+
+        #region"Agreement No"
+
+        [HttpGet("GetAllAgreementNoList")]
+        public ActionResult<Response<List<VENDOR_AGREEMENT>>> GetAllAgreementNoList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllAgreementNoList()));
+        }
+
+        #endregion
+
+        #region "VENDOR AGREEMENT"
+        [HttpPost("InsertVendorAgreement")]
+        public ActionResult<Response<CommonResponse>> InsertVendorAgreement(VENDOR_AGREEMENT_LIST request)
+        {
+            return Ok(_masterService.InsertVendorAgreement(request));
         }
 
         #endregion

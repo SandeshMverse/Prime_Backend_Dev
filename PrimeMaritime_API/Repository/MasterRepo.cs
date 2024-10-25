@@ -38,7 +38,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
                   new SqlParameter("@REMARKS", SqlDbType.VarChar, 200) { Value = master.REMARKS },
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 100) { Value = master.AGENT_CODE },
-                  //new SqlParameter("@CREATED_BY", SqlDbType.VarChar,100) { Value = master.CREATED_BY },
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar,100) { Value = master.CREATED_BY },
                   new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
                   new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
                   new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
@@ -150,130 +150,6 @@ namespace PrimeMaritime_API.Repository
 
                     SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, tbl1, "MST_CUSTOMER_BANK", columns1);
 
-
-                    //vednor agreement list
-                    foreach (var agreement in master.VENDOR_AGREEMENT_LIST)
-                    {
-
-                        SqlParameter[] vendorParams =
-                     {
-                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_VENDOR_AGREEMENT" },
-                    new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = agreement.AGREEMENT_NO },
-                    new SqlParameter("@vendor_id", SqlDbType.Int) { Value = Convert.ToInt32(ID) },
-                    new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = agreement.PROCUREMENT_DATE },
-                    new SqlParameter("@start_date", SqlDbType.DateTime) { Value = agreement.START_DATE },
-                    new SqlParameter("@end_date", SqlDbType.DateTime) { Value = agreement.END_DATE },
-                    new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_TYPE_ID },
-                    new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_SIZE_ID },
-                    new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = agreement.ON_HIRE_HANDLING },
-                    new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = agreement.OFF_HIRE_HANDLING },
-                    new SqlParameter("@dpp", SqlDbType.Decimal) { Value = agreement.DPP },
-                    new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = agreement.PICKUP_CREDIT },
-                    new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = agreement.DROP_OFF_CHARGE },
-                    new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = agreement.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
-                    new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = agreement.RE_DELIVERY_CAP },
-                    new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = agreement.DEPRECIATED_REPLACEMENT_VALUE },
-                    new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = agreement.INSPECTION_CHARGES },
-                    new SqlParameter("@currency_id", SqlDbType.Int) { Value = agreement.CURRENCY_ID },
-                    new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = agreement.MIN_RENTAL_PERIOD_IN_DAYS },
-                    new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = agreement.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
-                    new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.PRE_TRIP_INSPECTION_CHARGE },
-                    new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.POST_TRIP_INSPECTION_CHARGE },
-                    new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = agreement.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
-                    new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = agreement.PICKUP_CHARGE },
-                    new SqlParameter("@is_active", SqlDbType.Bit) { Value = agreement.IS_ACTIVE },
-                    new SqlParameter("@created_by", SqlDbType.Int) { Value = agreement.CREATED_BY },
-                    new SqlParameter("@created_at", SqlDbType.DateTime) { Value = agreement.CREATED_AT },
-                    new SqlParameter("@modified_by", SqlDbType.Int) { Value = agreement.MODIFIED_BY },
-                    new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = agreement.MODIFIED_AT },
-
-                };
-
-                        var vendorAgreementId = SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
-
-                        DataTable portTable = new DataTable();
-                        portTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
-                        portTable.Columns.Add(new DataColumn("port_id", typeof(int)));
-                        portTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
-                        portTable.Columns.Add(new DataColumn("created_by", typeof(int)));
-                        portTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
-                        portTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
-                        portTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
-                        portTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
-                        portTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
-
-                        foreach (var port in master.VENDOR_PICKUP_PORT_LIST)
-                        {
-                            DataRow portRow = portTable.NewRow();
-                            portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
-                            portRow["port_id"] = port.PORT_ID;
-                            portRow["is_active"] = port.IS_ACTIVE;
-                            portRow["created_by"] = port.CREATED_BY.HasValue ? port.CREATED_BY.Value : (object)DBNull.Value;
-                            portRow["created_at"] = port.CREATED_AT.HasValue ? port.CREATED_AT.Value : (object)DBNull.Value;
-                            portRow["modified_by"] = port.MODIFIED_BY.HasValue ? port.MODIFIED_BY.Value : (object)DBNull.Value;
-                            portRow["modified_at"] = port.MODIFIED_AT.HasValue ? port.MODIFIED_AT.Value : (object)DBNull.Value;
-                            portRow["deleted_by"] = port.DELETED_BY.HasValue ? port.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
-                            portRow["deleted_at"] = port.DELETED_AT.HasValue ? port.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
-
-                            portTable.Rows.Add(portRow);
-                        }
-                        string[] columns2 = new string[9];
-                        columns2[0] = "vendor_agreement_id";
-                        columns2[1] = "port_id";
-                        columns2[2] = "is_active";
-                        columns2[3] = "created_by";
-                        columns2[4] = "created_at";
-                        columns2[5] = "modified_by";
-                        columns2[6] = "modified_at";
-                        columns2[7] = "deleted_by";
-                        columns2[8] = "deleted_at";
-
-                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_pickup_port", columns2);
-
-
-                        //redelivery
-                        DataTable locationTable = new DataTable();
-                        locationTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("redelivery_port_id", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
-                        locationTable.Columns.Add(new DataColumn("created_by", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
-                        locationTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
-                        locationTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
-                        locationTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
-
-
-                        foreach (var location in master.VENDOR_REDELIVERY_PORT_LIST)
-                        {
-                            DataRow locationRow = locationTable.NewRow();
-                            locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
-                            locationRow["redelivery_port_id"] = location.REDELIVERY_PORT_ID;
-                            locationRow["is_active"] = location.IS_ACTIVE;
-                            locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
-                            locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
-                            locationRow["modified_by"] = location.MODIFIED_BY.HasValue ? location.MODIFIED_BY.Value : (object)DBNull.Value;
-                            locationRow["modified_at"] = location.MODIFIED_AT.HasValue ? location.MODIFIED_AT.Value : (object)DBNull.Value;
-                            locationRow["deleted_by"] = location.DELETED_BY.HasValue ? location.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
-                            locationRow["deleted_at"] = location.DELETED_AT.HasValue ? location.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
-
-
-                            locationTable.Rows.Add(locationRow);
-                        }
-
-                        string[] columns3 = new string[9];
-                        columns3[0] = "vendor_agreement_id";
-                        columns3[1] = "redelivery_port_id";
-                        columns3[2] = "is_active";
-                        columns3[3] = "created_by";
-                        columns3[4] = "created_at";
-                        columns3[5] = "modified_by";
-                        columns3[6] = "modified_at";
-                        columns3[7] = "deleted_by";
-                        columns3[8] = "deleted_at";
-
-                        SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_redelivery_port", columns3);
-                    }
                     transaction.Commit();
                     return ID;
                 }
@@ -540,7 +416,8 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
                   new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
-                  new SqlParameter("@CSC_DETAILS", SqlDbType.VarChar,100) { Value = master.CSC_DETAILS },
+                  new SqlParameter("@CSC_NO", SqlDbType.VarChar,100) { Value = master.CSC_NO },
+                  new SqlParameter("@ACEP_NO", SqlDbType.VarChar,100) { Value = master.ACEP_NO },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -623,7 +500,8 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
                   new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
-                  new SqlParameter("@CSC_DETAILS", SqlDbType.VarChar,100) { Value = master.CSC_DETAILS },
+                  new SqlParameter("@CSC_NO", SqlDbType.VarChar,100) { Value = master.CSC_NO },
+                  new SqlParameter("@ACEP_NO", SqlDbType.VarChar,100) { Value = master.ACEP_NO },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -3958,7 +3836,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar,50) { Value = master.CREATED_BY },
-                  new SqlParameter("@CREATED_DATE", SqlDbType.DateTime) { Value = master.CREATED_DATE },
+                  new SqlParameter("@CREATED_AT", SqlDbType.DateTime) { Value = master.CREATED_AT },
                   new SqlParameter("@MODIFIED_BY", SqlDbType.VarChar,50) { Value = master.MODIFIED_BY },
                   new SqlParameter("@MODIFIED_AT", SqlDbType.DateTime) { Value = master.MODIFIED_AT },
                   new SqlParameter("@DELETED_BY", SqlDbType.VarChar,50) { Value = master.DELETED_BY },
@@ -4022,6 +3900,7 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_EQUIPMENT" },
                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE },
+                  new SqlParameter("@EQUIPMENT_TYPE_ID", SqlDbType.VarChar,255) { Value = master.EQUIPMENT_TYPE_ID },
                   new SqlParameter("@DESCRIPTION", SqlDbType.VarChar,255) { Value = master.DESCRIPTION},
                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = master.IS_ACTIVE },
                   new SqlParameter("@MODIFIED_BY", SqlDbType.VarChar,50) { Value = master.MODIFIED_BY },
@@ -4082,6 +3961,174 @@ namespace PrimeMaritime_API.Repository
 
         #endregion
 
+
+        #region "Agreement No"
+        public List<VENDOR_AGREEMENT> GetAllAgreementNoList(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_ALL_AGREEMENT_NO" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_CONTAINER_MASTER", parameters);
+                List<VENDOR_AGREEMENT> master = SqlHelper.CreateListFromTable<VENDOR_AGREEMENT>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+
+        #region " VEDNOR AGREEMENT"
+        public string InsertVendorAgreement(string connstring, VENDOR_AGREEMENT_LIST vendor)
+        {
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
+                try
+                {
+                    //vednor agreement list
+                    SqlParameter[] vendorParams =
+                         {
+                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_VENDOR_AGREEMENT" },
+                    new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = vendor.AGREEMENT_NO },
+                    new SqlParameter("@vendor_id", SqlDbType.Int) { Value = vendor.VENDOR_ID },
+                    new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                    new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
+                    new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
+                    new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },
+                    new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
+                    new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = vendor.ON_HIRE_HANDLING },
+                    new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = vendor.OFF_HIRE_HANDLING },
+                    new SqlParameter("@dpp", SqlDbType.Decimal) { Value = vendor.DPP },
+                    new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = vendor.PICKUP_CREDIT },
+                    new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = vendor.DROP_OFF_CHARGE },
+                    new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = vendor.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
+                    new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = vendor.RE_DELIVERY_CAP },
+                    new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = vendor.DEPRECIATED_REPLACEMENT_VALUE },
+                    new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = vendor.INSPECTION_CHARGES },
+                    new SqlParameter("@currency_id", SqlDbType.Int) { Value = vendor.CURRENCY_ID },
+                    new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = vendor.MIN_RENTAL_PERIOD_IN_DAYS },
+                    new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = vendor.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
+                    new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = vendor.PRE_TRIP_INSPECTION_CHARGE },
+                    new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = vendor.POST_TRIP_INSPECTION_CHARGE },
+                    new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = vendor.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
+                    new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = vendor.PICKUP_CHARGE },
+                    new SqlParameter("@is_active", SqlDbType.Bit) { Value = vendor.IS_ACTIVE },
+                    new SqlParameter("@created_by", SqlDbType.Int) { Value = vendor.CREATED_BY },
+                    new SqlParameter("@created_at", SqlDbType.DateTime) { Value = vendor.CREATED_AT },
+                    new SqlParameter("@modified_by", SqlDbType.Int) { Value = vendor.MODIFIED_BY },
+                    new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
+
+                };
+
+                    var vendorAgreementId = SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
+
+                    DataTable portTable = new DataTable();
+                    portTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("port_id", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
+                    portTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
+                    portTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
+                    portTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
+
+                    foreach (var port in vendor.VENDOR_PICKUP_PORT_LIST)
+                    {
+                        DataRow portRow = portTable.NewRow();
+                        portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
+                        portRow["port_id"] = port.PORT_ID;
+                        portRow["is_active"] = port.IS_ACTIVE;
+                        portRow["created_by"] = port.CREATED_BY.HasValue ? port.CREATED_BY.Value : (object)DBNull.Value;
+                        portRow["created_at"] = port.CREATED_AT.HasValue ? port.CREATED_AT.Value : (object)DBNull.Value;
+                        portRow["modified_by"] = port.MODIFIED_BY.HasValue ? port.MODIFIED_BY.Value : (object)DBNull.Value;
+                        portRow["modified_at"] = port.MODIFIED_AT.HasValue ? port.MODIFIED_AT.Value : (object)DBNull.Value;
+                        portRow["deleted_by"] = port.DELETED_BY.HasValue ? port.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
+                        portRow["deleted_at"] = port.DELETED_AT.HasValue ? port.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+
+                        portTable.Rows.Add(portRow);
+                    }
+                    string[] columns2 = new string[9];
+                    columns2[0] = "vendor_agreement_id";
+                    columns2[1] = "port_id";
+                    columns2[2] = "is_active";
+                    columns2[3] = "created_by";
+                    columns2[4] = "created_at";
+                    columns2[5] = "modified_by";
+                    columns2[6] = "modified_at";
+                    columns2[7] = "deleted_by";
+                    columns2[8] = "deleted_at";
+
+                    SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_pickup_port", columns2);
+
+
+                    //redelivery
+                    DataTable locationTable = new DataTable();
+                    locationTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("redelivery_port_id", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
+                    locationTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
+                    locationTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
+                    locationTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
+
+
+                    foreach (var location in vendor.VENDOR_REDELIVERY_PORT_LIST)
+                    {
+                        DataRow locationRow = locationTable.NewRow();
+                        locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
+                        locationRow["redelivery_port_id"] = location.REDELIVERY_PORT_ID;
+                        locationRow["is_active"] = location.IS_ACTIVE;
+                        locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
+                        locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
+                        locationRow["modified_by"] = location.MODIFIED_BY.HasValue ? location.MODIFIED_BY.Value : (object)DBNull.Value;
+                        locationRow["modified_at"] = location.MODIFIED_AT.HasValue ? location.MODIFIED_AT.Value : (object)DBNull.Value;
+                        locationRow["deleted_by"] = location.DELETED_BY.HasValue ? location.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
+                        locationRow["deleted_at"] = location.DELETED_AT.HasValue ? location.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+
+
+                        locationTable.Rows.Add(locationRow);
+                    }
+
+                    string[] columns3 = new string[9];
+                    columns3[0] = "vendor_agreement_id";
+                    columns3[1] = "redelivery_port_id";
+                    columns3[2] = "is_active";
+                    columns3[3] = "created_by";
+                    columns3[4] = "created_at";
+                    columns3[5] = "modified_by";
+                    columns3[6] = "modified_at";
+                    columns3[7] = "deleted_by";
+                    columns3[8] = "deleted_at";
+
+                    SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_redelivery_port", columns3);
+
+                    transaction.Commit();
+                    return vendorAgreementId;
+                }
+
+                catch (Exception ex)
+                {
+
+                    // Rollback the transaction on error
+                    transaction.Rollback();
+                    throw new Exception("An error occurred while inserting the vendor master: " + ex.Message);
+                }
+            }
+        }
+
+        #endregion
     }
 }
 

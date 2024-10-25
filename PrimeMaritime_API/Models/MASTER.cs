@@ -34,9 +34,8 @@ namespace PrimeMaritime_API.Models
         public bool IS_VENDOR { get; set; }
         public List<CUSTOMER_BRANCH> BRANCH_LIST { get; set; } = new List<CUSTOMER_BRANCH>();
         public List<CUSTOMER_BANK> BANK_LIST { get; set; } = new List<CUSTOMER_BANK>();
-        public List<VENDOR_AGREEMENT_LIST> VENDOR_AGREEMENT_LIST { get; set; } = new List<VENDOR_AGREEMENT_LIST>();
-        public List<VENDOR_PICKUP_PORT_LIST> VENDOR_PICKUP_PORT_LIST { get; set; } = new List<VENDOR_PICKUP_PORT_LIST>();
-        public List<VENDOR_REDELIVERY_PORT_LIST> VENDOR_REDELIVERY_PORT_LIST { get; set; } = new List<VENDOR_REDELIVERY_PORT_LIST>();
+       
+
     }
     public class CUSTOMER_BRANCH
     {
@@ -86,7 +85,8 @@ namespace PrimeMaritime_API.Models
         public decimal TARE_WEIGHT { get; set; }
         public decimal PAYLOAD_CAPACITY { get; set; }
         public decimal GROSS_WEIGHT { get; set; }
-        public string CSC_DETAILS { get; set; }
+        public string CSC_NO { get; set; }
+        public string ACEP_NO { get; set; }
  
     }
     public class COUNTRY_MASTER
@@ -807,8 +807,8 @@ namespace PrimeMaritime_API.Models
         public int? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
 
-        //public List<VENDOR_PORT_LIST> VENDOR_PORT_LIST { get; set; } = new List<VENDOR_PORT_LIST>();
-        //public List<VENDOR_PICKUP_LOCATION_LIST> VENDOR_PICKUP_LOCATION_LIST { get; set; } = new List<VENDOR_PICKUP_LOCATION_LIST>();
+        public List<VENDOR_PICKUP_PORT_LIST> VENDOR_PICKUP_PORT_LIST { get; set; } = new List<VENDOR_PICKUP_PORT_LIST>();
+        public List<VENDOR_REDELIVERY_PORT_LIST> VENDOR_REDELIVERY_PORT_LIST { get; set; } = new List<VENDOR_REDELIVERY_PORT_LIST>();
     }
 
     public class VENDOR_PICKUP_PORT_LIST
@@ -848,10 +848,16 @@ namespace PrimeMaritime_API.Models
         public string DESCRIPTION { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public string CREATED_BY { get; set; }
-        public DateTime? CREATED_DATE { get; set; }
+        public DateTime? CREATED_AT { get; set; }
         public string MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
         public string DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
+    }
+
+    public class VENDOR_AGREEMENT
+    {
+        public int VENDOR_AGREEMENT_ID { get; set; }
+        public string AGREEMENT_NO { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<PARTY_MASTER>> response = new Response<List<PARTY_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetPartyMasterList(dbConn, Agent_code, CustName, CustType, Status, FROM_DATE, TO_DATE,IS_VENDOR);
+            var data = DbClientFactory<MasterRepo>.Instance.GetPartyMasterList(dbConn, Agent_code, CustName, CustType, Status, FROM_DATE, TO_DATE, IS_VENDOR);
 
             if (data != null)
             {
@@ -65,7 +65,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<PARTY_MASTER> response = new Response<PARTY_MASTER>();
- 
+
             var data = DbClientFactory<MasterRepo>.Instance.GetPartyMasterDetails(dbConn, Agent_code, CUSTOMER_ID, VENDOR_AGREEMENT_ID);
 
             if (data != null)
@@ -255,7 +255,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<MASTER>> response = new Response<List<MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetMasterList(dbConn, key,FROM_DATE,TO_DATE,STATUS);
+            var data = DbClientFactory<MasterRepo>.Instance.GetMasterList(dbConn, key, FROM_DATE, TO_DATE, STATUS);
 
             if (data != null)
             {
@@ -357,7 +357,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<VESSEL_MASTER>> response = new Response<List<VESSEL_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetVesselMasterList(dbConn,VESSEL_NAME,IMO_NO,STATUS,FROM_DATE,TO_DATE);
+            var data = DbClientFactory<MasterRepo>.Instance.GetVesselMasterList(dbConn, VESSEL_NAME, IMO_NO, STATUS, FROM_DATE, TO_DATE);
 
             if (data != null)
             {
@@ -564,7 +564,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<CONTAINER_TYPE>> response = new Response<List<CONTAINER_TYPE>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetContainerTypeMasterList( dbConn,  ContTypeCode,  ContType,  ContSize,  Status,  FROM_DATE,  TO_DATE);
+            var data = DbClientFactory<MasterRepo>.Instance.GetContainerTypeMasterList(dbConn, ContTypeCode, ContType, ContSize, Status, FROM_DATE, TO_DATE);
 
             if (data != null)
             {
@@ -790,12 +790,12 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<List<LINER>> GetLinerList(string Name,string Code,string Description,bool Status,string FROM_DATE,string TO_DATE)
+        public Response<List<LINER>> GetLinerList(string Name, string Code, string Description, bool Status, string FROM_DATE, string TO_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<LINER>> response = new Response<List<LINER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetLinerList(dbConn , Name,  Code,  Description,  Status,  FROM_DATE,  TO_DATE);
+            var data = DbClientFactory<MasterRepo>.Instance.GetLinerList(dbConn, Name, Code, Description, Status, FROM_DATE, TO_DATE);
 
             if (data != null)
             {
@@ -891,7 +891,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<List<SERVICE>> GetServiceList(bool Status,string FROM_DATE,string TO_DATE)
+        public Response<List<SERVICE>> GetServiceList(bool Status, string FROM_DATE, string TO_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -999,7 +999,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<SCHEDULE>> response = new Response<List<SCHEDULE>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetScheduleList(dbConn , VESSEL_NAME,  PORT_CODE,  STATUS,    ETA,  ETD);
+            var data = DbClientFactory<MasterRepo>.Instance.GetScheduleList(dbConn, VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD);
 
             if (data != null)
             {
@@ -1185,7 +1185,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<LOCATION_MASTER>> response = new Response<List<LOCATION_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetLocationMasterList(dbConn, LOC_NAME,LOC_TYPE,STATUS,FROM_DATE,TO_DATE);
+            var data = DbClientFactory<MasterRepo>.Instance.GetLocationMasterList(dbConn, LOC_NAME, LOC_TYPE, STATUS, FROM_DATE, TO_DATE);
 
             if (data != null)
             {
@@ -1819,7 +1819,7 @@ namespace PrimeMaritime_API.Services
                 response.ResponseCode = 500;
 
                 return response;
-            }            
+            }
         }
         public Response<List<ORG_MASTER>> GetOrgMasterList()
         {
@@ -1844,7 +1844,7 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<ORG_MASTER> GetOrgMasterDetails(string ORG_CODE) 
+        public Response<ORG_MASTER> GetOrgMasterDetails(string ORG_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -2656,7 +2656,7 @@ namespace PrimeMaritime_API.Services
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<SRR_LIST>> response = new Response<List<SRR_LIST>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetSRRLIST(dbConn, LOCATION, AGENT_NAME, MONTH , YEAR);
+            var data = DbClientFactory<MasterRepo>.Instance.GetSRRLIST(dbConn, LOCATION, AGENT_NAME, MONTH, YEAR);
 
             if (data != null)
             {
@@ -2677,7 +2677,7 @@ namespace PrimeMaritime_API.Services
         #endregion
 
         #region "DOCS LIST"
-        public Response<List<DOCS_LIST>> GetDOCSLIST(string LOCATION,  string MONTH, string YEAR)
+        public Response<List<DOCS_LIST>> GetDOCSLIST(string LOCATION, string MONTH, string YEAR)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -2833,7 +2833,7 @@ namespace PrimeMaritime_API.Services
         #endregion
 
         #region "AGENCY LIST"
-        public Response<List<AGENCY_LIST>> GetAgencyList(string LOCATION,  string MONTH, string YEAR)
+        public Response<List<AGENCY_LIST>> GetAgencyList(string LOCATION, string MONTH, string YEAR)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -3084,7 +3084,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-         public Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        public Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -3107,7 +3107,50 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-           
+
+
+        #endregion
+
+        #region"Agreement No"
+        public Response<List<VENDOR_AGREEMENT>> GetAllAgreementNoList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<VENDOR_AGREEMENT>> response = new Response<List<VENDOR_AGREEMENT>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllAgreementNoList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+        #endregion
+
+        #region "VENDOR AGREEMENT"
+        public Response<CommonResponse> InsertVendorAgreement(VENDOR_AGREEMENT_LIST request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            var ID = DbClientFactory<MasterRepo>.Instance.InsertVendorAgreement(dbConn, request);
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            response.Succeeded = true;
+            response.ResponseMessage = ID;
+            response.ResponseCode = 200;
+
+            return response;
+        }
 
         #endregion
     }

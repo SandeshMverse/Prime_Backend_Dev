@@ -69,7 +69,7 @@ namespace PrimeMaritime_API.IServices
 
         Response<CommonResponse> InsertContainerTypeMaster(CONTAINER_TYPE request);
 
-        Response<List<CONTAINER_TYPE>> GetContainerTypeMasterList( string ContTypeCode,string ContType, string ContSize, bool Status, string FROM_DATE, string TO_DATE);
+        Response<List<CONTAINER_TYPE>> GetContainerTypeMasterList(string ContTypeCode, string ContType, string ContSize, bool Status, string FROM_DATE, string TO_DATE);
 
         Response<CONTAINER_TYPE> GetContainerTypeMasterDetails(int ID);
 
@@ -112,9 +112,9 @@ namespace PrimeMaritime_API.IServices
 
         Response<CommonResponse> InsertLiner(LINER request);
 
-        Response<List<LINER>> GetLinerList(string Name,string Code,string Description,bool Status,string FROM_DATE,string TO_DATE);
+        Response<List<LINER>> GetLinerList(string Name, string Code, string Description, bool Status, string FROM_DATE, string TO_DATE);
 
-        Response<LINER> GetLinerDetails( int ID);
+        Response<LINER> GetLinerDetails(int ID);
         Response<CommonResponse> UpdateLinerList(LINER request);
 
         Response<CommonResponse> DeleteLinerList(int ID);
@@ -124,7 +124,7 @@ namespace PrimeMaritime_API.IServices
         #region "LinerService"
         Response<CommonResponse> InsertService(SERVICE request);
 
-        Response<List<SERVICE>> GetServiceList(bool Status,string FROM_DATE,string TO_CODE);
+        Response<List<SERVICE>> GetServiceList(bool Status, string FROM_DATE, string TO_CODE);
 
         Response<SERVICE> GetServiceDetails(int ID);
 
@@ -326,7 +326,7 @@ namespace PrimeMaritime_API.IServices
         #endregion
 
         #region "SHIPPER-REPORT"
-        Response<List<SHIPPER_LIST>> GetShipperLIST(string LOCATION, string CUSTOMER_NAME,  string MONTH, string YEAR);
+        Response<List<SHIPPER_LIST>> GetShipperLIST(string LOCATION, string CUSTOMER_NAME, string MONTH, string YEAR);
         #endregion
 
         #region "CONSIGNEE-REPORT"
@@ -342,7 +342,7 @@ namespace PrimeMaritime_API.IServices
         #endregion
 
         #region "AGENCY-REPORT"
-        Response<List<AGENCY_LIST>> GetAgencyList(string LOCATION,  string MONTH, string YEAR);
+        Response<List<AGENCY_LIST>> GetAgencyList(string LOCATION, string MONTH, string YEAR);
         #endregion
 
         #region "SALES-REPORT"
@@ -373,6 +373,16 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
         Response<CommonResponse> DeleteEquipmentTypeList(int ID);
         Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
+
+        #endregion
+
+        #region"Agreement No"
+        Response<List<VENDOR_AGREEMENT>> GetAllAgreementNoList();
+        #endregion
+
+        #region "VEDNOR AGREEMENT"
+
+        Response<CommonResponse> InsertVendorAgreement(VENDOR_AGREEMENT_LIST request);
 
         #endregion
     }

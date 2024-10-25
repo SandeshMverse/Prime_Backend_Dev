@@ -88,6 +88,30 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("STATUS"))
                 item.STATUS = SqlHelper.GetBoolean(reader, "STATUS");
 
+            if (reader.IsColumnExists("vendor_agreement_id"))
+                item.vendor_agreement_id = SqlHelper.GetNullableInt32(reader, "vendor_agreement_id");
+
+            if (reader.IsColumnExists("OFFHIRE_DATE"))
+                item.OFFHIRE_DATE = SqlHelper.GetDateTime(reader, "OFFHIRE_DATE");
+
+            if (reader.IsColumnExists("YEAR_OF_MANUFACTURE"))
+                item.YEAR_OF_MANUFACTURE = SqlHelper.GetDateTime(reader, "YEAR_OF_MANUFACTURE");
+
+            if (reader.IsColumnExists("TARE_WEIGHT"))
+                item.TARE_WEIGHT = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "TARE_WEIGHT"));
+
+            if (reader.IsColumnExists("PAYLOAD_CAPACITY"))
+                item.PAYLOAD_CAPACITY = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "PAYLOAD_CAPACITY"));
+
+            if (reader.IsColumnExists("GROSS_WEIGHT"))
+                item.GROSS_WEIGHT = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "GROSS_WEIGHT"));
+
+            if (reader.IsColumnExists("CSC_NO"))
+                item.CSC_NO = SqlHelper.GetNullableString(reader, "CSC_NO");
+
+            if (reader.IsColumnExists("ACEP_NO"))
+                item.ACEP_NO = SqlHelper.GetNullableString(reader, "ACEP_NO");
+
             return item;
         }
         public static COUNTRY_MASTER TranslateAsCountry(this SqlDataReader reader, bool isList = false)
@@ -946,8 +970,8 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("CREATED_BY"))
                 item.CREATED_BY = SqlHelper.GetNullableString(reader, "CREATED_BY");
 
-            if (reader.IsColumnExists("CREATED_DATE"))
-                item.CREATED_DATE = SqlHelper.GetDateTime(reader, "CREATED_DATE");
+            if (reader.IsColumnExists("CREATED_AT"))
+                item.CREATED_AT = SqlHelper.GetDateTime(reader, "CREATED_AT");
 
             if (reader.IsColumnExists("MODIFIED_BY"))
                 item.MODIFIED_BY = SqlHelper.GetNullableString(reader, "MODIFIED_BY");
