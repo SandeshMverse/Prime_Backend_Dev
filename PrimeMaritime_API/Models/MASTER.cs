@@ -79,7 +79,7 @@ namespace PrimeMaritime_API.Models
         public bool STATUS { get; set; }
 
         //add new field
-        public int vendor_agreement_id { get; set; }
+        public int VENDOR_AGREEMENT_ID { get; set; }
         public DateTime OFFHIRE_DATE { get; set; }
         public string YEAR_OF_MANUFACTURE { get; set; }
         public decimal TARE_WEIGHT { get; set; }
@@ -87,6 +87,7 @@ namespace PrimeMaritime_API.Models
         public decimal GROSS_WEIGHT { get; set; }
         public string CSC_NO { get; set; }
         public string ACEP_NO { get; set; }
+        public string AGREEMENT_NO { get; set; }
  
     }
     public class COUNTRY_MASTER
@@ -859,5 +860,24 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_AGREEMENT_ID { get; set; }
         public string AGREEMENT_NO { get; set; }
+    }
+
+    public class VENDOR_AGREEMENT_REPORT
+    {
+        public string AGREEMENT_NO { get; set;  }
+        public string VENDOR_NAME { get; set;  }
+        public string CONTAINER_NO { get; set;  }
+        public string SIZE_TYPE { get; set;  }
+        public decimal LEASE_RENT_AMOUNT { get; set;  }
+        public decimal TOTAL_AMOUNT { get; set;  }
+        public decimal ONHIRE_HANDLING_RATE { get; set;  }
+        public decimal OFFHIRE_HANDLING_RATE { get; set;  }
+        public decimal TOTAL_AMOUNT_USD { get; set;  }
+    }
+
+    public class VENDOR_LIST
+    {
+        public int VENDOR_ID { get; set; }
+        public string VENDOR_NAME{ get; set; }
     }
 }

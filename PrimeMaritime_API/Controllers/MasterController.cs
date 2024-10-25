@@ -1033,9 +1033,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetEquipmentTypeList")]
-        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeList()
+        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeList()));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeList(IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE)));
         }
 
         [HttpGet("GetEquipmentByID")]
@@ -1054,12 +1054,6 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<CommonResponse>> DeleteEquipmentTypeList(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteEquipmentTypeList(ID)));
-        }
-
-        [HttpGet("SearchEquipment")]
-        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
-        {
-            return Ok(JsonConvert.SerializeObject(_masterService.SearchEquipment(IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE)));
         }
 
         #endregion
@@ -1089,9 +1083,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetVendorAgreementById")]
-        public ActionResult<Response<PARTY_MASTER>> GetVendorAgreementById(string AGENT_CODE,  int VENDOR_AGREEMENT_ID)
+        public ActionResult<Response<VENDOR_AGREEMENT_LIST>> GetVendorAgreementById( int VENDOR_AGREEMENT_ID)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementById(AGENT_CODE, VENDOR_AGREEMENT_ID)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementById( VENDOR_AGREEMENT_ID)));
         }
 
         [HttpDelete("DeleteVendorAgreementById")]
@@ -1104,6 +1098,26 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementList(AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE)));
         }
+        #endregion
+
+        #region "VENDOR AGREEMENT REPORT"
+
+        [HttpGet("GetVendorAgreementReport")]
+        public ActionResult<Response<List<VENDOR_AGREEMENT_REPORT>>> GetVendorAgreementReport(string VENDOR_ID, string MONTH)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementReport(VENDOR_ID, MONTH)));
+        }
+
+        #endregion
+
+        #region " GET ALL VENDOR NAME LIST"
+
+        [HttpGet("GetAllVendorList")]
+        public ActionResult<Response<List<VENDOR_LIST>>> GetAllVendorList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllVendorList()));
+        }
+
         #endregion
 
     }

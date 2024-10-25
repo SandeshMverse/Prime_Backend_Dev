@@ -89,7 +89,7 @@ namespace PrimeMaritime_API.Translators
                 item.STATUS = SqlHelper.GetBoolean(reader, "STATUS");
 
             if (reader.IsColumnExists("vendor_agreement_id"))
-                item.vendor_agreement_id = SqlHelper.GetNullableInt32(reader, "vendor_agreement_id");
+                item.VENDOR_AGREEMENT_ID = SqlHelper.GetNullableInt32(reader, "vendor_agreement_id");
 
             if (reader.IsColumnExists("OFFHIRE_DATE"))
                 item.OFFHIRE_DATE = SqlHelper.GetDateTime(reader, "OFFHIRE_DATE");

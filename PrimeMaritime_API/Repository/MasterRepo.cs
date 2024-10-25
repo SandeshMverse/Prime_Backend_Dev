@@ -338,7 +338,7 @@ namespace PrimeMaritime_API.Repository
 
                 //ADD NEW FIELD
 
-                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.VENDOR_AGREEMENT_ID },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
                   new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.VarChar,100) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
@@ -422,7 +422,7 @@ namespace PrimeMaritime_API.Repository
                   
                 //ADD NEW FIELD
 
-                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.VENDOR_AGREEMENT_ID },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
                   new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.VarChar,100) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
@@ -3779,19 +3779,22 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeList(string dbConn)
+        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeList(string dbConn, Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             try
             {
                 SqlParameter[] parameters =
-                {
-                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EQUIPMENTLIST" },
+                 {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "SEARCH_EQUIPMENT_LIST" },
+                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
+                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar, 100) { Value = EQUIPMENT_TYPE },
+                   new SqlParameter("@CREATED_AT", SqlDbType.VarChar, 100) { Value = FROM_DATE },
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_EQUIPMENT", parameters);
-                List<EQUIPMENT_TYPE_MASTER> master = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
+                List<EQUIPMENT_TYPE_MASTER> result = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
 
-                return master;
+                return result;
             }
             catch (Exception)
             {
@@ -3817,9 +3820,6 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-
-
-
         public void UpdatEquipmentTypeList(string connstring, EQUIPMENT_TYPE_MASTER master)
         {
             try
@@ -3861,31 +3861,6 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-
-        public List<EQUIPMENT_TYPE_MASTER> SearchEquipment(string connstring, Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
-        {
-            try
-            {
-                SqlParameter[] parameters =
-                {
-                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "SEARCH_EQUIPMENT_LIST" },
-                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
-                   new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar, 100) { Value = EQUIPMENT_TYPE },
-                   new SqlParameter("@CREATED_AT", SqlDbType.VarChar, 100) { Value = FROM_DATE },
-                };
-
-                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_EQUIPMENT", parameters);
-                List<EQUIPMENT_TYPE_MASTER> result = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_MASTER>(dataTable);
-
-                return result;
-            }
-            catch (Exception)
-            {
-
-                throw;
-            }
-        }
-
 
         #endregion
 
@@ -4143,15 +4118,14 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public DataSet GetVendorAgreementById(string connstring, string AGENT_CODE, int VENDOR_AGREEMENT_ID)
+        public DataSet GetVendorAgreementById(string connstring,  int VENDOR_AGREEMENT_ID)
         {
             try
             {
                 SqlParameter[] parameters =
                 {
-                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = AGENT_CODE },
                   new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = VENDOR_AGREEMENT_ID },
-                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_CUSTOMERDETAILS" }
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_VENDOR_DETAILS" }
                 };
 
                 return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MASTER", parameters);
@@ -4187,11 +4161,11 @@ namespace PrimeMaritime_API.Repository
             {
                 SqlParameter[] parameters =
                 {
-                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_CUSTOMERLIST" },
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "GET_VENDOR_DETAILS_LIST" },
                   new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar, 50) { Value = AGREEMENT_NO },
                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
-                  new SqlParameter("@START_DATE", SqlDbType.DateTime) { Value = START_DATE },
-                  new SqlParameter("@END_DATE", SqlDbType.DateTime) { Value = END_DATE },
+                  new SqlParameter("@START_DATE", SqlDbType.VarChar, 100) { Value = START_DATE },
+                  new SqlParameter("@END_DATE", SqlDbType.VarChar, 100) { Value = END_DATE },
 
                 };
 
@@ -4205,6 +4179,56 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
 
+        }
+
+        #endregion
+
+        #region " VENDOR AGREEMENT REPORT"
+        public List<VENDOR_AGREEMENT_REPORT> GetVendorAgreementReport(string connstring,string VENDOR_ID, string MONTH)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_VENDOR_AGR_REPORT" },
+                   new SqlParameter("@VENDOR_ID", SqlDbType.VarChar, 255) { Value = VENDOR_ID },
+                   new SqlParameter("@MONTH", SqlDbType.VarChar, 50) { Value = MONTH },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_VENDOR_AGR_REPORT", parameters);
+                List<VENDOR_AGREEMENT_REPORT> result = SqlHelper.CreateListFromTable<VENDOR_AGREEMENT_REPORT>(dataTable);
+
+                return result;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        #endregion
+
+        #region "VENDOR NAME LIST"
+
+        public List<VENDOR_LIST> GetAllVendorList(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_ALL_VENDOR_LIST" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_MASTER", parameters);
+                List<VENDOR_LIST> master = SqlHelper.CreateListFromTable<VENDOR_LIST>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         #endregion

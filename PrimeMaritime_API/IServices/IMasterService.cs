@@ -368,11 +368,10 @@ namespace PrimeMaritime_API.IServices
         #region "EQUIPMENT_TYPE"
 
         Response<CommonResponse> InsertEquipmentType(EQUIPMENT_TYPE_MASTER request);
-        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList();
+        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
         Response<EQUIPMENT_TYPE_MASTER> GetEquipmentByID(int ID);
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
         Response<CommonResponse> DeleteEquipmentTypeList(int ID);
-        Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
 
         #endregion
 
@@ -384,9 +383,18 @@ namespace PrimeMaritime_API.IServices
 
         Response<CommonResponse> InsertVendorAgreement(VENDOR_AGREEMENT_LIST request);
         Response<CommonResponse> UpdateVendorAgreement(VENDOR_AGREEMENT_LIST request);
-        Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById(string AGENT_CODE, int VENDOR_AGREEMENT_ID);
+        Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById( int VENDOR_AGREEMENT_ID);
         Response<CommonResponse> DeleteVendorAgreementById(int VENDOR_AGREEMENT_ID);
         Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE);
+        #endregion
+
+        #region " VENDOR AGREEMENT REPORT"
+        Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH);
+
+        #endregion
+
+        #region "VENDOR NAME LIST"
+        Response<List<VENDOR_LIST>> GetAllVendorList();
         #endregion
     }
 }

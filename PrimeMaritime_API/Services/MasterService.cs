@@ -2990,12 +2990,12 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList()
+        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeList(dbConn);
+            var data = DbClientFactory<MasterRepo>.Instance.GetEquipmentTypeList(dbConn, IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE);
 
             if (data != null)
             {
@@ -3072,31 +3072,6 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<List<EQUIPMENT_TYPE_MASTER>> SearchEquipment(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
-        {
-            string dbConn = _config.GetConnectionString("ConnectionString");
-
-            Response<List<EQUIPMENT_TYPE_MASTER>> response = new Response<List<EQUIPMENT_TYPE_MASTER>>();
-            var data = DbClientFactory<MasterRepo>.Instance.SearchEquipment(dbConn, IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE);
-
-            if (data != null)
-            {
-                response.Succeeded = true;
-                response.ResponseCode = 200;
-                response.ResponseMessage = "Success";
-                response.Data = data;
-            }
-            else
-            {
-                response.Succeeded = false;
-                response.ResponseCode = 500;
-                response.ResponseMessage = "No Data";
-            }
-
-            return response;
-        }
-
-
         #endregion
 
         #region"Agreement No"
@@ -3154,13 +3129,13 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById(string AGENT_CODE, int VENDOR_AGREEMENT_ID)
+        public Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById( int VENDOR_AGREEMENT_ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<VENDOR_AGREEMENT_LIST> response = new Response<VENDOR_AGREEMENT_LIST>();
 
-            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementById(dbConn, AGENT_CODE, VENDOR_AGREEMENT_ID);
+            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementById(dbConn, VENDOR_AGREEMENT_ID);
 
             if (data != null)
             {
@@ -3209,6 +3184,61 @@ namespace PrimeMaritime_API.Services
 
             Response<List<VENDOR_AGREEMENT_LIST>> response = new Response<List<VENDOR_AGREEMENT_LIST>>();
             var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementList(dbConn, AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        #endregion
+
+        #region "VENDOR AGREEMENT REPORT"
+
+        public Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<VENDOR_AGREEMENT_REPORT>> response = new Response<List<VENDOR_AGREEMENT_REPORT>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementReport(dbConn, VENDOR_ID, MONTH);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        #endregion
+
+        #region "GET ALL VENDOR LIST"
+        public Response<List<VENDOR_LIST>> GetAllVendorList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<VENDOR_LIST>> response = new Response<List<VENDOR_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllVendorList(dbConn);
 
             if (data != null)
             {
