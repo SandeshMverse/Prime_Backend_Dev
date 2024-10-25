@@ -4220,7 +4220,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_ALL_VENDOR_LIST" },
                 };
 
-                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_MASTER", parameters);
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_VENDOR_AGR_REPORT", parameters);
                 List<VENDOR_LIST> master = SqlHelper.CreateListFromTable<VENDOR_LIST>(dataTable);
 
                 return master;
