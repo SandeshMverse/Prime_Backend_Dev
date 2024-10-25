@@ -1081,6 +1081,29 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_masterService.InsertVendorAgreement(request));
         }
 
+
+        [HttpPost("UpdateVendorAgreement")]
+        public ActionResult<Response<CommonResponse>> UpdateVendorAgreement(VENDOR_AGREEMENT_LIST request)
+        {
+            return Ok(_masterService.UpdateVendorAgreement(request));
+        }
+
+        [HttpGet("GetVendorAgreementById")]
+        public ActionResult<Response<PARTY_MASTER>> GetVendorAgreementById(string AGENT_CODE,  int VENDOR_AGREEMENT_ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementById(AGENT_CODE, VENDOR_AGREEMENT_ID)));
+        }
+
+        [HttpDelete("DeleteVendorAgreementById")]
+        public ActionResult<Response<CommonResponse>> DeleteVendorAgreementById(int VENDOR_AGREEMENT_ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.DeleteVendorAgreementById(VENDOR_AGREEMENT_ID)));
+        }
+        [HttpGet("GetVendorAgreementList")]
+        public ActionResult<Response<List<VENDOR_AGREEMENT_LIST>>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementList(AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE)));
+        }
         #endregion
 
     }

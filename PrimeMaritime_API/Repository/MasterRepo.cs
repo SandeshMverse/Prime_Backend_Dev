@@ -309,78 +309,6 @@ namespace PrimeMaritime_API.Repository
                         SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters2);
                     }
 
-                    //vednor agreement list
-                    //foreach (var agreement in master.VENDOR_AGREEMENT_LIST)
-                    //{
-
-                    //    SqlParameter[] vendorParams =
-                    // {
-                    //    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_AGREEMENT" },
-                    //    new SqlParameter("@vendor_agreement_id", SqlDbType.VarChar, 50) { Value = agreement.VENDOR_AGREEMENT_ID },
-                    //    new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = agreement.AGREEMENT_NO },
-                    //    new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = agreement.PROCUREMENT_DATE },
-                    //    new SqlParameter("@start_date", SqlDbType.DateTime) { Value = agreement.START_DATE },
-                    //    new SqlParameter("@end_date", SqlDbType.DateTime) { Value = agreement.END_DATE },
-                    //    new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_TYPE_ID },
-                    //    new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = agreement.EQUIPMENT_SIZE_ID },
-                    //    new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = agreement.ON_HIRE_HANDLING },
-                    //    new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = agreement.OFF_HIRE_HANDLING },
-                    //    new SqlParameter("@dpp", SqlDbType.Decimal) { Value = agreement.DPP },
-                    //    new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = agreement.PICKUP_CREDIT },
-                    //    new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = agreement.DROP_OFF_CHARGE },
-                    //    new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = agreement.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
-                    //    new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = agreement.RE_DELIVERY_CAP },
-                    //    new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = agreement.DEPRECIATED_REPLACEMENT_VALUE },
-                    //    new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = agreement.INSPECTION_CHARGES },
-                    //    new SqlParameter("@currency_id", SqlDbType.Int) { Value = agreement.CURRENCY_ID },
-                    //    new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = agreement.MIN_RENTAL_PERIOD_IN_DAYS },
-                    //    new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = agreement.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
-                    //    new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.PRE_TRIP_INSPECTION_CHARGE },
-                    //    new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = agreement.POST_TRIP_INSPECTION_CHARGE },
-                    //    new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = agreement.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
-                    //    new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = agreement.PICKUP_CHARGE },
-                    //    new SqlParameter("@modified_by", SqlDbType.Int) { Value = agreement.MODIFIED_BY },
-                    //    new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = agreement.MODIFIED_AT },
-                    //};
-
-                    //    SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
-
-
-                    //    foreach (var items in master.VENDOR_PICKUP_PORT_LIST)
-                    //    {
-                    //        SqlParameter[] vendorparameters =
-                    //         {
-                    //          new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_PORT" },
-                    //          new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
-                    //          new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
-                    //          new SqlParameter("@port_id", SqlDbType.Int) { Value = items.PORT_ID},
-                    //          new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
-                    //          new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
-                    //     };
-
-                    //        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorparameters);
-
-                    //    }
-
-
-
-                    //    foreach (var items in master.VENDOR_REDELIVERY_PORT_LIST)
-                    //    {
-                    //        SqlParameter[] vendor_pickup_parameters =
-                    //                 {
-                    //          new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_REDELIVERY_PORT" },
-                    //          new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
-                    //          new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
-                    //          new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.REDELIVERY_PORT_ID},
-                    //          new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
-                    //          new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
-                    //     };
-
-                    //        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendor_pickup_parameters);
-                    //    }
-                    //    transaction.Commit();
-
-                    //}
                 }
                 catch (Exception ex)
                 {
@@ -412,7 +340,7 @@ namespace PrimeMaritime_API.Repository
 
                   new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
-                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
+                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.VarChar,100) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
                   new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
@@ -496,7 +424,7 @@ namespace PrimeMaritime_API.Repository
 
                   new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = master.vendor_agreement_id },
                   new SqlParameter("@OFFHIRE_DATE", SqlDbType.DateTime) { Value = master.OFFHIRE_DATE },
-                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.Decimal) { Value = master.YEAR_OF_MANUFACTURE },
+                  new SqlParameter("@YEAR_OF_MANUFACTURE", SqlDbType.VarChar,100) { Value = master.YEAR_OF_MANUFACTURE },
                   new SqlParameter("@TARE_WEIGHT", SqlDbType.Decimal) { Value = master.TARE_WEIGHT },
                   new SqlParameter("@PAYLOAD_CAPACITY", SqlDbType.Decimal) { Value = master.PAYLOAD_CAPACITY },
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
@@ -4126,6 +4054,157 @@ namespace PrimeMaritime_API.Repository
                     throw new Exception("An error occurred while inserting the vendor master: " + ex.Message);
                 }
             }
+        }
+
+        public void UpdateVendorAgreement(string connstring, VENDOR_AGREEMENT_LIST vendor)
+        {
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                conn.Open();
+                SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
+                try
+                {
+                    //vednor agreement list
+
+                    SqlParameter[] vendorParams =
+                 {
+                        new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_AGREEMENT" },
+                        new SqlParameter("@vendor_agreement_id", SqlDbType.VarChar, 50) { Value = vendor.VENDOR_AGREEMENT_ID },
+                        new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = vendor.AGREEMENT_NO },
+                        new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                        new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
+                        new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
+                        new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },
+                        new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
+                        new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = vendor.ON_HIRE_HANDLING },
+                        new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = vendor.OFF_HIRE_HANDLING },
+                        new SqlParameter("@dpp", SqlDbType.Decimal) { Value = vendor.DPP },
+                        new SqlParameter("@pickup_credit", SqlDbType.Decimal) { Value = vendor.PICKUP_CREDIT },
+                        new SqlParameter("@drop_off_charge", SqlDbType.Decimal) { Value = vendor.DROP_OFF_CHARGE },
+                        new SqlParameter("@annual_depreciation_in_percentage", SqlDbType.Decimal) { Value = vendor.ANNUAL_DEPRECIATION_IN_PERCENTAGE },
+                        new SqlParameter("@re_delivery_cap", SqlDbType.Int) { Value = vendor.RE_DELIVERY_CAP },
+                        new SqlParameter("@depreciated_replacement_value", SqlDbType.Decimal) { Value = vendor.DEPRECIATED_REPLACEMENT_VALUE },
+                        new SqlParameter("@inspection_charges", SqlDbType.Decimal) { Value = vendor.INSPECTION_CHARGES },
+                        new SqlParameter("@currency_id", SqlDbType.Int) { Value = vendor.CURRENCY_ID },
+                        new SqlParameter("@min_rental_period_in_days", SqlDbType.Int) { Value = vendor.MIN_RENTAL_PERIOD_IN_DAYS },
+                        new SqlParameter("@min_residual_value_in_percentage", SqlDbType.Decimal) { Value = vendor.MIN_RESIDUAL_VALUE_IN_PERCENTAGE },
+                        new SqlParameter("@pre_trip_inspection_charge", SqlDbType.Decimal) { Value = vendor.PRE_TRIP_INSPECTION_CHARGE },
+                        new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = vendor.POST_TRIP_INSPECTION_CHARGE },
+                        new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = vendor.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
+                        new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = vendor.PICKUP_CHARGE },
+                        new SqlParameter("@modified_by", SqlDbType.Int) { Value = vendor.MODIFIED_BY },
+                        new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
+                    };
+
+                    SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
+
+
+                    foreach (var items in vendor.VENDOR_PICKUP_PORT_LIST)
+                    {
+                        SqlParameter[] vendorparameters =
+                         {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_PORT" },
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
+                              new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
+                              new SqlParameter("@port_id", SqlDbType.Int) { Value = items.PORT_ID},
+                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
+                         };
+
+                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorparameters);
+
+                    }
+
+
+
+                    foreach (var items in vendor.VENDOR_REDELIVERY_PORT_LIST)
+                    {
+                        SqlParameter[] vendor_pickup_parameters =
+                                 {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_REDELIVERY_PORT" },
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
+                              new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
+                              new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.REDELIVERY_PORT_ID},
+                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
+                         };
+
+                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendor_pickup_parameters);
+                    }
+                    transaction.Commit();
+
+                }
+                catch (Exception ex)
+                {
+                    // Rollback the transaction on error
+                    transaction.Rollback();
+                    throw new Exception("An error occurred while inserting the party master: " + ex.Message);
+                }
+            }
+        }
+
+        public DataSet GetVendorAgreementById(string connstring, string AGENT_CODE, int VENDOR_AGREEMENT_ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = AGENT_CODE },
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = VENDOR_AGREEMENT_ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_CUSTOMERDETAILS" }
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MASTER", parameters);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public void DeleteVendorAgreementById(string connstring, int VENDOR_AGREEMENT_ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = VENDOR_AGREEMENT_ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "DELETE_VENDOR" }
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public List<VENDOR_AGREEMENT_LIST> GetVendorAgreementList(string dbConn, string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_CUSTOMERLIST" },
+                  new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar, 50) { Value = AGREEMENT_NO },
+                  new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
+                  new SqlParameter("@START_DATE", SqlDbType.DateTime) { Value = START_DATE },
+                  new SqlParameter("@END_DATE", SqlDbType.DateTime) { Value = END_DATE },
+
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_MASTER", parameters);
+                List<VENDOR_AGREEMENT_LIST> master = SqlHelper.CreateListFromTable<VENDOR_AGREEMENT_LIST>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
         #endregion

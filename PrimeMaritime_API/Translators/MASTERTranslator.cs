@@ -95,7 +95,7 @@ namespace PrimeMaritime_API.Translators
                 item.OFFHIRE_DATE = SqlHelper.GetDateTime(reader, "OFFHIRE_DATE");
 
             if (reader.IsColumnExists("YEAR_OF_MANUFACTURE"))
-                item.YEAR_OF_MANUFACTURE = SqlHelper.GetDateTime(reader, "YEAR_OF_MANUFACTURE");
+                item.YEAR_OF_MANUFACTURE = SqlHelper.GetNullableString(reader, "YEAR_OF_MANUFACTURE");
 
             if (reader.IsColumnExists("TARE_WEIGHT"))
                 item.TARE_WEIGHT = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "TARE_WEIGHT"));

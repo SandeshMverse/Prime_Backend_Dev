@@ -84,18 +84,6 @@ namespace PrimeMaritime_API.Services
                 {
                     response.Data.BANK_LIST = MasterRepo.GetListFromDataSet<CUSTOMER_BANK>(data.Tables[2]);
                 }
-                //if (data.Tables.Contains("Table3"))
-                //{
-                //    response.Data.VENDOR_AGREEMENT_LIST = MasterRepo.GetListFromDataSet<VENDOR_AGREEMENT_LIST>(data.Tables[3]);
-                //}
-                //if (data.Tables.Contains("Table4"))
-                //{
-                //    response.Data.VENDOR_PICKUP_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_PICKUP_PORT_LIST>(data.Tables[4]);
-                //}
-                //if (data.Tables.Contains("Table5"))
-                //{
-                //    response.Data.VENDOR_REDELIVERY_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_REDELIVERY_PORT_LIST>(data.Tables[5]);
-                //}
             }
             else
             {
@@ -3148,6 +3136,93 @@ namespace PrimeMaritime_API.Services
             response.Succeeded = true;
             response.ResponseMessage = ID;
             response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<CommonResponse> UpdateVendorAgreement(VENDOR_AGREEMENT_LIST request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.UpdateVendorAgreement(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Master updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById(string AGENT_CODE, int VENDOR_AGREEMENT_ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<VENDOR_AGREEMENT_LIST> response = new Response<VENDOR_AGREEMENT_LIST>();
+
+            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementById(dbConn, AGENT_CODE, VENDOR_AGREEMENT_ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = MasterRepo.GetSingleDataFromDataSet<VENDOR_AGREEMENT_LIST>(data.Tables[0]);
+                if (data.Tables.Contains("Table1"))
+                {
+                    response.Data.VENDOR_PICKUP_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_PICKUP_PORT_LIST>(data.Tables[1]);
+                }
+                if (data.Tables.Contains("Table2"))
+                {
+                    response.Data.VENDOR_REDELIVERY_PORT_LIST = MasterRepo.GetListFromDataSet<VENDOR_REDELIVERY_PORT_LIST>(data.Tables[2]);
+                }
+              
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<CommonResponse> DeleteVendorAgreementById(int VENDOR_AGREEMENT_ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.DeleteVendorAgreementById(dbConn, VENDOR_AGREEMENT_ID);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "vendor deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+
+        public Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<VENDOR_AGREEMENT_LIST>> response = new Response<List<VENDOR_AGREEMENT_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementList(dbConn, AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
 
             return response;
         }

@@ -81,7 +81,7 @@ namespace PrimeMaritime_API.Models
         //add new field
         public int vendor_agreement_id { get; set; }
         public DateTime OFFHIRE_DATE { get; set; }
-        public DateTime YEAR_OF_MANUFACTURE { get; set; }
+        public string YEAR_OF_MANUFACTURE { get; set; }
         public decimal TARE_WEIGHT { get; set; }
         public decimal PAYLOAD_CAPACITY { get; set; }
         public decimal GROSS_WEIGHT { get; set; }

@@ -383,7 +383,10 @@ namespace PrimeMaritime_API.IServices
         #region "VEDNOR AGREEMENT"
 
         Response<CommonResponse> InsertVendorAgreement(VENDOR_AGREEMENT_LIST request);
-
+        Response<CommonResponse> UpdateVendorAgreement(VENDOR_AGREEMENT_LIST request);
+        Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById(string AGENT_CODE, int VENDOR_AGREEMENT_ID);
+        Response<CommonResponse> DeleteVendorAgreementById(int VENDOR_AGREEMENT_ID);
+        Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE);
         #endregion
     }
 }
