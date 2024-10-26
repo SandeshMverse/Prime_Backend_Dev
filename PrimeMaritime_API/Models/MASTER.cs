@@ -776,6 +776,7 @@ namespace PrimeMaritime_API.Models
         public int VENDOR_AGREEMENT_ID { get; set; }
         public string AGREEMENT_NO { get; set; }
         public int VENDOR_ID { get; set; }
+        public string VENDOR_NAME { get; set; }
         public DateTime PROCUREMENT_DATE { get; set; }
         public DateTime START_DATE { get; set; }
         public DateTime END_DATE { get; set; }
@@ -785,6 +786,7 @@ namespace PrimeMaritime_API.Models
         public string CONTAINER_TYPE { get; set; }
         public decimal ON_HIRE_HANDLING { get; set; }
         public decimal OFF_HIRE_HANDLING { get; set; }
+        public decimal LEASE_RENT { get; set; }
         public decimal DPP { get; set; }
         public decimal PICKUP_CREDIT { get; set; }
         public decimal DROP_OFF_CHARGE { get; set; }
