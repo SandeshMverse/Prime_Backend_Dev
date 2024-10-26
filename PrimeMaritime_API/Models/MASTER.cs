@@ -777,9 +777,9 @@ namespace PrimeMaritime_API.Models
         public string AGREEMENT_NO { get; set; }
         public int VENDOR_ID { get; set; }
         public string VENDOR_NAME { get; set; }
-        public DateTime PROCUREMENT_DATE { get; set; }
-        public DateTime START_DATE { get; set; }
-        public DateTime END_DATE { get; set; }
+        public DateTime? PROCUREMENT_DATE { get; set; }
+        public DateTime? START_DATE { get; set; }
+        public DateTime? END_DATE { get; set; }
         public int EQUIPMENT_TYPE_ID { get; set; }
         public string EQUIPMENT_TYPE { get; set; }
         public int EQUIPMENT_SIZE_ID { get; set; }
@@ -803,11 +803,11 @@ namespace PrimeMaritime_API.Models
         public int REDELIVERY_NOTICE_PERIOD_IN_DAYS { get; set; }
         public decimal PICKUP_CHARGE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
-        public int? CREATED_BY { get; set; }
+        public string? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
-        public int? MODIFIED_BY { get; set; }
+        public string? MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
-        public int? DELETED_BY { get; set; }
+        public string? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
 
         public List<VENDOR_PICKUP_PORT_LIST> VENDOR_PICKUP_PORT_LIST { get; set; } = new List<VENDOR_PICKUP_PORT_LIST>();
@@ -821,11 +821,11 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string PORT_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
-        public int? CREATED_BY { get; set; }
+        public string? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
-        public int? MODIFIED_BY { get; set; }
+        public string? MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
-        public int? DELETED_BY { get; set; }
+        public string? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
     }
 
@@ -836,11 +836,11 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string REDELIVERY_PORT_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
-        public int? CREATED_BY { get; set; }
+        public string? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
-        public int? MODIFIED_BY { get; set; }
+        public string? MODIFIED_BY { get; set; }
         public DateTime? MODIFIED_AT { get; set; }
-        public int? DELETED_BY { get; set; }
+        public string? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
     }
 

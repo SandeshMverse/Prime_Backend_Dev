@@ -3926,10 +3926,8 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = vendor.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
                     new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = vendor.PICKUP_CHARGE },
                     new SqlParameter("@is_active", SqlDbType.Bit) { Value = vendor.IS_ACTIVE },
-                    new SqlParameter("@created_by", SqlDbType.Int) { Value = vendor.CREATED_BY },
+                    new SqlParameter("@created_by", SqlDbType.VarChar, 50) { Value = vendor.CREATED_BY },
                     new SqlParameter("@created_at", SqlDbType.DateTime) { Value = vendor.CREATED_AT },
-                    new SqlParameter("@modified_by", SqlDbType.Int) { Value = vendor.MODIFIED_BY },
-                    new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
 
                 };
 
@@ -3939,12 +3937,8 @@ namespace PrimeMaritime_API.Repository
                     portTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
                     portTable.Columns.Add(new DataColumn("port_id", typeof(int)));
                     portTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
-                    portTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                    portTable.Columns.Add(new DataColumn("created_by", typeof(string)));
                     portTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
-                    portTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
-                    portTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
-                    portTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
-                    portTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
 
                     foreach (var port in vendor.VENDOR_PICKUP_PORT_LIST)
                     {
@@ -3952,25 +3946,18 @@ namespace PrimeMaritime_API.Repository
                         portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
                         portRow["port_id"] = port.ID;
                         portRow["is_active"] = port.IS_ACTIVE;
-                        portRow["created_by"] = port.CREATED_BY.HasValue ? port.CREATED_BY.Value : (object)DBNull.Value;
-                        portRow["created_at"] = port.CREATED_AT.HasValue ? port.CREATED_AT.Value : (object)DBNull.Value;
-                        portRow["modified_by"] = port.MODIFIED_BY.HasValue ? port.MODIFIED_BY.Value : (object)DBNull.Value;
-                        portRow["modified_at"] = port.MODIFIED_AT.HasValue ? port.MODIFIED_AT.Value : (object)DBNull.Value;
-                        portRow["deleted_by"] = port.DELETED_BY.HasValue ? port.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
-                        portRow["deleted_at"] = port.DELETED_AT.HasValue ? port.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+                        portRow["created_by"] = port.CREATED_BY;
+                        portRow["created_at"] = port.CREATED_AT ?? (object)DBNull.Value;
 
                         portTable.Rows.Add(portRow);
                     }
-                    string[] columns2 = new string[9];
+                    string[] columns2 = new string[5];
                     columns2[0] = "vendor_agreement_id";
                     columns2[1] = "port_id";
                     columns2[2] = "is_active";
                     columns2[3] = "created_by";
                     columns2[4] = "created_at";
-                    columns2[5] = "modified_by";
-                    columns2[6] = "modified_at";
-                    columns2[7] = "deleted_by";
-                    columns2[8] = "deleted_at";
+
 
                     SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, portTable, "vendor_agreement_pickup_port", columns2);
 
@@ -3980,12 +3967,8 @@ namespace PrimeMaritime_API.Repository
                     locationTable.Columns.Add(new DataColumn("vendor_agreement_id", typeof(int)));
                     locationTable.Columns.Add(new DataColumn("redelivery_port_id", typeof(int)));
                     locationTable.Columns.Add(new DataColumn("is_active", typeof(Boolean)));
-                    locationTable.Columns.Add(new DataColumn("created_by", typeof(int)));
+                    locationTable.Columns.Add(new DataColumn("created_by", typeof(string)));
                     locationTable.Columns.Add(new DataColumn("created_at", typeof(DateTime)));
-                    locationTable.Columns.Add(new DataColumn("modified_by", typeof(int)));
-                    locationTable.Columns.Add(new DataColumn("modified_at", typeof(DateTime)));
-                    locationTable.Columns.Add(new DataColumn("deleted_by", typeof(int)));
-                    locationTable.Columns.Add(new DataColumn("deleted_at", typeof(DateTime)));
 
 
                     foreach (var location in vendor.VENDOR_REDELIVERY_PORT_LIST)
@@ -3994,27 +3977,20 @@ namespace PrimeMaritime_API.Repository
                         locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
                         locationRow["redelivery_port_id"] = location.ID;
                         locationRow["is_active"] = location.IS_ACTIVE;
-                        locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
-                        locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
-                        locationRow["modified_by"] = location.MODIFIED_BY.HasValue ? location.MODIFIED_BY.Value : (object)DBNull.Value;
-                        locationRow["modified_at"] = location.MODIFIED_AT.HasValue ? location.MODIFIED_AT.Value : (object)DBNull.Value;
-                        locationRow["deleted_by"] = location.DELETED_BY.HasValue ? location.DELETED_BY.Value : (object)DBNull.Value; // Handle nullable int
-                        locationRow["deleted_at"] = location.DELETED_AT.HasValue ? location.DELETED_AT.Value : (object)DBNull.Value; // Handle nullable DateTime
+                        locationRow["created_by"] = location.CREATED_BY;
+                        locationRow["created_at"] = location.CREATED_AT ?? (object)DBNull.Value;
 
 
                         locationTable.Rows.Add(locationRow);
                     }
 
-                    string[] columns3 = new string[9];
+                    string[] columns3 = new string[5];
                     columns3[0] = "vendor_agreement_id";
                     columns3[1] = "redelivery_port_id";
                     columns3[2] = "is_active";
                     columns3[3] = "created_by";
                     columns3[4] = "created_at";
-                    columns3[5] = "modified_by";
-                    columns3[6] = "modified_at";
-                    columns3[7] = "deleted_by";
-                    columns3[8] = "deleted_at";
+
 
                     SqlHelper.ExecuteProcedureBulkInserts(conn, transaction, locationTable, "vendor_agreement_redelivery_port", columns3);
 
@@ -4069,7 +4045,7 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@post_trip_inspection_charge", SqlDbType.Decimal) { Value = vendor.POST_TRIP_INSPECTION_CHARGE },
                         new SqlParameter("@redelivery_notice_period_in_days", SqlDbType.Int) { Value = vendor.REDELIVERY_NOTICE_PERIOD_IN_DAYS },
                         new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = vendor.PICKUP_CHARGE },
-                        new SqlParameter("@modified_by", SqlDbType.Int) { Value = vendor.MODIFIED_BY },
+                        new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = vendor.MODIFIED_BY },
                         new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
                     };
 
@@ -4084,7 +4060,7 @@ namespace PrimeMaritime_API.Repository
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
                               new SqlParameter("@port_id", SqlDbType.Int) { Value = items.ID},
-                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = items.MODIFIED_BY },
                               new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
                          };
 
@@ -4102,7 +4078,7 @@ namespace PrimeMaritime_API.Repository
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
                               new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.ID},
-                              new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
+                              new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = items.MODIFIED_BY },
                               new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
                          };
 
