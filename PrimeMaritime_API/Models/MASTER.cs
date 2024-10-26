@@ -73,21 +73,21 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string CONTAINER_NO { get; set; }
         public string CONTAINER_TYPE { get; set; }
-        public DateTime ONHIRE_DATE { get; set; }      
-        public string ONHIRE_LOCATION { get; set; }      
-        public string LEASED_FROM { get; set; }      
+        public DateTime? ONHIRE_DATE { get; set; }      
+        public string? ONHIRE_LOCATION { get; set; }      
+        public string? LEASED_FROM { get; set; }      
         public bool STATUS { get; set; }
 
         //add new field
-        public int VENDOR_AGREEMENT_ID { get; set; }
-        public DateTime OFFHIRE_DATE { get; set; }
-        public string YEAR_OF_MANUFACTURE { get; set; }
-        public decimal TARE_WEIGHT { get; set; }
-        public decimal PAYLOAD_CAPACITY { get; set; }
-        public decimal GROSS_WEIGHT { get; set; }
-        public string CSC_NO { get; set; }
-        public string ACEP_NO { get; set; }
-        public string AGREEMENT_NO { get; set; }
+        public int? VENDOR_AGREEMENT_ID { get; set; }
+        public DateTime? OFFHIRE_DATE { get; set; }
+        public string? YEAR_OF_MANUFACTURE { get; set; }
+        public decimal? TARE_WEIGHT { get; set; }
+        public decimal? PAYLOAD_CAPACITY { get; set; }
+        public decimal? GROSS_WEIGHT { get; set; }
+        public string? CSC_NO { get; set; }
+        public string? ACEP_NO { get; set; }
+        public string? AGREEMENT_NO { get; set; }
  
     }
     public class COUNTRY_MASTER
@@ -776,32 +776,32 @@ namespace PrimeMaritime_API.Models
         public int VENDOR_AGREEMENT_ID { get; set; }
         public string AGREEMENT_NO { get; set; }
         public int VENDOR_ID { get; set; }
-        public string VENDOR_NAME { get; set; }
+        public string? VENDOR_NAME { get; set; }
         public DateTime? PROCUREMENT_DATE { get; set; }
         public DateTime? START_DATE { get; set; }
         public DateTime? END_DATE { get; set; }
-        public int EQUIPMENT_TYPE_ID { get; set; }
-        public string EQUIPMENT_TYPE { get; set; }
-        public int EQUIPMENT_SIZE_ID { get; set; }
-        public string CONTAINER_TYPE { get; set; }
-        public decimal ON_HIRE_HANDLING { get; set; }
-        public decimal OFF_HIRE_HANDLING { get; set; }
-        public decimal LEASE_RENT { get; set; }
-        public decimal DPP { get; set; }
-        public decimal PICKUP_CREDIT { get; set; }
-        public decimal DROP_OFF_CHARGE { get; set; }
-        public decimal ANNUAL_DEPRECIATION_IN_PERCENTAGE { get; set; }
-        public int RE_DELIVERY_CAP { get; set; }
-        public decimal DEPRECIATED_REPLACEMENT_VALUE { get; set; }
-        public decimal INSPECTION_CHARGES { get; set; }
-        public int CURRENCY_ID { get; set; }
-        public string CURRENCY_CODE { get; set; }
-        public int MIN_RENTAL_PERIOD_IN_DAYS { get; set; }
-        public decimal MIN_RESIDUAL_VALUE_IN_PERCENTAGE { get; set; }
-        public decimal PRE_TRIP_INSPECTION_CHARGE { get; set; }
-        public decimal POST_TRIP_INSPECTION_CHARGE { get; set; }
-        public int REDELIVERY_NOTICE_PERIOD_IN_DAYS { get; set; }
-        public decimal PICKUP_CHARGE { get; set; }
+        public int? EQUIPMENT_TYPE_ID { get; set; }
+        public string? EQUIPMENT_TYPE { get; set; }
+        public int? EQUIPMENT_SIZE_ID { get; set; }
+        public string? CONTAINER_TYPE { get; set; }
+        public decimal? ON_HIRE_HANDLING { get; set; }
+        public decimal? OFF_HIRE_HANDLING { get; set; }
+        public decimal? LEASE_RENT { get; set; }
+        public decimal? DPP { get; set; }
+        public decimal? PICKUP_CREDIT { get; set; }
+        public decimal? DROP_OFF_CHARGE { get; set; }
+        public decimal? ANNUAL_DEPRECIATION_IN_PERCENTAGE { get; set; }
+        public int? RE_DELIVERY_CAP { get; set; }
+        public decimal? DEPRECIATED_REPLACEMENT_VALUE { get; set; }
+        public decimal? INSPECTION_CHARGES { get; set; }
+        public int? CURRENCY_ID { get; set; }
+        public string? CURRENCY_CODE { get; set; }
+        public int? MIN_RENTAL_PERIOD_IN_DAYS { get; set; }
+        public decimal? MIN_RESIDUAL_VALUE_IN_PERCENTAGE { get; set; }
+        public decimal? PRE_TRIP_INSPECTION_CHARGE { get; set; }
+        public decimal? POST_TRIP_INSPECTION_CHARGE { get; set; }
+        public int? REDELIVERY_NOTICE_PERIOD_IN_DAYS { get; set; }
+        public decimal? PICKUP_CHARGE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public string? CREATED_BY { get; set; }
         public DateTime? CREATED_AT { get; set; }
