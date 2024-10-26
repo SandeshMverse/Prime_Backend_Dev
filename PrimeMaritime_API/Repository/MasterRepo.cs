@@ -4101,7 +4101,7 @@ namespace PrimeMaritime_API.Repository
                               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_REDELIVERY_PORT" },
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
-                              new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.REDELIVERY_PORT_ID},
+                              new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.ID},
                               new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
                               new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
                          };
