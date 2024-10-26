@@ -818,7 +818,7 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_AGREEMENT_ID { get; set; }
         public int VENDOR_AGR_PORT_ID { get; set; }
-        public int PORT_ID { get; set; }
+        public int ID { get; set; }
         public string PORT_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }
@@ -833,7 +833,7 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_AGREEMENT_ID { get; set; }
         public int VENDOR_AGR_PORT_ID { get; set; }
-        public int REDELIVERY_PORT_ID { get; set; }
+        public int ID { get; set; }
         public string REDELIVERY_PORT_CODE { get; set; }
         public Boolean IS_ACTIVE { get; set; }
         public int? CREATED_BY { get; set; }

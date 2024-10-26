@@ -3950,7 +3950,7 @@ namespace PrimeMaritime_API.Repository
                     {
                         DataRow portRow = portTable.NewRow();
                         portRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
-                        portRow["port_id"] = port.PORT_ID;
+                        portRow["port_id"] = port.ID;
                         portRow["is_active"] = port.IS_ACTIVE;
                         portRow["created_by"] = port.CREATED_BY.HasValue ? port.CREATED_BY.Value : (object)DBNull.Value;
                         portRow["created_at"] = port.CREATED_AT.HasValue ? port.CREATED_AT.Value : (object)DBNull.Value;
@@ -3992,7 +3992,7 @@ namespace PrimeMaritime_API.Repository
                     {
                         DataRow locationRow = locationTable.NewRow();
                         locationRow["vendor_agreement_id"] = Convert.ToInt32(vendorAgreementId);
-                        locationRow["redelivery_port_id"] = location.REDELIVERY_PORT_ID;
+                        locationRow["redelivery_port_id"] = location.ID;
                         locationRow["is_active"] = location.IS_ACTIVE;
                         locationRow["created_by"] = location.CREATED_BY.HasValue ? location.CREATED_BY.Value : (object)DBNull.Value;
                         locationRow["created_at"] = location.CREATED_AT.HasValue ? location.CREATED_AT.Value : (object)DBNull.Value;
@@ -4083,7 +4083,7 @@ namespace PrimeMaritime_API.Repository
                               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_PORT" },
                               new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
-                              new SqlParameter("@port_id", SqlDbType.Int) { Value = items.PORT_ID},
+                              new SqlParameter("@port_id", SqlDbType.Int) { Value = items.ID},
                               new SqlParameter("@modified_by", SqlDbType.Int) { Value = items.MODIFIED_BY },
                               new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = items.MODIFIED_AT },
                          };
