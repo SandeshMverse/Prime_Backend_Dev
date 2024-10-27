@@ -1033,7 +1033,7 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetEquipmentTypeList")]
-        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        public ActionResult<Response<List<EQUIPMENT_TYPE_MASTER>>> GetEquipmentTypeList(string IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetEquipmentTypeList(IS_ACTIVE, EQUIPMENT_TYPE, FROM_DATE)));
         }

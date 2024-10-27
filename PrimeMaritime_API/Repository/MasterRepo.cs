@@ -3779,14 +3779,14 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeList(string dbConn, Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        public List<EQUIPMENT_TYPE_MASTER> GetEquipmentTypeList(string dbConn, string IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             try
             {
                 SqlParameter[] parameters =
                  {
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "SEARCH_EQUIPMENT_LIST" },
-                   new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
+                   new SqlParameter("@IS_ACTIVE", SqlDbType.VarChar, 50) { Value = IS_ACTIVE },
                    new SqlParameter("@EQUIPMENT_TYPE", SqlDbType.VarChar, 100) { Value = EQUIPMENT_TYPE },
                    new SqlParameter("@CREATED_AT", SqlDbType.VarChar, 100) { Value = FROM_DATE },
                 };

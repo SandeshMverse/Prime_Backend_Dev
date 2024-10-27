@@ -368,7 +368,7 @@ namespace PrimeMaritime_API.IServices
         #region "EQUIPMENT_TYPE"
 
         Response<CommonResponse> InsertEquipmentType(EQUIPMENT_TYPE_MASTER request);
-        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
+        Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(string IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE);
         Response<EQUIPMENT_TYPE_MASTER> GetEquipmentByID(int ID);
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
         Response<CommonResponse> DeleteEquipmentTypeList(int ID);

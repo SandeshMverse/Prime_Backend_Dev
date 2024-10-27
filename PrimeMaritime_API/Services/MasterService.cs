@@ -2990,7 +2990,7 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(Boolean IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
+        public Response<List<EQUIPMENT_TYPE_MASTER>> GetEquipmentTypeList(string IS_ACTIVE, string EQUIPMENT_TYPE, string FROM_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
