@@ -973,6 +973,10 @@ namespace PrimeMaritime_API.Helpers
         {
             return reader.IsDBNull(reader.GetOrdinal(colName)) ? default(DateTime) : Convert.ToDateTime(reader[colName]);
         }
+        public static DateTime? GetNullableDateTime(SqlDataReader reader, string colName)
+        {
+            return reader.IsDBNull(reader.GetOrdinal(colName)) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal(colName));
+        }
 
         //this method is to check wheater column exists or not in data reader
         public static bool IsColumnExists(this System.Data.IDataRecord dr, string colName)
@@ -986,6 +990,7 @@ namespace PrimeMaritime_API.Helpers
                 return false;
             }
         }
+
         #endregion
     }
 }

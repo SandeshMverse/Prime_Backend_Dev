@@ -1094,7 +1094,7 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteVendorAgreementById(VENDOR_AGREEMENT_ID)));
         }
         [HttpGet("GetVendorAgreementList")]
-        public ActionResult<Response<List<VENDOR_AGREEMENT_LIST>>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        public ActionResult<Response<List<VENDOR_AGREEMENT_LIST>>> GetVendorAgreementList(string AGREEMENT_NO, string IS_ACTIVE, string START_DATE, string END_DATE)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementList(AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE)));
         }

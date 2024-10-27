@@ -56,14 +56,70 @@ namespace PrimeMaritime_API.Translators
 
             return item;
         }
+        //public static CONTAINER_MASTER TranslateAsContainer(this SqlDataReader reader, bool isList = false)
+        //{
+        //    if (!isList)
+        //    {
+        //        if (!reader.HasRows)
+        //            return null;
+        //        reader.Read();
+        //    }
+
+        //    var item = new CONTAINER_MASTER();
+
+        //    if (reader.IsColumnExists("ID"))
+        //        item.ID = SqlHelper.GetNullableInt32(reader, "ID");
+
+        //    if (reader.IsColumnExists("CONTAINER_NO"))
+        //        item.CONTAINER_NO = SqlHelper.GetNullableString(reader, "CONTAINER_NO");
+
+        //    if (reader.IsColumnExists("CONTAINER_TYPE"))
+        //        item.CONTAINER_TYPE = SqlHelper.GetNullableString(reader, "CONTAINER_TYPE");
+
+        //    if (reader.IsColumnExists("ONHIRE_DATE"))
+        //        item.ONHIRE_DATE = SqlHelper.GetDateTime(reader, "ONHIRE_DATE");
+
+        //    if (reader.IsColumnExists("ONHIRE_LOCATION"))
+        //        item.ONHIRE_LOCATION = SqlHelper.GetNullableString(reader, "ONHIRE_LOCATION");
+
+        //    if (reader.IsColumnExists("LEASED_FROM"))
+        //        item.LEASED_FROM = SqlHelper.GetNullableString(reader, "LEASED_FROM");
+
+        //    if (reader.IsColumnExists("STATUS"))
+        //        item.STATUS = SqlHelper.GetBoolean(reader, "STATUS");
+
+        //    if (reader.IsColumnExists("vendor_agreement_id"))
+        //        item.VENDOR_AGREEMENT_ID = SqlHelper.GetNullableInt32(reader, "vendor_agreement_id");
+
+        //    if (reader.IsColumnExists("OFFHIRE_DATE"))
+        //        item.OFFHIRE_DATE = SqlHelper.GetDateTime(reader, "OFFHIRE_DATE");
+
+        //    if (reader.IsColumnExists("YEAR_OF_MANUFACTURE"))
+        //        item.YEAR_OF_MANUFACTURE = SqlHelper.GetNullableString(reader, "YEAR_OF_MANUFACTURE");
+
+        //    if (reader.IsColumnExists("TARE_WEIGHT"))
+        //        item.TARE_WEIGHT = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "TARE_WEIGHT"));
+
+        //    if (reader.IsColumnExists("PAYLOAD_CAPACITY"))
+        //        item.PAYLOAD_CAPACITY = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "PAYLOAD_CAPACITY"));
+
+        //    if (reader.IsColumnExists("GROSS_WEIGHT"))
+        //        item.GROSS_WEIGHT = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "GROSS_WEIGHT"));
+
+        //    if (reader.IsColumnExists("CSC_NO"))
+        //        item.CSC_NO = SqlHelper.GetNullableString(reader, "CSC_NO");
+
+        //    if (reader.IsColumnExists("ACEP_NO"))
+        //        item.ACEP_NO = SqlHelper.GetNullableString(reader, "ACEP_NO");
+
+        //    return item;
+        //}
         public static CONTAINER_MASTER TranslateAsContainer(this SqlDataReader reader, bool isList = false)
         {
-            if (!isList)
-            {
-                if (!reader.HasRows)
-                    return null;
-                reader.Read();
-            }
+            if (!isList && !reader.HasRows)
+                return null;
+
+            if (!isList) reader.Read();
 
             var item = new CONTAINER_MASTER();
 
@@ -77,7 +133,7 @@ namespace PrimeMaritime_API.Translators
                 item.CONTAINER_TYPE = SqlHelper.GetNullableString(reader, "CONTAINER_TYPE");
 
             if (reader.IsColumnExists("ONHIRE_DATE"))
-                item.ONHIRE_DATE = SqlHelper.GetDateTime(reader, "ONHIRE_DATE");
+                item.ONHIRE_DATE = SqlHelper.GetNullableDateTime(reader, "ONHIRE_DATE");
 
             if (reader.IsColumnExists("ONHIRE_LOCATION"))
                 item.ONHIRE_LOCATION = SqlHelper.GetNullableString(reader, "ONHIRE_LOCATION");
@@ -88,11 +144,11 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("STATUS"))
                 item.STATUS = SqlHelper.GetBoolean(reader, "STATUS");
 
-            if (reader.IsColumnExists("vendor_agreement_id"))
-                item.VENDOR_AGREEMENT_ID = SqlHelper.GetNullableInt32(reader, "vendor_agreement_id");
+            if (reader.IsColumnExists("VENDOR_AGREEMENT_ID"))
+                item.VENDOR_AGREEMENT_ID = SqlHelper.GetNullableInt32(reader, "VENDOR_AGREEMENT_ID");
 
             if (reader.IsColumnExists("OFFHIRE_DATE"))
-                item.OFFHIRE_DATE = SqlHelper.GetDateTime(reader, "OFFHIRE_DATE");
+                item.OFFHIRE_DATE = SqlHelper.GetNullableDateTime(reader, "OFFHIRE_DATE");
 
             if (reader.IsColumnExists("YEAR_OF_MANUFACTURE"))
                 item.YEAR_OF_MANUFACTURE = SqlHelper.GetNullableString(reader, "YEAR_OF_MANUFACTURE");
@@ -112,8 +168,12 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("ACEP_NO"))
                 item.ACEP_NO = SqlHelper.GetNullableString(reader, "ACEP_NO");
 
+            if (reader.IsColumnExists("AGREEMENT_NO"))
+                item.AGREEMENT_NO = SqlHelper.GetNullableString(reader, "AGREEMENT_NO");
+
             return item;
         }
+
         public static COUNTRY_MASTER TranslateAsCountry(this SqlDataReader reader, bool isList = false)
         {
             if (!isList)

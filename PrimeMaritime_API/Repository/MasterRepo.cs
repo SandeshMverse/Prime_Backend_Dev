@@ -4057,7 +4057,7 @@ namespace PrimeMaritime_API.Repository
                         SqlParameter[] vendorparameters =
                          {
                               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_PICKUP_PORT" },
-                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = vendor.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
                               new SqlParameter("@port_id", SqlDbType.Int) { Value = items.ID},
                               new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = items.MODIFIED_BY },
@@ -4075,7 +4075,7 @@ namespace PrimeMaritime_API.Repository
                         SqlParameter[] vendor_pickup_parameters =
                                  {
                               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_REDELIVERY_PORT" },
-                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = items.VENDOR_AGREEMENT_ID},
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = vendor.VENDOR_AGREEMENT_ID},
                               new SqlParameter("@vendor_agr_port_id", SqlDbType.Int) { Value = items.VENDOR_AGR_PORT_ID},
                               new SqlParameter("@redelivery_port_id", SqlDbType.Int) { Value = items.ID},
                               new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = items.MODIFIED_BY },
@@ -4133,7 +4133,7 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public List<VENDOR_AGREEMENT_LIST> GetVendorAgreementList(string dbConn, string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        public List<VENDOR_AGREEMENT_LIST> GetVendorAgreementList(string dbConn, string AGREEMENT_NO, string IS_ACTIVE, string START_DATE, string END_DATE)
         {
             try
             {
@@ -4141,7 +4141,7 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "GET_VENDOR_DETAILS_LIST" },
                   new SqlParameter("@AGREEMENT_NO", SqlDbType.VarChar, 50) { Value = AGREEMENT_NO },
-                  new SqlParameter("@IS_ACTIVE", SqlDbType.Bit) { Value = IS_ACTIVE },
+                  new SqlParameter("@IS_ACTIVE", SqlDbType.VarChar, 50) { Value = IS_ACTIVE },
                   new SqlParameter("@START_DATE", SqlDbType.VarChar, 100) { Value = START_DATE },
                   new SqlParameter("@END_DATE", SqlDbType.VarChar, 100) { Value = END_DATE },
 

@@ -3178,7 +3178,7 @@ namespace PrimeMaritime_API.Services
         }
 
 
-        public Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, bool IS_ACTIVE, string START_DATE, string END_DATE)
+        public Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, string IS_ACTIVE, string START_DATE, string END_DATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
