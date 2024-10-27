@@ -4052,6 +4052,14 @@ namespace PrimeMaritime_API.Repository
                     SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
 
 
+                         SqlParameter[] DeleteParams =
+                        {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "DELETE_ALL_VENDOR_PORT" },
+                              new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = vendor.VENDOR_AGREEMENT_ID}
+                         };
+                          SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", DeleteParams);
+
+
                     foreach (var items in vendor.VENDOR_PICKUP_PORT_LIST)
                     {
                         SqlParameter[] vendorparameters =
