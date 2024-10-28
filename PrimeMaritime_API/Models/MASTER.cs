@@ -846,7 +846,7 @@ namespace PrimeMaritime_API.Models
 
     public class EQUIPMENT_TYPE_MASTER
     {
-        public int EQUIPMENT_TYPE_ID { get; set; }
+        public int? EQUIPMENT_TYPE_ID { get; set; }
         public string EQUIPMENT_TYPE { get; set; }
         public string DESCRIPTION { get; set; }
         public Boolean IS_ACTIVE { get; set; }
