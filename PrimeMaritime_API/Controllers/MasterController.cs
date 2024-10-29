@@ -1098,6 +1098,51 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementList(AGREEMENT_NO, IS_ACTIVE, START_DATE, END_DATE)));
         }
+
+        [HttpPost("UploadVendorAgreementFiles")]
+        public IActionResult UploadVendorAgreementFiles(int VENDORID)
+        {
+            var formFile = Request.Form.Files;
+
+            // Define base paths
+            string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
+            string attachmentPath = Path.Combine(uploadPath, "VendorAgreementFiles");
+
+            // Create directories if they do not exist
+            if (!Directory.Exists(uploadPath))
+            {
+                Directory.CreateDirectory(uploadPath);
+            }
+
+            if (!Directory.Exists(attachmentPath))
+            {
+                Directory.CreateDirectory(attachmentPath);
+            }
+
+            List<string> uploadedFiles = new List<string>();
+            foreach (IFormFile postedFile in formFile)
+            {
+                string fileName = Path.GetFileName(VENDORID + "_" + postedFile.FileName);
+                // Construct full file path
+                string fullFilePath = Path.Combine(attachmentPath, fileName);
+
+                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                {
+                    postedFile.CopyTo(stream);
+                    // Convert path to use backslashes
+                    string relativePath = Path.Combine("Uploads", "VendorAgreementFiles", fileName).Replace('/', '\\');
+                    uploadedFiles.Add(relativePath); // Store relative path with backslashes
+                }
+            }
+            // If multiple files are uploaded, handle them as needed. For this example, we'll use the first file.
+            string attachmentpath = uploadedFiles.FirstOrDefault(); // Use the path of the first uploaded file
+
+            // Pass only the relative path to the service
+            _masterService.UpdateVendorAgreementPath(VENDORID, attachmentpath);
+            return Ok();
+        }
+
+
         #endregion
 
         #region "VENDOR AGREEMENT REPORT"

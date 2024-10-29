@@ -3202,6 +3202,13 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public void UpdateVendorAgreementPath(int VENDORID, string attachmentpath)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<MasterRepo>.Instance.UpdateVendorAgreementPath(dbConn, VENDORID, attachmentpath);
+        }
+
         #endregion
 
         #region "VENDOR AGREEMENT REPORT"

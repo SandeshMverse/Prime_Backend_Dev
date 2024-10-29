@@ -373,6 +373,8 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> UpdatEquipmentTypeList(EQUIPMENT_TYPE_MASTER request);
         Response<CommonResponse> DeleteEquipmentTypeList(int ID);
 
+        void UpdateVendorAgreementPath(int VENDORID, string attachmentpath);
+
         #endregion
 
         #region"Agreement No"

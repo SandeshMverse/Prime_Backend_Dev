@@ -4166,7 +4166,17 @@ namespace PrimeMaritime_API.Repository
             }
 
         }
+        public void UpdateVendorAgreementPath(string connstring, int VENDORID, string attachmentpath)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "UPDATE_VENDOR_AGREEMENT_FILE_PATH" },
+                new SqlParameter("@vendor_agreement_id", SqlDbType.Int) { Value = VENDORID },
+                new SqlParameter("@AttachmentPath", SqlDbType.VarChar, 500) { Value = attachmentpath },
+             };
 
+            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
+        }
         #endregion
 
         #region " VENDOR AGREEMENT REPORT"

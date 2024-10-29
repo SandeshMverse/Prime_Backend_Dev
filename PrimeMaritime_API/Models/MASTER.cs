@@ -809,6 +809,7 @@ namespace PrimeMaritime_API.Models
         public DateTime? MODIFIED_AT { get; set; }
         public string? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
+        public string? AttachmentPath { get; set; }
 
         public List<VENDOR_PICKUP_PORT_LIST> VENDOR_PICKUP_PORT_LIST { get; set; } = new List<VENDOR_PICKUP_PORT_LIST>();
         public List<VENDOR_REDELIVERY_PORT_LIST> VENDOR_REDELIVERY_PORT_LIST { get; set; } = new List<VENDOR_REDELIVERY_PORT_LIST>();
