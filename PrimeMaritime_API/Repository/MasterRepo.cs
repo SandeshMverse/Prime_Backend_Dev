@@ -4047,6 +4047,7 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@pickup_charge", SqlDbType.Decimal) { Value = vendor.PICKUP_CHARGE },
                         new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = vendor.MODIFIED_BY },
                         new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
+                        new SqlParameter("@AttachmentPath", SqlDbType.VarChar, 200) { Value = vendor.AttachmentPath },
                     };
 
                     SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
