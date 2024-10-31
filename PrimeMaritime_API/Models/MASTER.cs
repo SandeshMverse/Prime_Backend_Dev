@@ -871,11 +871,12 @@ namespace PrimeMaritime_API.Models
         public string VENDOR_NAME { get; set;  }
         public string CONTAINER_NO { get; set;  }
         public string SIZE_TYPE { get; set;  }
+        public string CURRENCY { get; set;  }
         public decimal LEASE_RENT_AMOUNT { get; set;  }
         public decimal TOTAL_AMOUNT { get; set;  }
         public decimal ONHIRE_HANDLING_RATE { get; set;  }
         public decimal OFFHIRE_HANDLING_RATE { get; set;  }
-        public decimal TOTAL_AMOUNT_USD { get; set;  }
+        public string TOTAL_AMOUNT_USD { get; set;  }
     }
 
     public class VENDOR_LIST
