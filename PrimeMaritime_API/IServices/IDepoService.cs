@@ -20,5 +20,9 @@ namespace PrimeMaritime_API.IServices
         Response<string> DeleteMRRequest(string MR_NO, string LOCATION);
 
 
+        void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
+
+
+        void InsertPrinMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
     }
 }

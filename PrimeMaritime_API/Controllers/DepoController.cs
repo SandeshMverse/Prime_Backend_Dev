@@ -7,6 +7,7 @@ using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Response;
+using PrimeMaritime_API.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -147,6 +148,123 @@ namespace PrimeMaritime_API.Controllers
             return response;
         }
 
+
+        [HttpPost("InsertMNRFiles")]
+        public async Task<ActionResult<Response<string>>> InsertMNRFiles()
+        {
+            try
+            {
+                // Check if there are files in the request
+                if (Request.Form.Files.Count == 0)
+                {
+                    return BadRequest(new { message = "No files uploaded." });
+                }
+
+                // Retrieve the payload as a list of MR_LIST items
+                string payload = Request.Form["PAYLOAD2"];
+                var newMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
+
+                // Define base paths
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
+                string attachmentPath = Path.Combine(uploadPath, "NEWMNRFiles");
+
+                // Create directories if they do not exist
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                if (!Directory.Exists(attachmentPath))
+                {
+                    Directory.CreateDirectory(attachmentPath);
+                }
+
+                List<string> uploadedFiles = new List<string>();
+
+                // Save each file with an associated MR_NO
+                foreach (IFormFile postedFile in Request.Form.Files)
+                {
+                    // Generate file name with MR_NO and original file name
+                    string fileName = $"{newMNRList[0].MR_NO}_{Path.GetFileName(postedFile.FileName)}";
+                    string fullFilePath = Path.Combine(attachmentPath, fileName);
+
+                    using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                        string relativePath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace('/', '\\');
+                        uploadedFiles.Add(relativePath);
+                    }
+                }
+
+                // Pass the list of MR_LIST items and the list of file paths to the service
+                _depoService.InsertMNRFiles(newMNRList, uploadedFiles);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+
+        [HttpPost("InsertPrinMNRFiles")]
+        public async Task<ActionResult<Response<string>>> InsertPrinMNRFiles()
+        {
+            try
+            {
+                // Check if there are files in the request
+                if (Request.Form.Files.Count == 0)
+                {
+                    return BadRequest(new { message = "No files uploaded." });
+                }
+
+                // Retrieve the payload as a list of MR_LIST items
+                string payload = Request.Form["PAYLOAD2"];
+                var newMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
+
+                // Define base paths
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
+                string attachmentPath = Path.Combine(uploadPath, "NEWMNRFiles");
+
+                // Create directories if they do not exist
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                if (!Directory.Exists(attachmentPath))
+                {
+                    Directory.CreateDirectory(attachmentPath);
+                }
+
+                List<string> uploadedFiles = new List<string>();
+
+                // Save each file with an associated MR_NO
+                foreach (IFormFile postedFile in Request.Form.Files)
+                {
+                    // Generate file name with MR_NO and original file name
+                    string fileName = $"{newMNRList[0].MR_NO}_{Path.GetFileName(postedFile.FileName)}";
+                    string fullFilePath = Path.Combine(attachmentPath, fileName);
+
+                    using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                        string relativePath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace('/', '\\');
+                        uploadedFiles.Add(relativePath);
+                    }
+                }
+
+                // Pass the list of MR_LIST items and the list of file paths to the service
+                _depoService.InsertPrinMNRFiles(newMNRList, uploadedFiles);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
 
     }
 }

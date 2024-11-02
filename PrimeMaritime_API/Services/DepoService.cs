@@ -160,5 +160,24 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            // Pass the list directly to the repository
+            DbClientFactory<DEPORepo>.Instance.InsertMNRFiles(dbConn, newMNRList, attachmentPaths);
+
+        }
+
+        public void InsertPrinMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            // Pass the list directly to the repository
+            DbClientFactory<DEPORepo>.Instance.InsertPrinMNRFiles(dbConn, newMNRList, attachmentPaths);
+
+        }
+
     }
 }
