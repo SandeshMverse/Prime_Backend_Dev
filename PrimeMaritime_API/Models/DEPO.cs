@@ -41,7 +41,12 @@ namespace PrimeMaritime_API.Models
         public decimal APPROVED_RATE { get; set; }
         public string REMARKS { get; set; }
         public string STATUS { get; set; }
-        public string MNRFILE_PATH { get; set; }
+        public string YEAR_OF_MANUFACTURE { get; set; }
+        public decimal TARE_WEIGHT { get; set; }
+        public decimal PAYLOAD_CAPACITY { get; set; }
+        public decimal GROSS_WEIGHT { get; set; }
+        public string CSC_NO { get; set; }
+        public string CONTAINER_TYPE { get; set; }
     }
 
     public class MNR_LIST
