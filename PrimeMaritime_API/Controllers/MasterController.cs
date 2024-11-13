@@ -346,7 +346,7 @@ namespace PrimeMaritime_API.Controllers
 
         [HttpGet("GetServiceDetails")]
 
-        public ActionResult<Response<LINER>> GetServiceDetails(int ID)
+        public ActionResult<Response<SERVICE>> GetServiceDetails(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetServiceDetails(ID)));
         }
@@ -395,6 +395,18 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<CommonResponse>> DeleteSchedule(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteSchedule(ID)));
+        }
+
+        [HttpPost("uploadvesselschedule")]
+        public ActionResult<Response<string>> uploadvesselschedule(List<SCHEDULE> schedule)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.uploadvesselschedule(schedule)));
+        }
+
+        [HttpPost("Updatevesselschedule")]
+        public ActionResult<Response<string>> Updatevesselschedule(List<SCHEDULE> request)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.Updatevesselschedule(request)));
         }
 
         #endregion

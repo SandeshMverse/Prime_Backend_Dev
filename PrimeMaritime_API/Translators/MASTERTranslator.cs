@@ -312,6 +312,18 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("CREATED_BY"))
                 item.CREATED_BY = SqlHelper.GetNullableString(reader, "CREATED_BY");
 
+            if (reader.IsColumnExists("CALL_SIGN"))
+                item.CALL_SIGN = SqlHelper.GetNullableString(reader, "CALL_SIGN");
+
+            if (reader.IsColumnExists("YEAR_OF_BUILT"))
+                item.YEAR_OF_BUILT = SqlHelper.GetNullableInt32(reader, "YEAR_OF_BUILT");
+
+            if (reader.IsColumnExists("CAPACITY"))
+                item.CAPACITY = SqlHelper.GetNullableInt32(reader, "CAPACITY");
+
+            if (reader.IsColumnExists("UOM"))
+                item.UOM = SqlHelper.GetNullableString(reader, "UOM");
+
             //if (reader.IsColumnExists("CREATED_ON"))
             //    item.CREATED_ON = SqlHelper.GetDateTime(reader, "CREATED_ON");
 
@@ -459,13 +471,13 @@ namespace PrimeMaritime_API.Translators
                 item.ID = SqlHelper.GetNullableInt32(reader, "ID");
 
             if (reader.IsColumnExists("LINER_CODE"))
-                item.LINER_CODE = SqlHelper.GetNullableString(reader, "LINER_CODE");
+                item.LINER_NAME = SqlHelper.GetNullableString(reader, "LINER_CODE");
 
             if (reader.IsColumnExists("SERVICE_NAME"))
                 item.SERVICE_NAME = SqlHelper.GetNullableString(reader, "SERVICE_NAME");
 
             if (reader.IsColumnExists("PORT_CODE"))
-                item.PORT_CODE = SqlHelper.GetNullableString(reader, "PORT_CODE");
+                item.ORIGIN_PORT_CODE = SqlHelper.GetNullableString(reader, "PORT_CODE");
 
 
             if (reader.IsColumnExists("STATUS"))
@@ -516,6 +528,14 @@ namespace PrimeMaritime_API.Translators
 
             if (reader.IsColumnExists("CREATED_BY"))
                 item.CREATED_BY = SqlHelper.GetNullableString(reader, "CREATED_BY");
+
+
+            if (reader.IsColumnExists("VOYAGE_NO"))
+                item.VOYAGE_NO = SqlHelper.GetNullableString(reader, "VOYAGE_NO");
+
+
+            if (reader.IsColumnExists("TERMINAL_NO"))
+                item.TERMINAL_NO = SqlHelper.GetNullableString(reader, "TERMINAL_NO");
 
 
             return item;

@@ -134,6 +134,10 @@ namespace PrimeMaritime_API.Models
         public string VESSEL_CODE { get; set; }
         public Boolean STATUS { get; set; }
         public string CREATED_BY { get; set; }
+        public string? CALL_SIGN { get; set; }
+        public int? YEAR_OF_BUILT { get; set; }
+        public int? CAPACITY { get; set; }
+        public string? UOM { get; set; }
 
         //public DateTime CREATED_ON { get; set; }
 
@@ -210,25 +214,13 @@ namespace PrimeMaritime_API.Models
         public string UPDATED_BY { get; set; }
         public DateTime UPDATED_DATE { get; set; }
     }
-    public class SERVICE
-    {
-        public int ID { get; set; }
-        public String LINER_CODE { get; set; }
-        public String SERVICE_NAME { get; set; }
-        public String PORT_CODE { get; set; }
-        public Boolean STATUS { get; set; }
-        public DateTime CREATED_DATE { get; set; }
-        public string CREATED_BY { get; set; }
-        public string UPDATED_BY { get; set; }
-        public DateTime UPDATED_DATE { get; set; }
-    }
-    public class SCHEDULE
+      public class SCHEDULE
     {
         public int ID { get; set; }
         public string VESSEL_NAME { get; set; }
         public string SERVICE_NAME { get; set; }
         public string PORT_CODE { get; set; }
-        public string VIA_NO { get; set; }
+        public string? VIA_NO { get; set; }
         public DateTime ETA { get; set; }
         public DateTime ETD { get; set; }
         public Boolean STATUS { get; set; }
@@ -236,6 +228,8 @@ namespace PrimeMaritime_API.Models
         public string CREATED_BY { get; set; }
         public string UPDATED_BY { get; set; }
         public DateTime UPDATED_DATE { get; set; }
+        public string? VOYAGE_NO { get; set; }
+        public string TERMINAL_NO { get; set; }
     }
     public class LOCATION_MASTER
     {
@@ -883,5 +877,25 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_ID { get; set; }
         public string VENDOR_NAME{ get; set; }
+    }
+
+    public class SERVICE
+    {
+        public int ID { get; set; }
+        public String LINER_NAME { get; set; }
+        public String SERVICE_NAME { get; set; }
+        public String ORIGIN_PORT_CODE { get; set; }
+        public Boolean STATUS { get; set; }
+        public DateTime CREATED_DATE { get; set; }
+        public string CREATED_BY { get; set; }
+        public string UPDATED_BY { get; set; }
+        public DateTime UPDATED_DATE { get; set; }
+        public List<PORT_CODES> PORT_CODES { get; set; } = new List<PORT_CODES>();
+    }
+    public class PORT_CODES
+    {
+        public int LINER_SERVICE_ID { get; set; }
+        public int PORT_TRACK_ID { get; set; }
+        public string PORT_CODE { get; set; }
     }
 }

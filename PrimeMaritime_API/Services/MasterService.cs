@@ -903,11 +903,38 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        //public Response<SERVICE> GetServiceDetails(int ID)
+        //{
+        //    string dbConn = _config.GetConnectionString("ConnectionString");
+
+        //    Response<SERVICE> response = new Response<SERVICE>();
+        //    var data = DbClientFactory<MasterRepo>.Instance.GetServiceDetails(dbConn, ID);
+
+        //    if (data != null)
+        //    {
+        //        response.Succeeded = true;
+        //        response.ResponseCode = 200;
+        //        response.ResponseMessage = "Success";
+        //        response.Data = data;
+        //    }
+        //    else
+        //    {
+        //        response.Succeeded = false;
+        //        response.ResponseCode = 500;
+        //        response.ResponseMessage = "No Data";
+        //    }
+
+        //    return response;
+        //}
+
+        //NEW ADDED
+
         public Response<SERVICE> GetServiceDetails(int ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<SERVICE> response = new Response<SERVICE>();
+
             var data = DbClientFactory<MasterRepo>.Instance.GetServiceDetails(dbConn, ID);
 
             if (data != null)
@@ -915,7 +942,12 @@ namespace PrimeMaritime_API.Services
                 response.Succeeded = true;
                 response.ResponseCode = 200;
                 response.ResponseMessage = "Success";
-                response.Data = data;
+                response.Data = MasterRepo.GetSingleDataFromDataSet<SERVICE>(data.Tables[0]);
+                if (data.Tables.Contains("Table1"))
+                {
+                    response.Data.PORT_CODES = MasterRepo.GetListFromDataSet<PORT_CODES>(data.Tables[1]);
+                }
+
             }
             else
             {
@@ -926,6 +958,8 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+
         public Response<CommonResponse> UpdateService(SERVICE request)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -1061,6 +1095,34 @@ namespace PrimeMaritime_API.Services
 
             response.Succeeded = true;
             response.ResponseMessage = "Master deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+        public Response<string> uploadvesselschedule(List<SCHEDULE> schedule)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<string> response = new Response<string>();
+            DbClientFactory<MasterRepo>.Instance.uploadvesselschedule(dbConn, schedule);
+
+            response.Succeeded = true;
+            response.ResponseCode = 200;
+            response.ResponseMessage = "Success";
+            response.Data = "Uploaded Successfully !";
+
+            return response;
+        }
+
+        public Response<string> Updatevesselschedule(List<SCHEDULE> request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<string> response = new Response<string>();
+            DbClientFactory<MasterRepo>.Instance.Updatevesselschedule(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Master updated Successfully.";
             response.ResponseCode = 200;
 
             return response;

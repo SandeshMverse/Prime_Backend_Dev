@@ -144,6 +144,9 @@ namespace PrimeMaritime_API.IServices
 
         Response<CommonResponse> DeleteSchedule(int ID);
 
+        Response<string> uploadvesselschedule(List<SCHEDULE> schedule);
+        Response<string> Updatevesselschedule(List<SCHEDULE> request);
+
         #endregion
 
         #region "VESSEL VOYAGE"
