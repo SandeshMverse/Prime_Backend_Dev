@@ -391,6 +391,8 @@ namespace PrimeMaritime_API.IServices
         Response<VENDOR_AGREEMENT_LIST> GetVendorAgreementById( int VENDOR_AGREEMENT_ID);
         Response<CommonResponse> DeleteVendorAgreementById(int VENDOR_AGREEMENT_ID);
         Response<List<VENDOR_AGREEMENT_LIST>> GetVendorAgreementList(string AGREEMENT_NO, string IS_ACTIVE, string START_DATE, string END_DATE);
+
+        Response<List<EQUIPMENT_TYPE_LIST>> GetAllEquipmentTypeList();
         #endregion
 
         #region " VENDOR AGREEMENT REPORT"

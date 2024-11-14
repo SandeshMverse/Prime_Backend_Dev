@@ -4072,7 +4072,7 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
                     new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
                     new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },
-                    new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
+                   // new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
                     new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = vendor.ON_HIRE_HANDLING },
                     new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = vendor.OFF_HIRE_HANDLING },
                     new SqlParameter("@dpp", SqlDbType.Decimal) { Value = vendor.DPP },
@@ -4093,6 +4093,8 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@is_active", SqlDbType.Bit) { Value = vendor.IS_ACTIVE },
                     new SqlParameter("@created_by", SqlDbType.VarChar, 50) { Value = vendor.CREATED_BY },
                     new SqlParameter("@created_at", SqlDbType.DateTime) { Value = vendor.CREATED_AT },
+                    new SqlParameter("@BUILD_DOWN_PERIOD", SqlDbType.Int) { Value = vendor.BUILD_DOWN_PERIOD },
+                    new SqlParameter("@POST_BUILD_DOWN_LEASE_RENT", SqlDbType.Decimal) { Value = vendor.POST_BUILD_DOWN_LEASE_RENT }
 
                 };
 
@@ -4192,7 +4194,7 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
                         new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
                         new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },
-                        new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
+                        //new SqlParameter("@equipment_size_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_SIZE_ID },
                         new SqlParameter("@on_hire_handling", SqlDbType.Decimal) { Value = vendor.ON_HIRE_HANDLING },
                         new SqlParameter("@off_hire_handling", SqlDbType.Decimal) { Value = vendor.OFF_HIRE_HANDLING },
                         new SqlParameter("@dpp", SqlDbType.Decimal) { Value = vendor.DPP },
@@ -4213,6 +4215,8 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@modified_by", SqlDbType.VarChar, 50) { Value = vendor.MODIFIED_BY },
                         new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
                         new SqlParameter("@AttachmentPath", SqlDbType.VarChar, 200) { Value = vendor.AttachmentPath },
+                        new SqlParameter("@BUILD_DOWN_PERIOD", SqlDbType.Int) { Value = vendor.BUILD_DOWN_PERIOD },
+                        new SqlParameter("@POST_BUILD_DOWN_LEASE_RENT", SqlDbType.Decimal) { Value = vendor.POST_BUILD_DOWN_LEASE_RENT }
                     };
 
                     SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
@@ -4342,6 +4346,26 @@ namespace PrimeMaritime_API.Repository
              };
 
             SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
+        }
+
+        public List<EQUIPMENT_TYPE_LIST> GetAllEquipmentTypeList(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_ALL_EQUIPMENT_TYPE_LIST" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_MASTER", parameters);
+                List<EQUIPMENT_TYPE_LIST> master = SqlHelper.CreateListFromTable<EQUIPMENT_TYPE_LIST>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         #endregion
 

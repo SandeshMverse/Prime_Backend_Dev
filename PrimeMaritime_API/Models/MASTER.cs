@@ -804,6 +804,8 @@ namespace PrimeMaritime_API.Models
         public string? DELETED_BY { get; set; }
         public DateTime? DELETED_AT { get; set; }
         public string? AttachmentPath { get; set; }
+        public int? BUILD_DOWN_PERIOD { get; set; }
+        public decimal? POST_BUILD_DOWN_LEASE_RENT { get; set; }
 
         public List<VENDOR_PICKUP_PORT_LIST> VENDOR_PICKUP_PORT_LIST { get; set; } = new List<VENDOR_PICKUP_PORT_LIST>();
         public List<VENDOR_REDELIVERY_PORT_LIST> VENDOR_REDELIVERY_PORT_LIST { get; set; } = new List<VENDOR_REDELIVERY_PORT_LIST>();
@@ -897,5 +899,12 @@ namespace PrimeMaritime_API.Models
         public int LINER_SERVICE_ID { get; set; }
         public int PORT_TRACK_ID { get; set; }
         public string PORT_CODE { get; set; }
+    }
+
+    public class EQUIPMENT_TYPE_LIST
+    {
+        public int ID { get; set; }
+        public string CODE { get; set; }
+        public string CODE_DESC { get; set; }
     }
 }

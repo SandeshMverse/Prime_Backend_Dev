@@ -1154,6 +1154,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok();
         }
 
+        [HttpGet("GetAllEquipmentTypeList")]
+        public ActionResult<Response<List<EQUIPMENT_TYPE_LIST>>> GetAllEquipmentTypeList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllEquipmentTypeList()));
+        }
+
 
         #endregion
 

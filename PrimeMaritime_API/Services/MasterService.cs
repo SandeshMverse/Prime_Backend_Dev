@@ -3271,6 +3271,30 @@ namespace PrimeMaritime_API.Services
             DbClientFactory<MasterRepo>.Instance.UpdateVendorAgreementPath(dbConn, VENDORID, attachmentpath);
         }
 
+        public Response<List<EQUIPMENT_TYPE_LIST>> GetAllEquipmentTypeList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<EQUIPMENT_TYPE_LIST>> response = new Response<List<EQUIPMENT_TYPE_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllEquipmentTypeList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
         #endregion
 
         #region "VENDOR AGREEMENT REPORT"
