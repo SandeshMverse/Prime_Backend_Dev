@@ -15,5 +15,7 @@ namespace PrimeMaritime_API.IServices
         Response<List<CRO>> GetCROList(string AGENT_CODE,string FROM_DATE, string TO_DATE, string CRO_NO, string ORG_CODE, string PORT);
         Response<List<CRO>> GetCROListPM(string FROM_DATE, string TO_DATE, string CRO_NO);
         Response<CRODetails> GetCRODetails(string CRO_NO, string AGENT_CODE, string ORG_CODE, string PORT);
+        Response<List<CRO>> GetAllCRONo();
+        Response<CRO_DETAILS> GetCRONoDetail(string CRO_NO);
     }
 }

@@ -1067,5 +1067,99 @@ namespace PrimeMaritime_API.Translators
 
             return item;
         }
+
+        public static CRO_DETAILS TranslateAsCRODETAILS(this SqlDataReader reader, bool isList = false)
+        {
+            if (!isList)
+            {
+                if (!reader.HasRows)
+                    return null;
+                reader.Read();
+            }
+
+            var item = new CRO_DETAILS();
+
+            if (reader.IsColumnExists("ID"))
+                item.ID = SqlHelper.GetNullableInt32(reader, "ID");
+
+            if (reader.IsColumnExists("CRO_NO"))
+                item.CRO_NO = SqlHelper.GetNullableString(reader, "CRO_NO");
+
+            if (reader.IsColumnExists("BOOKING_NO"))
+                item.BOOKING_NO = SqlHelper.GetNullableString(reader, "BOOKING_NO");
+
+            if (reader.IsColumnExists("VESSEL_NAME"))
+                item.VESSEL_NAME = SqlHelper.GetNullableString(reader, "VESSEL_NAME");
+
+            if (reader.IsColumnExists("VOYAGE_NO"))
+                item.VOYAGE_NO = SqlHelper.GetNullableString(reader, "VOYAGE_NO");
+
+            if (reader.IsColumnExists("POL"))
+                item.POL = SqlHelper.GetNullableString(reader, "POL");
+
+            if (reader.IsColumnExists("POD"))
+                item.POD = SqlHelper.GetNullableString(reader, "POD");
+
+            return item;
+        }
+
+        public static MNR_TARIFF_LIST TranslateAsMNRTariffDetails(this SqlDataReader reader, bool isList = false)
+        {
+            if (!isList)
+            {
+                if (!reader.HasRows)
+                    return null;
+                reader.Read();
+            }
+
+            var item = new MNR_TARIFF_LIST();
+
+            if (reader.IsColumnExists("ID"))
+                item.ID = SqlHelper.GetNullableInt32(reader, "ID");
+
+            if (reader.IsColumnExists("PORT_CODE"))
+                item.PORT_CODE = SqlHelper.GetNullableString(reader, "PORT_CODE");
+
+            if (reader.IsColumnExists("DEPO_CODE"))
+                item.DEPO_CODE = SqlHelper.GetNullableString(reader, "DEPO_CODE");
+
+            if (reader.IsColumnExists("COMPONENT"))
+                item.COMPONENT = SqlHelper.GetNullableString(reader, "COMPONENT");
+
+            if (reader.IsColumnExists("DAMAGE_LOCATION"))
+                item.DAMAGE_LOCATION = SqlHelper.GetNullableString(reader, "DAMAGE_LOCATION");
+
+            if (reader.IsColumnExists("REPAIR"))
+                item.REPAIR = SqlHelper.GetNullableString(reader, "REPAIR");
+
+            if (reader.IsColumnExists("LENGTH"))
+                item.LENGTH = SqlHelper.GetNullableString(reader, "LENGTH");
+
+            if (reader.IsColumnExists("WIDTH"))
+                item.WIDTH = SqlHelper.GetNullableString(reader, "WIDTH");
+
+            if (reader.IsColumnExists("HEIGHT"))
+                item.HEIGHT = SqlHelper.GetNullableString(reader, "HEIGHT");
+
+            if (reader.IsColumnExists("QUANTITY"))
+                item.QUANTITY = SqlHelper.GetNullableString(reader, "QUANTITY");
+
+            if (reader.IsColumnExists("DESCRIPTION_OF_REPAIRS"))
+                item.DESCRIPTION_OF_REPAIRS = SqlHelper.GetNullableString(reader, "DESCRIPTION_OF_REPAIRS");
+
+            if (reader.IsColumnExists("MAN_HOUR"))
+                item.MAN_HOUR = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "MAN_HOUR"));
+
+            if (reader.IsColumnExists("LABOUR_CHARGE"))
+                item.LABOUR_CHARGE = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "LABOUR_CHARGE"));
+
+            if (reader.IsColumnExists("MATERIAL_COST"))
+                item.MATERIAL_COST = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "MATERIAL_COST"));
+
+            if (reader.IsColumnExists("TOTAL"))
+                item.TOTAL = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "TOTAL"));
+
+            return item;
+        }
     }
 }

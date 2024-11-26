@@ -30,11 +30,11 @@ namespace PrimeMaritime_API.Models
         public string SALES_NAME { get; set; }
         public string SALES_CODE { get; set; }
         public string SALES_LOC { get; set; }
-        public string SALES_EFFECTIVE_DATE { get; set; }       
+        public string SALES_EFFECTIVE_DATE { get; set; }
         public bool IS_VENDOR { get; set; }
         public List<CUSTOMER_BRANCH> BRANCH_LIST { get; set; } = new List<CUSTOMER_BRANCH>();
         public List<CUSTOMER_BANK> BANK_LIST { get; set; } = new List<CUSTOMER_BANK>();
-       
+
 
     }
     public class CUSTOMER_BRANCH
@@ -73,9 +73,9 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string CONTAINER_NO { get; set; }
         public string CONTAINER_TYPE { get; set; }
-        public DateTime? ONHIRE_DATE { get; set; }      
-        public string? ONHIRE_LOCATION { get; set; }      
-        public string? LEASED_FROM { get; set; }      
+        public DateTime? ONHIRE_DATE { get; set; }
+        public string? ONHIRE_LOCATION { get; set; }
+        public string? LEASED_FROM { get; set; }
         public bool STATUS { get; set; }
 
         //add new field
@@ -88,7 +88,7 @@ namespace PrimeMaritime_API.Models
         public string? CSC_NO { get; set; }
         public string? ACEP_NO { get; set; }
         public string? AGREEMENT_NO { get; set; }
- 
+
     }
     public class COUNTRY_MASTER
     {
@@ -214,7 +214,7 @@ namespace PrimeMaritime_API.Models
         public string UPDATED_BY { get; set; }
         public DateTime UPDATED_DATE { get; set; }
     }
-      public class SCHEDULE
+    public class SCHEDULE
     {
         public int ID { get; set; }
         public string VESSEL_NAME { get; set; }
@@ -245,7 +245,7 @@ namespace PrimeMaritime_API.Models
         public string COUNTRY_CODE { get; set; }
         public string PORT_CODE { get; set; }
         public bool STATUS { get; set; }
-        public DateTime CREATED_DATE { get; set; }     
+        public DateTime CREATED_DATE { get; set; }
         public string CREATED_BY { get; set; }
     }
     public class FREIGHT_MASTER
@@ -665,7 +665,7 @@ namespace PrimeMaritime_API.Models
         public int TOTAL_CONTAINER { get; set; }
         public decimal FREIGHT_PER_CONTAINER { get; set; }
         public double CONTAINER_PER_FINALIZED_BL { get; set; }
-   
+
     }
 
     public class CONSIGNEE_LIST
@@ -863,30 +863,30 @@ namespace PrimeMaritime_API.Models
 
     public class VENDOR_AGREEMENT_REPORT
     {
-        public string AGREEMENT_NO { get; set;  }
-        public string VENDOR_NAME { get; set;  }
-        public string CONTAINER_NO { get; set;  }
-        public string SIZE_TYPE { get; set;  }
-        public string CURRENCY { get; set;  }
-        public decimal LEASE_RENT_AMOUNT { get; set;  }
-        public decimal TOTAL_AMOUNT { get; set;  }
-        public decimal ONHIRE_HANDLING_RATE { get; set;  }
-        public decimal OFFHIRE_HANDLING_RATE { get; set;  }
-        public string TOTAL_AMOUNT_USD { get; set;  }
+        public string AGREEMENT_NO { get; set; }
+        public string VENDOR_NAME { get; set; }
+        public string CONTAINER_NO { get; set; }
+        public string SIZE_TYPE { get; set; }
+        public string CURRENCY { get; set; }
+        public decimal LEASE_RENT_AMOUNT { get; set; }
+        public decimal TOTAL_AMOUNT { get; set; }
+        public decimal ONHIRE_HANDLING_RATE { get; set; }
+        public decimal OFFHIRE_HANDLING_RATE { get; set; }
+        public string TOTAL_AMOUNT_USD { get; set; }
     }
 
     public class VENDOR_LIST
     {
         public int VENDOR_ID { get; set; }
-        public string VENDOR_NAME{ get; set; }
+        public string VENDOR_NAME { get; set; }
     }
 
     public class SERVICE
     {
         public int ID { get; set; }
-        public String LINER_NAME { get; set; }
-        public String SERVICE_NAME { get; set; }
-        public String ORIGIN_PORT_CODE { get; set; }
+        public string LINER_NAME { get; set; }
+        public string SERVICE_NAME { get; set; }
+        public string ORIGIN_PORT_CODE { get; set; }
         public Boolean STATUS { get; set; }
         public DateTime CREATED_DATE { get; set; }
         public string CREATED_BY { get; set; }
@@ -906,5 +906,78 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string CODE { get; set; }
         public string CODE_DESC { get; set; }
+    }
+
+    public class LINER_NAME
+    {
+        public int ID { get; set; }
+        public string CODE { get; set; }
+        public string CODE_DESC { get; set; }
+    }
+
+    public class SLOT_OPERATOR_NAME
+    {
+        public int ID { get; set; }
+        public string SLOT_OPERATOR { get; set; }
+        public string LINER_CODE { get; set; }
+        public string SERVICES { get; set; }
+    }
+
+    public class SLOT_PURCHASE_LIST
+    {
+        public int? ID { get; set; }
+        public int? SLOT_PURCHASE_MGMNT_ID { get; set; }
+        public string? RATE_REF { get; set; }
+        public string? SLOT_OPERATOR_NAME { get; set; }
+        public string? LINER_NAME { get; set; }
+        public string? SERVICE { get; set; }
+        public string? TERMS { get; set; }
+        public string? LADEN_STATUS { get; set; }
+        public string? POL { get; set; }
+        public string? POD { get; set; }
+        public string? CURRENCY { get; set; }
+        public decimal? OF_M20 { get; set; }
+        public decimal? OF_M40 { get; set; }
+        public decimal? OF_M45 { get; set; }
+        public decimal? OF_D20 { get; set; }
+        public decimal? OF_D40 { get; set; }
+        public decimal? OF_D45 { get; set; }
+        public decimal? OF_R20 { get; set; }
+        public decimal? OF_R40 { get; set; }
+        public decimal? OF_R45 { get; set; }
+        public decimal? HAZ_D20 { get; set; }
+        public decimal? HAZ_D40 { get; set; }
+        public decimal? HAZ_D45 { get; set; }
+        public decimal? FLEXI_D20 { get; set; }
+        public decimal? FLEXI_D40 { get; set; }
+        public decimal? FLEXI_D45 { get; set; }
+        public decimal? BAF { get; set; }
+        public decimal? EWRI { get; set; }
+        public DateTime FROM_DATE { get; set; }
+        public DateTime TO_DATE { get; set; }
+        public string? CREATED_BY { get; set; }
+        public DateTime? CREATED_DATE { get; set; }
+        public string? MODIFY_BY { get; set; }
+        public DateTime? MODIFY_DATE { get; set; }
+
+    }
+
+    public class MNR_TARIFF_LIST
+    {
+         public int ID { get; set; }
+         public string PORT_CODE { get; set; }
+        public string DEPO_CODE { get; set; }
+        public string COMPONENT { get; set; }
+        public string DAMAGE_LOCATION { get; set; }
+        public string REPAIR { get; set; }
+        public string LENGTH { get; set; }
+        public string WIDTH { get; set; }
+        public string HEIGHT { get; set; }
+        public string QUANTITY { get; set; }
+        public string DESCRIPTION_OF_REPAIRS { get; set; }
+        public decimal MAN_HOUR { get; set; }
+        public decimal LABOUR_CHARGE { get; set; }
+        public decimal MATERIAL_COST { get; set; }
+        public decimal TOTAL { get; set; }
     }
 }

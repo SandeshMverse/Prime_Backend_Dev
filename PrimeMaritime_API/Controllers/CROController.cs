@@ -48,5 +48,18 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_cROService.GetCRODetails(CRO_NO, AGENT_CODE, ORG_CODE, PORT)));
         }
+
+
+        [HttpGet("GetALLCRONo")]
+        public ActionResult<Response<List<CRO>>> GetAllCRONo()
+        {
+            return Ok(JsonConvert.SerializeObject(_cROService.GetAllCRONo()));
+        }
+
+        [HttpGet("GetCRONoDetail")]
+        public ActionResult<Response<CRO_DETAILS>> GetCRONoDetail(string CRO_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_cROService.GetCRONoDetail(CRO_NO)));
+        }
     }
 }

@@ -643,6 +643,12 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.UploadSlotRateTariff(master)));
         }
+
+        [HttpPost("UploadMNRTariff")] //siddhesh
+        public ActionResult<Response<string>> UploadMNRTariff(List<MNR_TARIFF_LIST> master)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.UploadMNRTariff(master)));
+        }
         #endregion
 
         #region "ORGANISATION MASTER"
@@ -1181,6 +1187,77 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.GetAllVendorList()));
         }
 
+        #endregion
+
+        #region"GET ALL LINER LIST"
+
+        [HttpGet("GetAllLinerList")]
+        public ActionResult<Response<List<LINER_NAME>>> GetAllLinerList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllLinerList()));
+        }
+        #endregion
+
+        #region"GET ALL SLOT OPERATOR LIST"
+
+        [HttpGet("GetAllSlotOperatorList")]
+        public ActionResult<Response<List<SLOT_OPERATOR_NAME>>> GetAllSlotOperatorList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllSlotOperatorList()));
+        }
+        #endregion
+
+        #region"GET ALL SLOT PURCHASE LIST"
+        [HttpPost("uploadslotpurchase")]
+        public ActionResult<Response<string>> InsertSlotPurchase(List<SLOT_PURCHASE_LIST> request)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.InsertSlotPurchase(request)));
+        }
+
+  
+        [HttpPost("Updateslotpurchase")]
+        public ActionResult<Response<string>> Updateslotpurchase(List<SLOT_PURCHASE_LIST> request)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.Updateslotpurchase(request)));
+        }
+
+        [HttpGet("GetAllSlotPurchase")] 
+        public ActionResult<Response<List<SLOT_PURCHASE_LIST>>> GetAllSlotPurchase()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllSlotPurchase()));
+        }
+
+        [HttpGet("GetSlotpurchaseById")]
+        public ActionResult<Response<List<SLOT_PURCHASE_LIST>>> GetSlotpurchaseById(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetSlotpurchaseById(ID)));
+        }
+        #endregion
+
+        #region "MNR TARIFF MASTER"
+        [HttpGet("GetAllMnrList")]
+        public ActionResult<Response<List<MNR_TARIFF_LIST>>> GetAllMnrList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetAllMnrList()));
+        }
+
+        [HttpGet("GetMNRListById")]
+        public ActionResult<Response<MNR_TARIFF_LIST>> GetMNRListById(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetMNRListById(ID)));
+        }
+
+        [HttpPost("UpdateMNRTariff")]
+        public ActionResult<Response<CommonResponse>> UpdateMNRTariffList(MNR_TARIFF_LIST request)
+        {
+            return Ok(_masterService.UpdateMNRTariffList(request));
+        }
+
+        [HttpDelete("DeleteMNRListById")]
+        public ActionResult<Response<CommonResponse>> DeleteMNRListById(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.DeleteMNRListById(ID)));
+        }
         #endregion
 
     }

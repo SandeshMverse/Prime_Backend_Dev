@@ -8,15 +8,43 @@ using System.Data.SqlClient;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Response;
 using PrimeMaritime_API.Translators;
+using Org.BouncyCastle.Utilities;
+using System.Numerics;
+using System.Transactions;
+using System.ComponentModel;
+using System.Data.Common;
 
 namespace PrimeMaritime_API.Repository
 {
     public class BLRepo
     {
-        public void InsertBL(string connstring, BL request)
+        public string InsertBL(string connstring, BL request)
+
         {
-            SqlParameter[] parameters =
+            string ContainerNoExists;
+            foreach (var item in request.CONTAINER_LIST2)
             {
+                SqlParameter[] parameters3 =
+                     {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_CRO" },
+                              new SqlParameter("@RETURNCONTAINERNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@CRO_NO", SqlDbType.VarChar, 100) { Value = request.CRO_NO },
+                              new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 50) { Value = item.CONTAINER_NO },
+
+                             };
+
+
+                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters3);
+                ContainerNoExists = Convert.ToString(parameters3[1].Value);
+                if (ContainerNoExists != item.CONTAINER_NO)
+                {
+                    return "failer";
+                }
+            }
+
+
+            SqlParameter[] parameters =
+                {
               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CREATE_BL" },
               new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
               new SqlParameter("@SRR_ID", SqlDbType.Int) { Value = request.SRR_ID },
@@ -54,40 +82,71 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@SWITCHBL_AGENT_CODE",SqlDbType.VarChar, 50) {Value = request.SWITCHBL_AGENT_CODE},  //SWITCHBL
             };
 
-            var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
+                var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
-            foreach (var i in request.CONTAINER_LIST)
-            {
-                i.BL_NO = BLNO;
-                i.BOOKING_NO = request.BOOKING_NO;
-                i.CRO_NO = request.CRO_NO;
-                i.MARKS_NOS = request.MARKS_NOS;
-                i.DESC_OF_GOODS = request.DESC_OF_GOODS;
-                i.CONTAINER_SIZE = 0;
-                
-            }
 
-            string[] columns = new string[17];
-            columns[0] = "BL_NO";
-            columns[1] = "BOOKING_NO";
-            columns[2] = "CRO_NO";
-            columns[3] = "CONTAINER_NO";
-            columns[4] = "CONTAINER_TYPE";
-            columns[5] = "CONTAINER_SIZE";
-            columns[6] = "SEAL_NO";
-            columns[7] = "MARKS_NOS";
-            columns[8] = "DESC_OF_GOODS";
-            columns[9] = "PKG_COUNT";
-            columns[10] = "PKG_DESC";
-            columns[11] = "GROSS_WEIGHT";
-            columns[12] = "NET_WEIGHT";
-            columns[13] = "MEASUREMENT";
-            columns[14] = "AGENT_CODE";
-            columns[15] = "AGENT_NAME";
-            columns[16] = "CREATED_BY";
+                foreach (var i in request.CONTAINER_LIST2)
+                {
+                    SqlParameter[] parameters2 =
+                         {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CONTAINER" },
+                              new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = BLNO },
+                              new SqlParameter("@CRO_NO", SqlDbType.VarChar, 100) { Value = request.CRO_NO },
+                              new SqlParameter("@BOOKING_NO", SqlDbType.VarChar, 50) { Value = request.BOOKING_NO },
+                              new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 50) { Value = i.CONTAINER_NO },
+                              new SqlParameter("@CONTAINER_TYPE", SqlDbType.VarChar, 50) { Value = i.CONTAINER_TYPE },
+                              new SqlParameter("@CONTAINER_SIZE", SqlDbType.Int) { Value = 0 },
+                              new SqlParameter("@SEAL_NO", SqlDbType.VarChar, 50) { Value = i.SEAL_NO },
+                              new SqlParameter("@MARKS_NOS", SqlDbType.VarChar, 200) { Value = request.MARKS_NOS },
+                              new SqlParameter("@DESC_OF_GOODS", SqlDbType.VarChar, 200) { Value = request.DESC_OF_GOODS },
+                              new SqlParameter("@PKG_COUNT", SqlDbType.Int) { Value = i.PKG_COUNT },
+                              new SqlParameter("@PKG_DESC", SqlDbType.VarChar, 200) { Value = i.PKG_DESC },
+                              new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = i.GROSS_WEIGHT },
+                              new SqlParameter("@NET_WEIGHT", SqlDbType.Decimal) { Value = i.NET_WEIGHT },
+                              new SqlParameter("@MEASUREMENT", SqlDbType.VarChar,100) { Value = i.MEASUREMENT },
+                              new SqlParameter("@AGENT_SEAL_NO", SqlDbType.VarChar,100) { Value = i.AGENT_SEAL_NO }
+                             };
 
-            SqlHelper.UpdateData<CONTAINERS>(request.CONTAINER_LIST, "TB_CONTAINER", connstring, columns);
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters2);
+
+                }
+            return "sucess";
+
+
+
+            //foreach (var i in request.CONTAINER_LIST)
+            //{
+            //    i.BL_NO = BLNO;
+            //    i.BOOKING_NO = request.BOOKING_NO;
+            //    i.CRO_NO = request.CRO_NO;
+            //    i.MARKS_NOS = request.MARKS_NOS;
+            //    i.DESC_OF_GOODS = request.DESC_OF_GOODS;
+            //    i.CONTAINER_SIZE = 0;
+
+            //}
+
+            //string[] columns2 = new string[17];
+            //columns2[0] = "BL_NO";
+            //columns2[1] = "BOOKING_NO";
+            //columns2[2] = "CRO_NO";
+            //columns2[3] = "CONTAINER_NO";
+            //columns2[4] = "CONTAINER_TYPE";
+            //columns2[5] = "CONTAINER_SIZE";
+            //columns2[6] = "SEAL_NO";
+            //columns2[7] = "MARKS_NOS";
+            //columns2[8] = "DESC_OF_GOODS";
+            //columns2[9] = "PKG_COUNT";
+            //columns2[10] = "PKG_DESC";
+            //columns2[11] = "GROSS_WEIGHT";
+            //columns2[12] = "NET_WEIGHT";
+            //columns2[13] = "MEASUREMENT";
+            //columns2[14] = "AGENT_CODE";
+            //columns2[15] = "AGENT_NAME";
+            //columns2[16] = "CREATED_BY";
+
+            //SqlHelper.UpdateData<CONTAINERS>(request.CONTAINER_LIST, "TB_CONTAINER", connstring, columns2);
         }
+
 
         public void InsertSurrender(string connstring, string BL_NO)
         {
@@ -166,6 +225,7 @@ namespace PrimeMaritime_API.Repository
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
+
                 foreach (var i in request.CONTAINER_LIST2)
                 {
                     i.BL_NO = request.BL_NO;
@@ -173,21 +233,21 @@ namespace PrimeMaritime_API.Repository
                     i.DESC_OF_GOODS = request.DESC_OF_GOODS;
                 }
 
-                string[] columns = new string[12];
-                columns[0] = "BL_NO";
-                columns[1] = "CONTAINER_NO";
-                columns[2] = "CONTAINER_TYPE";
-                columns[3] = "SEAL_NO";
-                columns[4] = "MARKS_NOS";
-                columns[5] = "DESC_OF_GOODS";
-                columns[6] = "PKG_COUNT";
-                columns[7] = "PKG_DESC";
-                columns[8] = "GROSS_WEIGHT";
-                columns[9] = "NET_WEIGHT";
-                columns[10] = "MEASUREMENT";
-                columns[11] = "AGENT_SEAL_NO";
+                string[] columns2 = new string[12];
+                columns2[0] = "BL_NO";
+                columns2[1] = "CONTAINER_NO";
+                columns2[2] = "CONTAINER_TYPE";
+                columns2[3] = "SEAL_NO";
+                columns2[4] = "MARKS_NOS";
+                columns2[5] = "DESC_OF_GOODS";
+                columns2[6] = "PKG_COUNT";
+                columns2[7] = "PKG_DESC";
+                columns2[8] = "GROSS_WEIGHT";
+                columns2[9] = "NET_WEIGHT";
+                columns2[10] = "MEASUREMENT";
+                columns2[11] = "AGENT_SEAL_NO";
 
-                SqlHelper.UpdateContainerDataForBL<CONTAINERS>(request.CONTAINER_LIST2, "TB_CONTAINER", connstring, columns);
+                SqlHelper.UpdateContainerDataForBL<CONTAINERS>(request.CONTAINER_LIST2, "TB_CONTAINER", connstring, columns2);
 
             }
             catch (Exception)
@@ -477,44 +537,44 @@ namespace PrimeMaritime_API.Repository
             var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
      
-            //string[] columns = new string[17];
-            //columns[0] = "BL_NO";
-            //columns[1] = "BOOKING_NO";
-            //columns[2] = "CRO_NO";
-            //columns[3] = "CONTAINER_NO";
-            //columns[4] = "CONTAINER_TYPE";
-            //columns[5] = "CONTAINER_SIZE";
-            //columns[6] = "SEAL_NO";
-            //columns[7] = "MARKS_NOS";
-            //columns[8] = "DESC_OF_GOODS";
-            //columns[9] = "PKG_COUNT";
-            //columns[10] = "PKG_DESC";
-            //columns[11] = "GROSS_WEIGHT";
-            //columns[12] = "NET_WEIGHT";
-            //columns[13] = "MEASUREMENT";
-            //columns[14] = "AGENT_CODE";
-            //columns[15] = "AGENT_NAME";
-            //columns[16] = "CREATED_BY";
+            //string[] columns2 = new string[17];
+            //columns2[0] = "BL_NO";
+            //columns2[1] = "BOOKING_NO";
+            //columns2[2] = "CRO_NO";
+            //columns2[3] = "CONTAINER_NO";
+            //columns2[4] = "CONTAINER_TYPE";
+            //columns2[5] = "CONTAINER_SIZE";
+            //columns2[6] = "SEAL_NO";
+            //columns2[7] = "MARKS_NOS";
+            //columns2[8] = "DESC_OF_GOODS";
+            //columns2[9] = "PKG_COUNT";
+            //columns2[10] = "PKG_DESC";
+            //columns2[11] = "GROSS_WEIGHT";
+            //columns2[12] = "NET_WEIGHT";
+            //columns2[13] = "MEASUREMENT";
+            //columns2[14] = "AGENT_CODE";
+            //columns2[15] = "AGENT_NAME";
+            //columns2[16] = "CREATED_BY";
 
             //DataTable tbl = new DataTable();
 
-            //tbl.Columns.Add(new DataColumn("BL_NO", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("BOOKING_NO", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("CRO_NO", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("CONTAINER_NO", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("CONTAINER_TYPE", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("CONTAINER_SIZE", typeof(int)));
-            //tbl.Columns.Add(new DataColumn("SEAL_NO", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("MARKS_NOS", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("DESC_OF_GOODS", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("PKG_COUNT", typeof(int)));
-            //tbl.Columns.Add(new DataColumn("PKG_DESC", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("GROSS_WEIGHT", typeof(decimal)));
-            //tbl.Columns.Add(new DataColumn("NET_WEIGHT", typeof(decimal)));
-            //tbl.Columns.Add(new DataColumn("MEASUREMENT", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("AGENT_CODE", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("AGENT_NAME", typeof(string)));
-            //tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("BL_NO", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("BOOKING_NO", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("CRO_NO", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("CONTAINER_NO", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("CONTAINER_TYPE", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("CONTAINER_SIZE", typeof(int)));
+            //tbl.columns2.Add(new DataColumn("SEAL_NO", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("MARKS_NOS", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("DESC_OF_GOODS", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("PKG_COUNT", typeof(int)));
+            //tbl.columns2.Add(new DataColumn("PKG_DESC", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("GROSS_WEIGHT", typeof(decimal)));
+            //tbl.columns2.Add(new DataColumn("NET_WEIGHT", typeof(decimal)));
+            //tbl.columns2.Add(new DataColumn("MEASUREMENT", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("AGENT_CODE", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("AGENT_NAME", typeof(string)));
+            //tbl.columns2.Add(new DataColumn("CREATED_BY", typeof(string)));
 
 
             //foreach (var i in request.CONTAINER_LIST)
@@ -542,7 +602,7 @@ namespace PrimeMaritime_API.Repository
             //    tbl.Rows.Add(dr);
             //}
 
-            //SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_CONTAINER", columns);
+            //SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_CONTAINER", columns2);
         }
 
         //TESTING FOR GETSWITCHBL
@@ -609,21 +669,21 @@ namespace PrimeMaritime_API.Repository
                     i.DESC_OF_GOODS = request.DESC_OF_GOODS;
                 }
 
-                string[] columns = new string[12];
-                columns[0] = "BL_NO";
-                columns[1] = "CONTAINER_NO";
-                columns[2] = "CONTAINER_TYPE";
-                columns[3] = "SEAL_NO";
-                columns[4] = "MARKS_NOS";
-                columns[5] = "DESC_OF_GOODS";
-                columns[6] = "PKG_COUNT";
-                columns[7] = "PKG_DESC";
-                columns[8] = "GROSS_WEIGHT";
-                columns[9] = "NET_WEIGHT";
-                columns[10] = "MEASUREMENT";
-                columns[11] = "AGENT_SEAL_NO";
+                string[] columns2 = new string[12];
+                columns2[0] = "BL_NO";
+                columns2[1] = "CONTAINER_NO";
+                columns2[2] = "CONTAINER_TYPE";
+                columns2[3] = "SEAL_NO";
+                columns2[4] = "MARKS_NOS";
+                columns2[5] = "DESC_OF_GOODS";
+                columns2[6] = "PKG_COUNT";
+                columns2[7] = "PKG_DESC";
+                columns2[8] = "GROSS_WEIGHT";
+                columns2[9] = "NET_WEIGHT";
+                columns2[10] = "MEASUREMENT";
+                columns2[11] = "AGENT_SEAL_NO";
 
-                SqlHelper.UpdateContainerDataForBL<CONTAINERS>(request.CONTAINER_LIST2, "TB_CONTAINER", connstring, columns);
+                SqlHelper.UpdateContainerDataForBL<CONTAINERS>(request.CONTAINER_LIST2, "TB_CONTAINER", connstring, columns2);
 
             }
             catch (Exception)

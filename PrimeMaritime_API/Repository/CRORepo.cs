@@ -130,5 +130,44 @@ namespace PrimeMaritime_API.Repository
         {
             return SqlHelper.CreateListFromTable<T>(dataTable);
         }
+
+        public List<CRO> GetAllCRONo(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "GET_ALL_CRO_LIST" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_CRO", parameters);
+                List<CRO> master = SqlHelper.CreateListFromTable<CRO>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public DataSet GetCRONoDetail(string dbConn,string CRO_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "GET_CRONO_DETAILS" },
+                  new SqlParameter("@CRO_NO", SqlDbType.VarChar, 100) { Value = CRO_NO },
+                };
+
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_CRO", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

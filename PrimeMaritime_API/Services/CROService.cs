@@ -128,5 +128,61 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<List<CRO>> GetAllCRONo()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<CRO>> response = new Response<List<CRO>>();
+            var data = DbClientFactory<CRORepo>.Instance.GetAllCRONo(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<CRO_DETAILS> GetCRONoDetail(string CRO_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CRO_DETAILS> response = new Response<CRO_DETAILS>();
+            var data = DbClientFactory<CRORepo>.Instance.GetCRONoDetail(dbConn,CRO_NO);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                CRO_DETAILS cro = new CRO_DETAILS();
+
+                cro = CRORepo.GetSingleDataFromDataSet<CRO_DETAILS>(data.Tables[0]);
+
+                if (data.Tables.Contains("Table1"))
+                {
+                    cro.CONTAINER_LIST2 = SRRRepo.GetListFromDataSet<CONTAINERS_DETAILS>(data.Tables[1]);
+                }
+                response.Data = cro;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
     }
 }

@@ -215,6 +215,7 @@ namespace PrimeMaritime_API.IServices
         Response<string> UploadDetentionTariff(List<DETENTION_MASTER> request);
         Response<string> UploadMandatoryTariff(List<MANDATORY_MASTER> request);
         Response<string> UploadSlotRateTariff(List<SLOT_RATE_MASTER> request);  //SIDDHESH
+        Response<string> UploadMNRTariff(List<MNR_TARIFF_LIST> request);  //SIDDHESH
         #endregion
 
         #region "ORGANISATION MASTER"
@@ -402,6 +403,29 @@ namespace PrimeMaritime_API.IServices
 
         #region "VENDOR NAME LIST"
         Response<List<VENDOR_LIST>> GetAllVendorList();
+        #endregion
+
+        #region "GET ALL LINER LIST"
+        Response<List<LINER_NAME>> GetAllLinerList();
+        #endregion
+
+        #region "GET ALL SLOT OPERATOR LIST"
+        Response<List<SLOT_OPERATOR_NAME>> GetAllSlotOperatorList();
+        #endregion
+
+        #region "GET ALL SLOT PURCHASE LIST"
+        Response<string> InsertSlotPurchase(List<SLOT_PURCHASE_LIST> request);
+        Response<string> Updateslotpurchase(List<SLOT_PURCHASE_LIST> request);
+        Response<List<SLOT_PURCHASE_LIST>> GetAllSlotPurchase();
+
+        Response<List<SLOT_PURCHASE_LIST>> GetSlotpurchaseById(int ID);
+        #endregion
+
+        #region "MNR TARIFF MASTER"
+        Response<List<MNR_TARIFF_LIST>> GetAllMnrList();
+        Response<MNR_TARIFF_LIST> GetMNRListById(int ID);
+        Response<CommonResponse> UpdateMNRTariffList(MNR_TARIFF_LIST request);
+        Response<CommonResponse> DeleteMNRListById(int ID);
         #endregion
     }
 }

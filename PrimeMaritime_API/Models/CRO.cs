@@ -44,4 +44,26 @@ namespace PrimeMaritime_API.Models
         public DateTime ETA { get; set; }     
         public DateTime ETD { get; set; }
     }
+
+    public class CRO_DETAILS
+    {
+        public int ID { get; set; }
+        public string CRO_NO { get; set; }
+        public string BOOKING_NO { get; set; }
+        public string POL { get; set; }
+        public string POD { get; set; }
+        public string VESSEL_NAME { get; set; }
+        public string VOYAGE_NO { get; set; }
+
+        public List<CONTAINERS_DETAILS> CONTAINER_LIST2 { get; set; } = new List<CONTAINERS_DETAILS>();
+
+    }
+
+    public class CONTAINERS_DETAILS
+    {
+        public int ID { get; set; }
+        public string CONTAINER_NO { get; set; }
+    }
+
+
 }

@@ -1830,6 +1830,21 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<string> UploadMNRTariff(List<MNR_TARIFF_LIST> request) //SIDDHESH
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<string> response = new Response<string>();
+            DbClientFactory<MasterRepo>.Instance.UploadMNRTariff(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseCode = 200;
+            response.ResponseMessage = "Success";
+            response.Data = "Uploaded Successfully !";
+
+            return response;
+        }
         #endregion
 
         #region "ORGANISATION MASTER"
@@ -3350,6 +3365,226 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        #endregion
+
+        #region "GET ALL LINER LIST"
+        public Response<List<LINER_NAME>> GetAllLinerList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<LINER_NAME>> response = new Response<List<LINER_NAME>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllLinerList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        #endregion
+
+        #region "GET ALL SLOT OPERATOR LIST"
+        public Response<List<SLOT_OPERATOR_NAME>> GetAllSlotOperatorList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SLOT_OPERATOR_NAME>> response = new Response<List<SLOT_OPERATOR_NAME>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllSlotOperatorList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        #endregion
+
+        #region "GET ALL SLOT PURCHASE LIST"
+        public Response<string> InsertSlotPurchase(List<SLOT_PURCHASE_LIST> request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<MasterRepo>.Instance.InsertSlotPurchase(dbConn, request);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Master saved Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<string> Updateslotpurchase(List<SLOT_PURCHASE_LIST> request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<MasterRepo>.Instance.Updateslotpurchase(dbConn, request);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Master updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+
+        }
+
+        public Response<List<SLOT_PURCHASE_LIST>> GetAllSlotPurchase()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SLOT_PURCHASE_LIST>> response = new Response<List<SLOT_PURCHASE_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllSlotPurchase(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<List<SLOT_PURCHASE_LIST>> GetSlotpurchaseById(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SLOT_PURCHASE_LIST>> response = new Response<List<SLOT_PURCHASE_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetSlotpurchaseById(dbConn, ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        #endregion
+
+        #region "MNR TARIFF MASTER"
+        public Response<List<MNR_TARIFF_LIST>> GetAllMnrList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<MNR_TARIFF_LIST>> response = new Response<List<MNR_TARIFF_LIST>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetAllMnrList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<MNR_TARIFF_LIST> GetMNRListById(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<MNR_TARIFF_LIST> response = new Response<MNR_TARIFF_LIST>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetMNRListById(dbConn, ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<CommonResponse> UpdateMNRTariffList(MNR_TARIFF_LIST request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.UpdateMNRTariffList(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "MNR Tariff updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<CommonResponse> DeleteMNRListById(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+
+            if ((ID == 0) || (ID == 0))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide ID ";
+                return response;
+            }
+
+            DbClientFactory<MasterRepo>.Instance.DeleteMNRListById(dbConn, ID);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Equipment deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
         #endregion
     }
 }
