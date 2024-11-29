@@ -437,13 +437,23 @@ namespace PrimeMaritime_API.Services
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            DbClientFactory<BLRepo>.Instance.InsertSWITCHBL(dbConn, request);
+            var returnBLNo = DbClientFactory<BLRepo>.Instance.InsertSWITCHBL(dbConn, request);
 
             Response<string> response = new Response<string>();
-            response.Succeeded = true;
-            response.ResponseMessage = "BL Created Successfully.";
-            response.ResponseCode = 200;
+            if (returnBLNo == "sucess")
+            {
+                response.Succeeded = true;
+                response.ResponseMessage = "BL Created Successfully";
+                response.ResponseCode = 200;
+            }
+            else
+            {
 
+                response.Succeeded = false;
+                response.ResponseMessage = "BL is Already Created.";
+                response.ResponseCode = 500;
+            }
+            
             return response;
         }
 

@@ -417,8 +417,9 @@ namespace PrimeMaritime_API.IServices
         Response<string> InsertSlotPurchase(List<SLOT_PURCHASE_LIST> request);
         Response<string> Updateslotpurchase(List<SLOT_PURCHASE_LIST> request);
         Response<List<SLOT_PURCHASE_LIST>> GetAllSlotPurchase();
-
         Response<List<SLOT_PURCHASE_LIST>> GetSlotpurchaseById(int ID);
+        Response<CommonResponse> UpdateSlotPurchase(SLOT_PURCHASE_LIST request);
+
         #endregion
 
         #region "MNR TARIFF MASTER"

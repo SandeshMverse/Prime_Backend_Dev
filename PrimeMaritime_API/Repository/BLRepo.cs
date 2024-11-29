@@ -490,8 +490,26 @@ namespace PrimeMaritime_API.Repository
         #endregion
 
         //SWITCHBL TESTING
-        public void InsertSWITCHBL(string connstring, BL request)
+        public string InsertSWITCHBL(string connstring, BL request)
         {
+            string ParentBLNoExists;
+                    SqlParameter[] parameters3 =
+                                 {
+                                      new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_SWITCHBLNO" },
+                                      new SqlParameter("@RETURNPARENTBLNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                                      new SqlParameter("@PARENTBL_NO", SqlDbType.VarChar, 50) { Value = request.BL_ID },
+                                      new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
+
+                                  };
+
+
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters3);
+                    ParentBLNoExists = Convert.ToString(parameters3[1].Value);
+                    if (ParentBLNoExists == Convert.ToString(request.BL_NO))
+                    {
+                        return "failer";
+                    }
+
             SqlParameter[] parameters =
             {
               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CREATE_SWITCHBL" },
@@ -536,7 +554,7 @@ namespace PrimeMaritime_API.Repository
 
             var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
-     
+            return "sucess";
             //string[] columns2 = new string[17];
             //columns2[0] = "BL_NO";
             //columns2[1] = "BOOKING_NO";

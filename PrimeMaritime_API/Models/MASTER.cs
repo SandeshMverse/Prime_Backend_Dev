@@ -954,7 +954,7 @@ namespace PrimeMaritime_API.Models
         public decimal? BAF { get; set; }
         public decimal? EWRI { get; set; }
         public DateTime FROM_DATE { get; set; }
-        public DateTime TO_DATE { get; set; }
+        public DateTime? TO_DATE { get; set; }
         public string? CREATED_BY { get; set; }
         public DateTime? CREATED_DATE { get; set; }
         public string? MODIFY_BY { get; set; }

@@ -4537,7 +4537,7 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@BAF",    SqlDbType.Decimal) { Value = master.BAF },
                     new SqlParameter("@EWRI",   SqlDbType.Decimal) { Value = master.EWRI },
                     new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = master.FROM_DATE },
-                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE },
+                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE ?? (object)DBNull.Value },
                     new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = master.CREATED_BY },
 
                 };
@@ -4589,7 +4589,7 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@BAF",    SqlDbType.Decimal) { Value = master.BAF },
                     new SqlParameter("@EWRI",   SqlDbType.Decimal) { Value = master.EWRI },
                     new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = master.FROM_DATE },
-                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE },
+                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE ?? (object)DBNull.Value },
                     new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = master.CREATED_BY },
 
                 };
@@ -4683,6 +4683,93 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public void UpdateSlotPurchase(string connstring, SLOT_PURCHASE_LIST master)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                      new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "UPDATE_SLOT_PURCHASE_LIST" },
+                    new SqlParameter("@ID", SqlDbType.Int) { Value = master.ID },
+                    new SqlParameter("@RATE_REF", SqlDbType.VarChar, 100) { Value = master.RATE_REF },
+                    new SqlParameter("@SLOT_OPERATOR_NAME", SqlDbType.VarChar, 100) { Value = master.SLOT_OPERATOR_NAME },
+                    new SqlParameter("@LINER_NAME", SqlDbType.VarChar, 100) { Value = master.LINER_NAME },
+                    new SqlParameter("@SERVICE", SqlDbType.VarChar, 100) { Value = master.SERVICE },
+                    new SqlParameter("@TERMS", SqlDbType.VarChar, 100) { Value = master.TERMS },
+                    new SqlParameter("@LADEN_STATUS", SqlDbType.VarChar, 100) { Value = master.LADEN_STATUS },
+                    new SqlParameter("@POL", SqlDbType.VarChar, 100) { Value = master.POL },
+                    new SqlParameter("@POD", SqlDbType.VarChar, 100) { Value = master.POD },
+                    new SqlParameter("@CURRENCY", SqlDbType.VarChar, 100) { Value = master.CURRENCY },
+                    new SqlParameter("@OF_M20", SqlDbType.Decimal) { Value = master.OF_M20 },
+                    new SqlParameter("@OF_M40", SqlDbType.Decimal) { Value = master.OF_M40 },
+                    new SqlParameter("@OF_M45", SqlDbType.Decimal) { Value = master.OF_M45 },
+                    new SqlParameter("@OF_D20", SqlDbType.Decimal) { Value = master.OF_D20 },
+                    new SqlParameter("@OF_D40", SqlDbType.Decimal) { Value = master.OF_D40 },
+                    new SqlParameter("@OF_D45", SqlDbType.Decimal) { Value = master.OF_D45 },
+                    new SqlParameter("@OF_R20", SqlDbType.Decimal) { Value = master.OF_R20 },
+                    new SqlParameter("@OF_R40", SqlDbType.Decimal) { Value = master.OF_R40 },
+                    new SqlParameter("@OF_R45", SqlDbType.Decimal) { Value = master.OF_R45 },
+                    new SqlParameter("@HAZ_D20", SqlDbType.Decimal) { Value = master.HAZ_D20 },
+                    new SqlParameter("@HAZ_D40", SqlDbType.Decimal) { Value = master.HAZ_D40 },
+                    new SqlParameter("@HAZ_D45", SqlDbType.Decimal) { Value = master.HAZ_D45 },
+                    new SqlParameter("@FLEXI_D20", SqlDbType.Decimal) { Value = master.FLEXI_D20 },
+                    new SqlParameter("@FLEXI_D40", SqlDbType.Decimal) { Value = master.FLEXI_D40 },
+                    new SqlParameter("@FLEXI_D45", SqlDbType.Decimal) { Value = master.FLEXI_D45 },
+                    new SqlParameter("@BAF",    SqlDbType.Decimal) { Value = master.BAF },
+                    new SqlParameter("@EWRI",   SqlDbType.Decimal) { Value = master.EWRI },
+                    new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = master.FROM_DATE },
+                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE ?? (object)DBNull.Value },
+                    new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = master.CREATED_BY },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_SLOT_PURCHASE", parameters);
+
+
+                SqlParameter[] parameters1 =
+         {
+                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "INSERT_SLOT_PURCHASE_HISTORY_LIST" },
+                    new SqlParameter("@SLOT_PURCHASE_MGMNT_ID", SqlDbType.Int) { Value = master.ID },
+                    new SqlParameter("@RATE_REF", SqlDbType.VarChar, 100) { Value = master.RATE_REF },
+                    new SqlParameter("@SLOT_OPERATOR_NAME", SqlDbType.VarChar, 100) { Value = master.SLOT_OPERATOR_NAME },
+                    new SqlParameter("@LINER_NAME", SqlDbType.VarChar, 100) { Value = master.LINER_NAME },
+                    new SqlParameter("@SERVICE", SqlDbType.VarChar, 100) { Value = master.SERVICE },
+                    new SqlParameter("@TERMS", SqlDbType.VarChar, 100) { Value = master.TERMS },
+                    new SqlParameter("@LADEN_STATUS", SqlDbType.VarChar, 100) { Value = master.LADEN_STATUS },
+                    new SqlParameter("@POL", SqlDbType.VarChar, 100) { Value = master.POL },
+                    new SqlParameter("@POD", SqlDbType.VarChar, 100) { Value = master.POD },
+                    new SqlParameter("@CURRENCY", SqlDbType.VarChar, 100) { Value = master.CURRENCY },
+                    new SqlParameter("@OF_M20", SqlDbType.Decimal) { Value = master.OF_M20 },
+                    new SqlParameter("@OF_M40", SqlDbType.Decimal) { Value = master.OF_M40 },
+                    new SqlParameter("@OF_M45", SqlDbType.Decimal) { Value = master.OF_M45 },
+                    new SqlParameter("@OF_D20", SqlDbType.Decimal) { Value = master.OF_D20 },
+                    new SqlParameter("@OF_D40", SqlDbType.Decimal) { Value = master.OF_D40 },
+                    new SqlParameter("@OF_D45", SqlDbType.Decimal) { Value = master.OF_D45 },
+                    new SqlParameter("@OF_R20", SqlDbType.Decimal) { Value = master.OF_R20 },
+                    new SqlParameter("@OF_R40", SqlDbType.Decimal) { Value = master.OF_R40 },
+                    new SqlParameter("@OF_R45", SqlDbType.Decimal) { Value = master.OF_R45 },
+                    new SqlParameter("@HAZ_D20", SqlDbType.Decimal) { Value = master.HAZ_D20 },
+                    new SqlParameter("@HAZ_D40", SqlDbType.Decimal) { Value = master.HAZ_D40 },
+                    new SqlParameter("@HAZ_D45", SqlDbType.Decimal) { Value = master.HAZ_D45 },
+                    new SqlParameter("@FLEXI_D20", SqlDbType.Decimal) { Value = master.FLEXI_D20 },
+                    new SqlParameter("@FLEXI_D40", SqlDbType.Decimal) { Value = master.FLEXI_D40 },
+                    new SqlParameter("@FLEXI_D45", SqlDbType.Decimal) { Value = master.FLEXI_D45 },
+                    new SqlParameter("@BAF",    SqlDbType.Decimal) { Value = master.BAF },
+                    new SqlParameter("@EWRI",   SqlDbType.Decimal) { Value = master.EWRI },
+                    new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = master.FROM_DATE },
+                    new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = master.TO_DATE },
+                    new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = master.CREATED_BY },
+
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_SLOT_PURCHASE", parameters1);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         #endregion
 

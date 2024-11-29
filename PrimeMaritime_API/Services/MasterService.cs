@@ -3499,6 +3499,20 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<CommonResponse> UpdateSlotPurchase(SLOT_PURCHASE_LIST request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.UpdateSlotPurchase(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "MNR Tariff updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
         #endregion
 
         #region "MNR TARIFF MASTER"

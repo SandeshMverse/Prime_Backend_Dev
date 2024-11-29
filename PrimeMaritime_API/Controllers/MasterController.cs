@@ -1232,6 +1232,13 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetSlotpurchaseById(ID)));
         }
+
+        [HttpPost("UpdateSlotPurchaseMaster")]
+        public ActionResult<Response<CommonResponse>> UpdateSlotPurchase(SLOT_PURCHASE_LIST request)
+        {
+            return Ok(_masterService.UpdateSlotPurchase(request));
+        }
+
         #endregion
 
         #region "MNR TARIFF MASTER"
