@@ -21,6 +21,46 @@ namespace PrimeMaritime_API.Repository
         public string InsertBL(string connstring, BL request)
 
         {
+
+            string ExistingPOL;
+            string ExistingPOD;
+            string ExistingVESSEL;
+            string ExistingVOYAGE;
+
+            SqlParameter[] parameters4 =
+                  {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_EXISTINGDATA" },
+                              new SqlParameter("@RETURNCONTAINERNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNPOL", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNPOD", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNVESSEL", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNVOYAGE", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@SRR_NO", SqlDbType.VarChar, 100) { Value = request.SRR_NO },
+
+                             };
+
+
+            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters4);
+            ExistingPOL = Convert.ToString(parameters4[2].Value);
+            ExistingPOD = Convert.ToString(parameters4[3].Value);
+            ExistingVESSEL = Convert.ToString(parameters4[4].Value);
+            ExistingVOYAGE = Convert.ToString(parameters4[5].Value);
+
+            // Split the PORT_OF_LOADING and PORT_OF_DISCHARGE strings and handle empty entries
+            string[] POLParts = request.PORT_OF_LOADING.Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] PODParts = request.PORT_OF_DISCHARGE.Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Extract the desired values (the part inside the parentheses)
+            string POL = POLParts.Length > 1 ? POLParts[1] : string.Empty;
+            string POD = PODParts.Length > 1 ? PODParts[1] : string.Empty;
+
+            if (ExistingPOL != POL || ExistingPOD != POD || ExistingVESSEL != request.VESSEL_NAME || ExistingVOYAGE != request.VOYAGE_NO)
+            {
+                return "failer";
+            }
+
+
+
             string ContainerNoExists;
             foreach (var item in request.CONTAINER_LIST2)
             {
