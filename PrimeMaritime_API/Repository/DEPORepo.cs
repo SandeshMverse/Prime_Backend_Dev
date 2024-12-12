@@ -10,6 +10,7 @@ using PrimeMaritime_API.Response;
 using System.IO;
 using PrimeMaritime_API.Translators;
 using Org.BouncyCastle.Asn1.Ocsp;
+using System.Reflection;
 
 namespace PrimeMaritime_API.Repository
 {
@@ -220,6 +221,29 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = OPERATION },
                   new SqlParameter("@MR_NO", SqlDbType.VarChar, 50) { Value = MR_NO },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
+                List<MR_LIST> Responses = SqlHelper.CreateListFromTable<MR_LIST>(dataTable);
+
+                return Responses;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public List<MR_LIST> getMRDetailsByID(string connstring, string OPERATION, string MR_NO, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = OPERATION },
+                  new SqlParameter("@MR_NO", SqlDbType.VarChar, 50) { Value = MR_NO },
+                  new SqlParameter("ID", SqlDbType.VarChar, 50) { Value = ID },
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
@@ -502,6 +526,60 @@ namespace PrimeMaritime_API.Repository
 
             SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
         }
+
+        public void updateMRRequest(string connstring, List<MR_LIST> updateMNRList, List<string> attachmentPaths)
+        {
+            //SqlParameter[] updateMRParameters =
+            //             {
+            //        new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_MNR" },
+            //        new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = updateMNRList[0].MR_NO },
+            //        new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = updateMNRList[0].DEPO_CODE },
+            //        new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
+            //        new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = updateMNRList[0].CREATED_BY },
+            //    };
+
+            //SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", updateMRParameters);
+
+
+            for (int i = 0; i < updateMNRList.Count; i++)
+            {
+                var mrList = updateMNRList[i];
+                object filePath = i < attachmentPaths.Count && attachmentPaths[i] != null ? (object)attachmentPaths[i] : DBNull.Value;
+
+                SqlParameter[] updateMRData =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_MR_REQUEST" },
+                  new SqlParameter("@ID", SqlDbType.VarChar, 10) { Value = mrList.ID },
+                  new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = mrList.MR_NO },
+                  new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 50) { Value = mrList.CONTAINER_NO },
+                  new SqlParameter("@LOCATION", SqlDbType.VarChar, 50) { Value = mrList.LOCATION },
+                  new SqlParameter("@COMPONENT", SqlDbType.VarChar, 50) { Value = mrList.COMPONENT },
+                  new SqlParameter("@DAMAGE", SqlDbType.VarChar, 50) { Value = mrList.DAMAGE },
+                  new SqlParameter("@REPAIR", SqlDbType.VarChar, 50) { Value = mrList.REPAIR },
+                  new SqlParameter("@DESC", SqlDbType.VarChar, 255) { Value = mrList.DESC },
+                  new SqlParameter("@LENGTH", SqlDbType.VarChar, 50) { Value = mrList.LENGTH },
+                  new SqlParameter("@WIDTH", SqlDbType.VarChar, 50) { Value = mrList.WIDTH },
+                  new SqlParameter("@HEIGHT", SqlDbType.VarChar, 50) { Value = mrList.HEIGHT },
+                  new SqlParameter("@UNIT", SqlDbType.VarChar, 10) { Value = mrList.UNIT },
+                  new SqlParameter("@RESPONSIBILITY", SqlDbType.VarChar, 50) { Value = mrList.RESPONSIBILITY },
+                  new SqlParameter("@MAN_HOUR", SqlDbType.Decimal) { Value = mrList.MAN_HOUR, Precision =18, Scale=2 },
+                  new SqlParameter("@LABOUR", SqlDbType.Decimal) { Value = mrList.LABOUR, Precision =18, Scale=2 },
+                  new SqlParameter("@MATERIAL", SqlDbType.Decimal) { Value = mrList.MATERIAL, Precision =18, Scale=2 },
+                  new SqlParameter("@TOTAL", SqlDbType.Decimal) { Value = mrList.TOTAL, Precision =18, Scale=2 },
+                  new SqlParameter("@TAX", SqlDbType.Decimal) { Value = mrList.TAX, Precision =18, Scale=2 },
+                  new SqlParameter("@FINAL_TOTAL", SqlDbType.Decimal) { Value = mrList.FINAL_TOTAL, Precision =18, Scale=2 },
+                  new SqlParameter("@REMARKS", SqlDbType.VarChar, 255) { Value = mrList.REMARKS },
+                  new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = mrList.CREATED_BY },
+                  new SqlParameter("@MNRFILE_PATH", SqlDbType.VarChar, 255) { Value = filePath }
+                };
+
+                // Execute stored procedure
+                SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", updateMRData);
+            }
+
+        }
+
         public void InsertPrinMNRFiles(string connstring, List<MR_LIST> newMNR, List<string> attachmentPaths)
         {
 

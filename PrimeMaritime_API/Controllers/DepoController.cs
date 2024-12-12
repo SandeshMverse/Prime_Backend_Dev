@@ -68,6 +68,13 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_depoService.GetMNRDetails(OPERATION, MR_NO)));
         }
 
+        
+        [HttpGet("getMRDetailsByID")]
+        public ActionResult<Response<List<MR_LIST>>> getMRDetailsByID(string OPERATION, string MR_NO, int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_depoService.getMRDetailsByID(OPERATION, MR_NO, ID)));
+        }
+
         [HttpPost("ApproveRate")]
         public ActionResult<Response<CommonResponse>> ApproveRate(List<MR_LIST> request)
         {
@@ -157,7 +164,12 @@ namespace PrimeMaritime_API.Controllers
                 // Check if there are files in the request
                 if (Request.Form.Files.Count == 0)
                 {
-                    return BadRequest(new { message = "No files uploaded." });
+                    return BadRequest(new
+                    {
+                        status = "error",
+                        code = 400,
+                        message = "No files uploaded."
+                    });
                 }
 
                 // Retrieve the payload as a list of MR_LIST items
@@ -206,6 +218,92 @@ namespace PrimeMaritime_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
+
+        [HttpPost("updateMRRequest")]
+        public async Task<ActionResult<Response<string>>> updateMRRequest()
+        {
+            try
+            {
+                // Retrieve the payload as a list of MR_LIST items
+                string payload = Request.Form["PAYLOAD2"];
+                var updateMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
+
+                // Define base paths
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
+                string attachmentPath = Path.Combine(uploadPath, "NEWMNRFiles");
+
+                // Create directories if they do not exist
+                if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+                if (!Directory.Exists(attachmentPath)) Directory.CreateDirectory(attachmentPath);
+
+                string newFilePath = null;
+
+                // Check if files are uploaded
+                if (Request.Form.Files.Count > 0)
+                {
+                    foreach (IFormFile postedFile in Request.Form.Files)
+                    {
+                        // Generate a unique file name with MR_NO and original file name
+                        string fileName = $"{updateMNRList[0].MR_NO}_{Path.GetFileName(postedFile.FileName)}";
+                        string fullFilePath = Path.Combine(attachmentPath, fileName);
+
+                        using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                        {
+                            postedFile.CopyTo(stream);
+
+                            // Convert the file path to a relative URL
+                            newFilePath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace("\\", "/");
+                        }
+                    }
+                }
+
+                // If no new file uploaded, keep the old file path
+                if (string.IsNullOrEmpty(newFilePath))
+                {
+                    newFilePath = GetExistingImagePath(updateMNRList[0].MR_NO);
+                }
+
+                // Convert the file path to a List<string>
+                List<string> filePaths = new List<string>();
+                if (!string.IsNullOrEmpty(newFilePath))
+                {
+                    filePaths.Add(newFilePath);
+                }
+
+                // Pass the updated MR_LIST and new file path to the service
+                _depoService.updateMRRequest(updateMNRList, filePaths);
+
+                return Ok(new { message = "Request updated successfully", responseCode = 200 });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+            }
+        }
+
+        // Helper method to get the existing image path based on MR_NO
+        private string GetExistingImagePath(string mrNo)
+        {
+            string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
+            string fileNamePattern = $"{mrNo}_*";
+
+            // Ensure the directory exists before attempting to get files
+            if (!Directory.Exists(uploadPath)) return null;
+
+            // Search for files matching the pattern
+            string[] files = Directory.GetFiles(uploadPath, fileNamePattern);
+
+            // Return the first matching file path (if any)
+            if (files.Length > 0)
+            {
+                return Path.Combine("Uploads", "NEWMNRFiles", Path.GetFileName(files[0])).Replace("\\", "/");
+            }
+
+            return null; // No files found
+        }
+
+
+
 
 
         [HttpPost("InsertPrinMNRFiles")]

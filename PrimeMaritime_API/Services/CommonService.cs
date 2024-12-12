@@ -67,6 +67,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+
         public async Task SendEmailAsync(MailRequest mailRequest)
         {
             var email = new MimeMessage();

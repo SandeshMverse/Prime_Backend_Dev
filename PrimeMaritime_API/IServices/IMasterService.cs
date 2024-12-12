@@ -1,4 +1,5 @@
-﻿using PrimeMaritime_API.Helpers;
+﻿using Microsoft.AspNetCore.Http;
+using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Response;
 using System;
@@ -26,7 +27,7 @@ namespace PrimeMaritime_API.IServices
 
         Response<List<CONTAINER_MASTER>> GetContainerMasterList(string ContainerNo, string ContType, string ContSize, bool Status, string ONHIRE_DATE);
 
-        Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO);
+        Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO, string DEPO_CODE);
 
         Response<CommonResponse> UpdateContainerMasterList(CONTAINER_MASTER request);
 
@@ -131,6 +132,8 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> UpdateService(SERVICE request);
 
         Response<CommonResponse> DeleteService(int ID);
+
+        Response<List<HISTORY_PORT>> LinerServiceHistory(int ID);
         #endregion
 
         #region "VESSELSCHEDULE"

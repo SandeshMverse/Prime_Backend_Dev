@@ -67,6 +67,7 @@ namespace PrimeMaritime_API.Models
         public string BANK_IFSC { get; set; }
         public string BANK_SWIFT { get; set; }
         public string BANK_REMARKS { get; set; }
+        public string DEPO_CODE { get; set; }
     }
     public class CONTAINER_MASTER
     {
@@ -89,6 +90,7 @@ namespace PrimeMaritime_API.Models
         public string? ACEP_NO { get; set; }
         public string? AGREEMENT_NO { get; set; }
 
+        public string? DEPO_CODE { get; set; }
     }
     public class COUNTRY_MASTER
     {
@@ -893,7 +895,10 @@ namespace PrimeMaritime_API.Models
         public string UPDATED_BY { get; set; }
         public DateTime UPDATED_DATE { get; set; }
         public List<PORT_CODES> PORT_CODES { get; set; } = new List<PORT_CODES>();
+
+        public string PortCodesString { get; set; }
     }
+
     public class PORT_CODES
     {
         public int LINER_SERVICE_ID { get; set; }
@@ -979,5 +984,11 @@ namespace PrimeMaritime_API.Models
         public decimal LABOUR_CHARGE { get; set; }
         public decimal MATERIAL_COST { get; set; }
         public decimal TOTAL { get; set; }
+    }
+
+    public class HISTORY_PORT
+    {
+        public string PORT_HISTORY { get; set; }
+        public int LINER_SERVICE_ID { get; set; }
     }
 }

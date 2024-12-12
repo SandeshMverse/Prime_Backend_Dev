@@ -10,6 +10,7 @@ namespace PrimeMaritime_API.IServices
     public interface ICommonService
     {
         Response<List<DROPDOWN>> GetDropdownData(string key,string port, string value, string value1, string value2);
+
         Task SendEmailAsync(MailRequest mailRequest);
         Task SendEmailBLAsync(MailRequest mailRequest);
         Response<int> CheckRandomNo(string RANDOM_NO);

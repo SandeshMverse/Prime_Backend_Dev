@@ -47,6 +47,9 @@ namespace PrimeMaritime_API.Models
         public decimal GROSS_WEIGHT { get; set; }
         public string CSC_NO { get; set; }
         public string CONTAINER_TYPE { get; set; }
+        public string MNRFILE_PATH { get; set; }
+
+        public int ID {get; set;}
     }
 
     public class MNR_LIST
@@ -58,6 +61,8 @@ namespace PrimeMaritime_API.Models
         public string STATUS { get; set; }
         public string CREATED_BY { get; set; }
         public DateTime CREATED_DATE { get; set; }
+
+        public decimal TOTAL { get; set; }
     }
 
     public class MNR_TARIFF

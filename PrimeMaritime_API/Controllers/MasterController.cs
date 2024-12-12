@@ -100,9 +100,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetContainerMasterDetails")]
-        public ActionResult<Response<CONTAINER_MASTER>> GetContainerMasterDetails(int ID, string CONTAINER_NO)
+        public ActionResult<Response<CONTAINER_MASTER>> GetContainerMasterDetails(int ID, string CONTAINER_NO, string DEPO_CODE)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetContainerMasterDetails(ID, CONTAINER_NO)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetContainerMasterDetails(ID, CONTAINER_NO, DEPO_CODE)));
         }
 
 
@@ -361,6 +361,12 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<CommonResponse>> DeleteService(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteService(ID)));
+        }
+
+        [HttpGet("LinerServiceHistory")]
+        public ActionResult<Response<List<HISTORY_PORT>>> LinerServiceHistory(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.LinerServiceHistory(ID)));
         }
 
         #endregion
@@ -1260,7 +1266,7 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_masterService.UpdateMNRTariffList(request));
         }
 
-        [HttpDelete("DeleteMNRListById")]
+        [HttpGet("DeleteMNRListById")]
         public ActionResult<Response<CommonResponse>> DeleteMNRListById(int ID)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.DeleteMNRListById(ID)));

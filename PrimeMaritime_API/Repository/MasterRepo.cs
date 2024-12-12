@@ -1,10 +1,12 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Translators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Dynamic;
@@ -364,6 +366,7 @@ namespace PrimeMaritime_API.Repository
         {
             try
             {
+
                 SqlParameter[] parameters =
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_CONTAINERLIST" },
@@ -386,10 +389,30 @@ namespace PrimeMaritime_API.Repository
 
         }
 
-        public CONTAINER_MASTER GetContainerMasterDetails(string connstring, int ID, string CONTAINER_NO)
+        public CONTAINER_MASTER GetContainerMasterDetails(string connstring, int ID, string CONTAINER_NO, string DEPO_CODE)
         {
             try
             {
+                string ExistingContainerNo;
+
+                SqlParameter[] parameters4 =
+                      {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "EXSIT_CONTAINER_NO" },
+                              new SqlParameter("@RETRUN_CONTAINER_NO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
+                              new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 100) { Value = DEPO_CODE },
+                             };
+
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MNR", parameters4);
+                ExistingContainerNo = Convert.ToString(parameters4[1].Value);
+
+
+                if (ExistingContainerNo == CONTAINER_NO)
+                {
+                    return null;
+                }
+
                 SqlParameter[] parameters =
                 {
                    new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
@@ -1304,6 +1327,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@PORT_CODE",SqlDbType.VarChar,100){Value=master.ORIGIN_PORT_CODE},
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar,255) { Value = master.CREATED_BY },
+                  new SqlParameter("@PORT_HISTORY", SqlDbType.VarChar,500) { Value = master.PortCodesString}
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_SERVICE_MASTER", parameters);
@@ -1312,7 +1336,8 @@ namespace PrimeMaritime_API.Repository
                  SqlParameter[] DeleteParams =
                              {
                               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "DELETE_ALL_LINER_PORT" },
-                              new SqlParameter("@LINER_SERVICE_ID", SqlDbType.Int) { Value = master.ID}
+                              new SqlParameter("@LINER_SERVICE_ID", SqlDbType.Int) { Value = master.ID},
+                             
                               };
                     SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_SERVICE_MASTER", DeleteParams);
 
@@ -1356,7 +1381,27 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public List<HISTORY_PORT> LinerServiceHistory(string connstring, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@LINER_SERVICE_ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_LINER_PORT_HISTORY" }
+                };
 
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_SERVICE_MASTER", parameters);
+                List<HISTORY_PORT> master = SqlHelper.CreateListFromTable<HISTORY_PORT>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         #endregion
 

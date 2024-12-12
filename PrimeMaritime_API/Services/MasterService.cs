@@ -163,12 +163,12 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO)
+        public Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO, string DEPO_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<CONTAINER_MASTER> response = new Response<CONTAINER_MASTER>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetContainerMasterDetails(dbConn, ID, CONTAINER_NO);
+            var data = DbClientFactory<MasterRepo>.Instance.GetContainerMasterDetails(dbConn, ID, CONTAINER_NO, DEPO_CODE);
 
             if (data != null)
             {
@@ -996,7 +996,29 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<List<HISTORY_PORT>> LinerServiceHistory(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
 
+            Response<List<HISTORY_PORT>> response = new Response<List<HISTORY_PORT>>();
+            var data = DbClientFactory<MasterRepo>.Instance.LinerServiceHistory(dbConn, ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
 
         #endregion
 

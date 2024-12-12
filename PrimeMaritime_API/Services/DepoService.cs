@@ -137,6 +137,30 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<List<MR_LIST>> getMRDetailsByID(string OPERATION, string MR_NO, int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<MR_LIST>> response = new Response<List<MR_LIST>>();
+            var data = DbClientFactory<DEPORepo>.Instance.getMRDetailsByID(dbConn, OPERATION, MR_NO, ID);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
         public Response<MNR_TARIFF> GetMNRTariff(string COMPONENT, string REPAIR, string LENGTH, string WIDTH, string HEIGHT, string QUANTITY, string DEPO_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -167,6 +191,15 @@ namespace PrimeMaritime_API.Services
 
             // Pass the list directly to the repository
             DbClientFactory<DEPORepo>.Instance.InsertMNRFiles(dbConn, newMNRList, attachmentPaths);
+
+        }
+
+        public void updateMRRequest(List<MR_LIST> updateMNRList, List<string> attachmentPaths)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            // Pass the list directly to the repository
+            DbClientFactory<DEPORepo>.Instance.updateMRRequest(dbConn, updateMNRList, attachmentPaths);
 
         }
 
