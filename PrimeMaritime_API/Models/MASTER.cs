@@ -155,6 +155,8 @@ namespace PrimeMaritime_API.Models
         public string PORT_CODE { get; set; }
         public Boolean STATUS { get; set; }
         public string CREATED_BY { get; set; }
+
+        public string LINER_NAME { get; set; }
     }
     public class CONTAINER_TYPE
     {
@@ -989,6 +991,6 @@ namespace PrimeMaritime_API.Models
     public class HISTORY_PORT
     {
         public string PORT_HISTORY { get; set; }
-        public int LINER_SERVICE_ID { get; set; }
+  
     }
 }

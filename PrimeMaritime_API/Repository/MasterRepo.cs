@@ -1212,7 +1212,7 @@ namespace PrimeMaritime_API.Repository
                 SqlParameter[] parameters =
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "INSERT_SERVICE" },
-                  new SqlParameter("@LINER_CODE",SqlDbType.VarChar,100){Value=master.LINER_NAME},
+                  new SqlParameter("@LINER_NAME",SqlDbType.VarChar,100){Value=master.LINER_NAME},
                   new SqlParameter("@SERVICE_NAME",SqlDbType.VarChar,255){Value=master.SERVICE_NAME},
                   new SqlParameter("@PORT_CODE",SqlDbType.VarChar,100){Value=master.ORIGIN_PORT_CODE},
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
@@ -1322,7 +1322,7 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "UPDATE_SERVICE" },
                   new SqlParameter("@ID",SqlDbType.Int){Value=master.ID},
-                  new SqlParameter("@LINER_CODE",SqlDbType.VarChar,100){Value=master.LINER_NAME},
+                  new SqlParameter("@LINER_NAME",SqlDbType.VarChar,100){Value=master.LINER_NAME},
                   new SqlParameter("@SERVICE_NAME",SqlDbType.VarChar,255){Value=master.SERVICE_NAME},
                   new SqlParameter("@PORT_CODE",SqlDbType.VarChar,100){Value=master.ORIGIN_PORT_CODE},
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},

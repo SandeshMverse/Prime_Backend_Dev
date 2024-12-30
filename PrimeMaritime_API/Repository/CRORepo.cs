@@ -121,8 +121,18 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        //public static T GetSingleDataFromDataSet<T>(DataTable dataTable) where T : new()
+        //{
+        //    return SqlHelper.CreateItemFromRow<T>(dataTable.Rows[0]);
+        //}
+
         public static T GetSingleDataFromDataSet<T>(DataTable dataTable) where T : new()
         {
+            if (dataTable == null || dataTable.Rows.Count == 0)
+            {
+                return default(T); // Return default value (e.g., null for reference types).
+            }
+
             return SqlHelper.CreateItemFromRow<T>(dataTable.Rows[0]);
         }
 

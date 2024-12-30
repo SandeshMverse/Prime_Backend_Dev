@@ -260,7 +260,8 @@ namespace PrimeMaritime_API.Controllers
                 // If no new file uploaded, keep the old file path
                 if (string.IsNullOrEmpty(newFilePath))
                 {
-                    newFilePath = GetExistingImagePath(updateMNRList[0].MR_NO);
+                    //newFilePath = GetExistingImagePath(updateMNRList[0].MR_NO);
+                    newFilePath = null;
                 }
 
                 // Convert the file path to a List<string>
@@ -282,27 +283,25 @@ namespace PrimeMaritime_API.Controllers
         }
 
         // Helper method to get the existing image path based on MR_NO
-        private string GetExistingImagePath(string mrNo)
-        {
-            string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
-            string fileNamePattern = $"{mrNo}_*";
+        //private string GetExistingImagePath(string mrNo)
+        //{
+        //    string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
+        //    string fileNamePattern = $"{mrNo}_*";
 
-            // Ensure the directory exists before attempting to get files
-            if (!Directory.Exists(uploadPath)) return null;
+        //    // Ensure the directory exists before attempting to get files
+        //    if (!Directory.Exists(uploadPath)) return null;
 
-            // Search for files matching the pattern
-            string[] files = Directory.GetFiles(uploadPath, fileNamePattern);
+        //    // Search for files matching the pattern
+        //    string[] files = Directory.GetFiles(uploadPath, fileNamePattern);
 
-            // Return the first matching file path (if any)
-            if (files.Length > 0)
-            {
-                return Path.Combine("Uploads", "NEWMNRFiles", Path.GetFileName(files[0])).Replace("\\", "/");
-            }
+        //    // Return the first matching file path (if any)
+        //    if (files.Length > 0)
+        //    {
+        //        return Path.Combine("Uploads", "NEWMNRFiles", Path.GetFileName(files[0])).Replace("\\", "/");
+        //    }
 
-            return null; // No files found
-        }
-
-
+        //    return null; // No files found
+        //}
 
 
 
