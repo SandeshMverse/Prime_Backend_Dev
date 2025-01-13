@@ -36,6 +36,8 @@ namespace PrimeMaritime_API.Models
         public decimal CGST { get; set; }
         public decimal SGST { get; set; }
         public string CHARGE_TYPE { get; set; }
+
+        public decimal VAT { get; set; }
     }
 
     public class INVOICE_MASTER
@@ -104,6 +106,9 @@ namespace PrimeMaritime_API.Models
         public decimal IGST { get; set; }
         public decimal SGST { get; set; }
         public decimal CGST { get; set; }
+
+        public decimal VAT { get; set; }
+        public decimal VAT_AMOUNT { get; set; }
         public decimal APPROVED_RATE { get; set; }
         public decimal TAXABLE_AMOUNT { get; set; }
         public decimal TAX_AMOUNT { get; set; }
@@ -170,6 +175,14 @@ namespace PrimeMaritime_API.Models
     {
         public string BL_NO { get; set; }
         public string INVOICE_TYPE { get; set;}
+    }
+
+    public class INVOICE_PAYMENT_TERM_CHECK
+    {
+        public string BL_NO { get; set; }
+        public string SRR_NO { get; set; }
+        public string  PAYMENT_TERM { get; set; }
+
     }
     public class CREDIT_NOTE_DETAILS
     {

@@ -163,29 +163,64 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        //public Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO, string DEPO_CODE)
+        //{
+        //    string dbConn = _config.GetConnectionString("ConnectionString");
+
+        //    Response<CONTAINER_MASTER> response = new Response<CONTAINER_MASTER>();
+        //    var data = DbClientFactory<MasterRepo>.Instance.GetContainerMasterDetails(dbConn, ID, CONTAINER_NO, DEPO_CODE);
+
+        //    if (data != null)
+        //    {
+        //        response.Succeeded = true;
+        //        response.ResponseCode = 200;
+        //        response.ResponseMessage = "Success";
+        //        response.Data = data;
+        //    }
+        //    else
+        //    {
+        //        response.Succeeded = false;
+        //        response.ResponseCode = 500;
+        //        response.ResponseMessage = "No Data";
+        //    }
+
+        //    return response;
+        //}
+
         public Response<CONTAINER_MASTER> GetContainerMasterDetails(int ID, string CONTAINER_NO, string DEPO_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<CONTAINER_MASTER> response = new Response<CONTAINER_MASTER>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetContainerMasterDetails(dbConn, ID, CONTAINER_NO, DEPO_CODE);
-
-            if (data != null)
+            try
             {
-                response.Succeeded = true;
-                response.ResponseCode = 200;
-                response.ResponseMessage = "Success";
-                response.Data = data;
+                var data = DbClientFactory<MasterRepo>.Instance.GetContainerMasterDetails(dbConn, ID, CONTAINER_NO, DEPO_CODE);
+
+                if (data != null)
+                {
+                    response.Succeeded = true;
+                    response.ResponseCode = 200;
+                    response.ResponseMessage = "Success";
+                    response.Data = data;
+                }
+                else
+                {
+                    response.Succeeded = false;
+                    response.ResponseCode = 500;
+                    response.ResponseMessage = "Container already exists in 'Requested' State.";
+                }
             }
-            else
+            catch (Exception ex)
             {
                 response.Succeeded = false;
-                response.ResponseCode = 500;
-                response.ResponseMessage = "No Data";
+                response.ResponseCode = 404;
+                response.ResponseMessage = ex.Message;
             }
 
             return response;
         }
+
         public Response<CommonResponse> UpdateContainerMasterList(CONTAINER_MASTER request)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -1044,6 +1079,30 @@ namespace PrimeMaritime_API.Services
 
             Response<List<SCHEDULE>> response = new Response<List<SCHEDULE>>();
             var data = DbClientFactory<MasterRepo>.Instance.GetScheduleList(dbConn, VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<SCHEDULE> GetDetailsByVesselAndVoyage(string VESSEL_NAME, string VOYAGE_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<SCHEDULE> response = new Response<SCHEDULE>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetDetailsByVesselAndVoyage(dbConn, VESSEL_NAME, VOYAGE_NO);
 
             if (data != null)
             {

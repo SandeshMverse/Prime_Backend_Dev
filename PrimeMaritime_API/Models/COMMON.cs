@@ -11,6 +11,8 @@ namespace PrimeMaritime_API.Models
         public string KEY_NAME { get; set; }
         public string CODE { get; set; }
         public string CODE_DESC { get; set; }
+
+        public string LINER_NAME { get; set; }
     }
 
     public class MailRequest

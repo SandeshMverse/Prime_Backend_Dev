@@ -31,17 +31,56 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CREATE_DO" },
                   new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = request.BL_NO },
                   new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = request.DO_NO },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,100) { Value = request.VESSEL_NAME },
+                  new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,100) { Value = request.VOYAGE_NO },
                   new SqlParameter("@ARRIVAL_DATE", SqlDbType.DateTime) { Value = request.ARRIVAL_DATE },
                   new SqlParameter("@IGM_NO", SqlDbType.VarChar, 50) { Value = request.IGM_NO },
+                  new SqlParameter("@IGM_DATE", SqlDbType.DateTime) { Value = request.IGM_DATE },
                   new SqlParameter("@IGM_ITEM_NO", SqlDbType.VarChar, 50) { Value = request.IGM_ITEM_NO },
+                  new SqlParameter("@DELIVERY_PARTY", SqlDbType.VarChar,100) { Value = request.DELIVERY_PARTY },
                   new SqlParameter("@CLEARING_PARTY", SqlDbType.VarChar,100) { Value = request.CLEARING_PARTY },
                   new SqlParameter("@ACCEPTANCE_LOCATION", SqlDbType.VarChar, 100) { Value = request.ACCEPTANCE_LOCATION },
                   new SqlParameter("@LETTER_VALIDITY",SqlDbType.DateTime) { Value = request.LETTER_VALIDITY },
                   new SqlParameter("@SHIPPING_TERMS", SqlDbType.VarChar, 50) { Value = request.SHIPPING_TERMS },
+                  new SqlParameter("@LINE_NO", SqlDbType.VarChar, 50) { Value = request.LINE_NO },
+                  new SqlParameter("@CFS_DETAILS", SqlDbType.VarChar, 50) { Value = request.CFS_DETAILS },
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = request.AGENT_CODE },
                   new SqlParameter("@AGENT_NAME", SqlDbType.VarChar, 255) { Value = request.AGENT_NAME },
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = request.CREATED_BY },
-                  new SqlParameter("@IGM_DATE", SqlDbType.DateTime) { Value = request.IGM_DATE }
+                  new SqlParameter("@DO_STATUS", SqlDbType.VarChar, 50) { Value = request.DO_STATUS },
+
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_DO", parameters);               
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void UpdateDO(string connstring, DO request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_DO" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = request.BL_NO },
+                  new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = request.DO_NO },
+                  new SqlParameter("@ARRIVAL_DATE", SqlDbType.DateTime) { Value = request.ARRIVAL_DATE },
+                  new SqlParameter("@IGM_NO", SqlDbType.VarChar, 50) { Value = request.IGM_NO },
+                  new SqlParameter("@IGM_DATE", SqlDbType.DateTime) { Value = request.IGM_DATE },
+                  new SqlParameter("@IGM_ITEM_NO", SqlDbType.VarChar, 50) { Value = request.IGM_ITEM_NO },
+                  new SqlParameter("@DELIVERY_PARTY", SqlDbType.VarChar,100) { Value = request.DELIVERY_PARTY },
+                  new SqlParameter("@CLEARING_PARTY", SqlDbType.VarChar,100) { Value = request.CLEARING_PARTY },
+                  new SqlParameter("@ACCEPTANCE_LOCATION", SqlDbType.VarChar, 100) { Value = request.ACCEPTANCE_LOCATION },
+                  new SqlParameter("@LETTER_VALIDITY",SqlDbType.DateTime) { Value = request.LETTER_VALIDITY },
+                  new SqlParameter("@SHIPPING_TERMS", SqlDbType.VarChar, 50) { Value = request.SHIPPING_TERMS },
+                  new SqlParameter("@LINE_NO", SqlDbType.VarChar, 50) { Value = request.LINE_NO },
+                  new SqlParameter("@CFS_DETAILS", SqlDbType.VarChar, 50) { Value = request.CFS_DETAILS },
+                  new SqlParameter("@DO_STATUS", SqlDbType.VarChar, 50) { Value = request.DO_STATUS },
+
                 };
 
                 var DONO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_DO", parameters);
@@ -59,10 +98,30 @@ namespace PrimeMaritime_API.Repository
                     columns[2] = "CONTAINER_NO";
 
                     SqlHelper.UpdateDataDO<CONTAINERS>(request.CONTAINER_LIST, "TB_CONTAINER", connstring, columns);
-                }                
+                }
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public void EditLetterValidity(string connstring, DO request)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "UPDATE_LETTER_VALIDITY_STATUS" },
+                  new SqlParameter("@ID",SqlDbType.Int){Value=request.ID},
+                  new SqlParameter("@EDIT_EMPTY_LETTER", SqlDbType.Bit) { Value = request.EDIT_EMPTY_LETTER},
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_DO", parameters);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
@@ -133,6 +192,64 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
 
+        }
+
+        public DODETAILS GetDOByDONo(string connstring, string DO_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+            {
+                new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_DONO_DETAILS" },
+                new SqlParameter("@DO_NO", SqlDbType.VarChar, 100) { Value = DO_NO },
+                
+            };
+
+                return SqlHelper.ExtecuteProcedureReturnData<DODETAILS>(connstring, "SP_CRUD_DO", r => r.TranslateDODETAILS(), parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public DODETAILS GetDOExists(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_DO_EXISTS" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<DODETAILS>(dbConn, "SP_CRUD_DO", r => r.TranslateDODETAILS(), parameters);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public DO CheckPaymentPaid(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_PAYMENT_PAID" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<DO>(dbConn, "SP_CRUD_DO", r => r.TranslateDO(), parameters);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

@@ -41,10 +41,45 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_doService.InsertDO(request));
         }
 
+        [HttpPost("UpdateDO")]
+        public ActionResult<Response<DO>> UpdateDO(DO request)
+        {
+            return Ok(_doService.UpdateDO(request));
+        }
+
+        [HttpPost("EditLetterValidity")]
+        public ActionResult<Response<DO>> EditLetterValidity(DO request)
+        {
+            return Ok(_doService.EditLetterValidity(request));
+        }
+        
+
         [HttpGet("GetDODetails")]
         public ActionResult<Response<DO>> GetDODetails(string DO_NO, string AGENT_CODE)
         {
             return Ok(JsonConvert.SerializeObject(_doService.GetDODetails(DO_NO, AGENT_CODE)));
         }
+
+        [HttpGet("GetDOByDONo")]
+        public ActionResult<Response<DODETAILS>> GetDOByDONo(string DO_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_doService.GetDOByDONo(DO_NO)));
+        }
+
+        [HttpPost("GetDOExists")]
+        public ActionResult<Response<DODETAILS>> GetDOExists(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_doService.GetDOExists(BL_NO)));
+        }
+
+        [HttpPost("CheckPaymentPaid")]
+        public ActionResult<Response<DO>> CheckPaymentPaid(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_doService.CheckPaymentPaid(BL_NO)));
+        }
+
+
+
+
     }
 }

@@ -11,7 +11,7 @@ namespace PrimeMaritime_API.Repository
 {
     public class InvoiceRepo
     {
-        public DataSet GetBLDetails(string connstring, string BL_NO, string PORT, string ORG_CODE)
+        public DataSet GetBLDetails(string connstring, string BL_NO, string PORT, string ORG_CODE, string AGENT_CODE)
         {
             SqlParameter[] parameters =
             {
@@ -19,6 +19,7 @@ namespace PrimeMaritime_API.Repository
                 new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
                 new SqlParameter("@PORT", SqlDbType.VarChar, 100) { Value = PORT },
                 new SqlParameter("@ORG_CODE", SqlDbType.VarChar, 50) { Value = ORG_CODE },
+                new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = AGENT_CODE },
             };
 
             return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_INVOICE", parameters);
@@ -78,7 +79,7 @@ namespace PrimeMaritime_API.Repository
 
                 var ID = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_INVOICE", parameters);
 
-                string[] columns = new string[19];
+                string[] columns = new string[21];
                 columns[0] = "INVOICE_NO";
                 columns[1] = "CHARGE_NAME";
                 columns[2] = "EXCHANGE_RATE";
@@ -98,6 +99,8 @@ namespace PrimeMaritime_API.Repository
                 columns[16] = "TAX_AMOUNT";
                 columns[17] = "TOTAL_AMOUNT";
                 columns[18] = "NEW_EXCHANGE_RATE";
+                columns[19] = "VAT";
+                columns[20] = "VAT_AMOUNT";
 
 
                 if (ID != "NULL")
@@ -123,6 +126,8 @@ namespace PrimeMaritime_API.Repository
                     tbl.Columns.Add(new DataColumn("TAX_AMOUNT", typeof(decimal)));
                     tbl.Columns.Add(new DataColumn("TOTAL_AMOUNT", typeof(decimal)));
                     tbl.Columns.Add(new DataColumn("NEW_EXCHANGE_RATE", typeof(decimal)));
+                    tbl.Columns.Add(new DataColumn("VAT", typeof(decimal)));
+                    tbl.Columns.Add(new DataColumn("VAT_AMOUNT", typeof(decimal)));
 
 
 
@@ -149,6 +154,8 @@ namespace PrimeMaritime_API.Repository
                         dr["TAX_AMOUNT"] = i.TAX_AMOUNT;
                         dr["TOTAL_AMOUNT"] = i.TOTAL_AMOUNT;
                         dr["NEW_EXCHANGE_RATE"] = master.EX_RATE;
+                        dr["VAT"] = i.VAT;
+                        dr["VAT_AMOUNT"] = i.VAT_AMOUNT;
 
 
                         tbl.Rows.Add(dr);
@@ -167,126 +174,6 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public void InsertImportInvoice(string connstring, INVOICE_MASTER master)
-        {
-            try
-            {
-                SqlParameter[] parameters =
-               {
-                  new SqlParameter("@OPERATION",    SqlDbType.VarChar,50) { Value = "INSERT_IMPORT_INVOICES" },
-                  new SqlParameter("@INVOICE_NO",   SqlDbType.VarChar,100) { Value = master.INVOICE_NO},
-                  new SqlParameter("@INVOICE_ID",   SqlDbType.Int) { Value = master.INVOICE_ID},
-                  new SqlParameter("@INVOICE_TYPE", SqlDbType.VarChar, 100) { Value = master.INVOICE_TYPE },
-                  new SqlParameter("@BILL_TO",      SqlDbType.VarChar, 255) { Value = master.BILL_TO },
-                  new SqlParameter("@BILL_FROM",    SqlDbType.VarChar, 255) { Value = master.BILL_FROM },
-                  new SqlParameter("@SHIPPER_NAME", SqlDbType.NVarChar, 255) { Value = master.SHIPPER_NAME },
-                  new SqlParameter("@CONSIGNEE_NAME", SqlDbType.NVarChar, 255) { Value = master.CONSIGNEE_NAME },
-                  new SqlParameter("@PAYMENT_TERM", SqlDbType.VarChar, 50) { Value = master.PAYMENT_TERM },
-                  new SqlParameter("@ADDRESS",      SqlDbType.VarChar) { Value = master.ADDRESS },
-                  new SqlParameter("@BRANCH_ID",     SqlDbType.Int ) { Value = master.BRANCH_ID },
-                  new SqlParameter("@BANK_ID",     SqlDbType.Int ) { Value = master.BANK_ID },
-                  new SqlParameter("@INVOICE_DATE",  SqlDbType.DateTime ) { Value = master.INVOICE_DATE },
-                  new SqlParameter("@BL_NO",        SqlDbType.VarChar, 50) { Value = master.BL_NO },
-                  new SqlParameter("@AGENT_NAME",   SqlDbType.VarChar, 50) { Value = master.AGENT_NAME},
-                  new SqlParameter("@AGENT_CODE",   SqlDbType.VarChar, 50) { Value = master.AGENT_CODE},
-                  new SqlParameter("@CREATED_BY",   SqlDbType.VarChar, 50) { Value = master.CREATED_BY},
-                  new SqlParameter("@UPDATED_BY",   SqlDbType.VarChar, 50) { Value = master.UPDATED_BY},
-                  new SqlParameter("@STATUS",        SqlDbType.VarChar, 50) { Value = master.STATUS},
-                  new SqlParameter("@CONTAINERS",    SqlDbType.VarChar) { Value = master.CONTAINERS},
-                  new SqlParameter("@SHIPPER_REF",    SqlDbType.VarChar,100) { Value = master.SHIPPER_REF},
-                  new SqlParameter("@REMARKS",    SqlDbType.VarChar,255) { Value = master.REMARKS},
-                };
-
-                var ID = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_INVOICE", parameters);
-
-                string[] columns = new string[19];
-                columns[0] = "INVOICE_NO";
-                columns[1] = "CHARGE_NAME";
-                columns[2] = "EXCHANGE_RATE";
-                columns[3] = "QUANTITY";
-                columns[4] = "AMOUNT";
-                columns[5] = "HSN_CODE";
-                columns[6] = "APPROVED_RATE";
-                columns[7] = "CURRENCY";
-                columns[8] = "IS_SRRCHARGE";
-                columns[9] = "INVOICE_ID";
-                columns[10] = "ID";
-                columns[11] = "TAXABLE_AMOUNT";
-                columns[12] = "RATE_PER";
-                columns[13] = "SGST";
-                columns[14] = "CGST";
-                columns[15] = "IGST";
-                columns[16] = "TAX_AMOUNT";
-                columns[17] = "TOTAL_AMOUNT";
-                columns[18] = "NEW_EXCHANGE_RATE";
-
-
-                if (ID != "NULL")
-                {
-                    DataTable tbl = new DataTable();
-
-                    tbl.Columns.Add(new DataColumn("INVOICE_NO", typeof(string)));
-                    tbl.Columns.Add(new DataColumn("CHARGE_NAME", typeof(string)));
-                    tbl.Columns.Add(new DataColumn("QUANTITY", typeof(int)));
-                    tbl.Columns.Add(new DataColumn("HSN_CODE", typeof(string)));
-                    tbl.Columns.Add(new DataColumn("CURRENCY", typeof(string)));
-                    tbl.Columns.Add(new DataColumn("IS_SRRCHARGE", typeof(string)));
-                    tbl.Columns.Add(new DataColumn("INVOICE_ID", typeof(int)));
-                    tbl.Columns.Add(new DataColumn("ID", typeof(int)));
-                    tbl.Columns.Add(new DataColumn("APPROVED_RATE", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("AMOUNT", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("EXCHANGE_RATE", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("TAXABLE_AMOUNT", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("RATE_PER", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("SGST", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("CGST", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("IGST", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("TAX_AMOUNT", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("TOTAL_AMOUNT", typeof(decimal)));
-                    tbl.Columns.Add(new DataColumn("NEW_EXCHANGE_RATE", typeof(decimal)));
-
-
-
-                    foreach (var i in master.BL_LIST)
-                    {
-                        DataRow dr = tbl.NewRow();
-
-                        dr["INVOICE_NO"] = master.INVOICE_NO;
-                        dr["INVOICE_ID"] = Convert.ToInt32(ID);
-                        dr["CHARGE_NAME"] = i.CHARGE_NAME;
-                        dr["QUANTITY"] = i.QUANTITY;
-                        dr["HSN_CODE"] = i.HSN_CODE;
-                        dr["CURRENCY"] = i.CURRENCY;
-                        dr["IS_SRRCHARGE"] = i.IS_SRRCHARGE;
-                        dr["ID"] = i.ID;
-                        dr["APPROVED_RATE"] = i.APPROVED_RATE;
-                        dr["AMOUNT"] = i.AMOUNT;
-                        dr["EXCHANGE_RATE"] = i.EXCHANGE_RATE;
-                        dr["TAXABLE_AMOUNT"] = i.TAXABLE_AMOUNT;
-                        dr["RATE_PER"] = i.RATE_PER;
-                        dr["SGST"] = i.SGST;
-                        dr["CGST"] = i.CGST;
-                        dr["IGST"] = i.IGST;
-                        dr["TAX_AMOUNT"] = i.TAX_AMOUNT;
-                        dr["TOTAL_AMOUNT"] = i.TOTAL_AMOUNT;
-                        dr["NEW_EXCHANGE_RATE"] = master.EX_RATE;
-
-
-                        tbl.Rows.Add(dr);
-                    }
-
-                    SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "INVOICE_IMPORT_CHARGES", columns);
-                }
-                else
-                {
-                    SqlHelper.UpdateInvoiceCharges<INVOICE_CHARGES>(master.BL_LIST, "INVOICE_IMPORT_CHARGES", connstring, columns);
-                }
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         public void InsertCreditNote(string connstring, List<CREDIT_NOTE> master)
         {
             try
@@ -351,6 +238,7 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
         public DataSet GetInvoiceDetails(string connstring, int INVOICE_ID, string INVOICE_NO, string PORT, string ORG_CODE)
         {
             SqlParameter[] parameters =
@@ -364,6 +252,7 @@ namespace PrimeMaritime_API.Repository
 
             return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_INVOICE", parameters);
         }
+
         public List<INVOICE_MASTER> GetInvoiceList(string connstring, string FROM_DATE, string TO_DATE, string ORG_CODE, string PORT, string BL_NO)
         {
             try
@@ -388,6 +277,8 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+
         public List<CREDIT_NOTE> GetCreditList(string connstring, string FROM_DATE, string TO_DATE, string ORG_CODE, string PORT, string CREDIT_NO)
         {
             try
@@ -426,6 +317,29 @@ namespace PrimeMaritime_API.Repository
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_INVOICE", parameters);
 
                 List<INVOICE_BL_CHECK> master = SqlHelper.CreateListFromTable<INVOICE_BL_CHECK>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        public List<INVOICE_PAYMENT_TERM_CHECK> PaymentTerm(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_PAYMENT_TERM" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_INVOICE", parameters);
+
+                List<INVOICE_PAYMENT_TERM_CHECK> master = SqlHelper.CreateListFromTable<INVOICE_PAYMENT_TERM_CHECK>(dataTable);
 
                 return master;
             }
@@ -480,6 +394,28 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_CUST_LIST" },
                   new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = BL_NO },
+
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_INVOICE", parameters);
+
+                List<GET_CUST_LIST> master = SqlHelper.CreateListFromTable<GET_CUST_LIST>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<GET_CUST_LIST> GetPrimeDetails(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_PRIME_DETAILS" },
 
                 };
 

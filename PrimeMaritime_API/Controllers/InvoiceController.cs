@@ -27,9 +27,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetInvoiceBLDetails")]
-        public ActionResult<Response<INVOICE_BL>> GetInvoiceBLDetails(string BL_NO, string PORT, string ORG_CODE)
+        public ActionResult<Response<INVOICE_BL>> GetInvoiceBLDetails(string BL_NO, string PORT, string ORG_CODE, string AGENT_CODE)
         {
-            return Ok(JsonConvert.SerializeObject(_invoiceService.GetBLDetails(BL_NO, PORT, ORG_CODE)));
+            return Ok(JsonConvert.SerializeObject(_invoiceService.GetBLDetails(BL_NO, PORT, ORG_CODE, AGENT_CODE)));
         }
 
         [HttpGet("GetCreditNoteDetails")]
@@ -44,12 +44,6 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_invoiceService.InsertInvoice(request));
         }
 
-        [HttpPost("InsertImportInvoice")]
-        public ActionResult<Response<CommonResponse>> InsertImportInvoice(INVOICE_MASTER request)
-        {
-            return Ok(_invoiceService.InsertImportInvoice(request));
-        }
-
         [HttpPost("InsertCreditNote")]
         public ActionResult<Response<CommonResponse>> InsertCreditNote(List<CREDIT_NOTE> request)
         {
@@ -61,6 +55,7 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(_invoiceService.FinalizeInvoice(request));
         }
+
 
         [HttpGet("GetInvoiceList")]
         public ActionResult<Response<List<INVOICE_MASTER>>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE,string BL_NO)
@@ -80,6 +75,7 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoiceDetails(INVOICE_ID,INVOICE_NO, PORT, ORG_CODE)));
         }
 
+
         [HttpGet("GetInvoiceDetailsForReceipt")]
         public ActionResult<Response<INVOICE_DETAILS_FOR_RECEIPT>> GetInvoiceDetailsForReceipt(string INVOICE_NO, string PORT, string ORG_CODE)
         {
@@ -91,6 +87,14 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_invoiceService.GetBLExists(INVOICE_TYPE, BL_NO)));
         }
+
+
+        [HttpPost("PaymentTerm")]
+        public ActionResult<Response<INVOICE_PAYMENT_TERM_CHECK>> PaymentTerm(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_invoiceService.PaymentTerm(BL_NO)));
+        }
+
         //NEW ADDED SIDDHESH
         [HttpPost("GetRateExists")]
         public ActionResult<Response<INVOICE_RATE_CHECK>> GetRateExists()
@@ -102,6 +106,12 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<GET_CUST_LIST>> GetBLCustList(string BL_NO)
         {
             return Ok(JsonConvert.SerializeObject(_invoiceService.GetBLCustList(BL_NO)));
+        }
+
+        [HttpPost("GetPrimeDetails")]
+        public ActionResult<Response<GET_CUST_LIST>> GetPrimeDetails()
+        {
+            return Ok(JsonConvert.SerializeObject(_invoiceService.GetPrimeDetails()));
         }
     }
 }

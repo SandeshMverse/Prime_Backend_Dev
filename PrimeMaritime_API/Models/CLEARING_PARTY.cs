@@ -16,5 +16,7 @@ namespace PrimeMaritime_API.Models
         public string AGENT_CODE { get; set; }
         public string CREATED_BY { get; set; }
 
+        public string CHA_NO { get; set; }
+
     }
 }

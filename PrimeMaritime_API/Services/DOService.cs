@@ -33,6 +33,34 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<string> UpdateDO(DO doRequest)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<DORepo>.Instance.UpdateDO(dbConn, doRequest);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<string> EditLetterValidity(DO doRequest)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<DORepo>.Instance.EditLetterValidity(dbConn, doRequest);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Updated Status for Edit Empty Letter Validity Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
         public Response<List<DO>> GetDOList(string DO_NO, string FROM_DATE, string TO_DATE, string AGENT_CODE, string ORG_CODE, string PORT)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -108,6 +136,91 @@ namespace PrimeMaritime_API.Services
                 response.Succeeded = false;
                 response.ResponseCode = 500;
                 response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<DODETAILS> GetDOByDONo(string DO_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<DODETAILS> response = new Response<DODETAILS>();
+
+            if ((DO_NO == "") || (DO_NO == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide BL No";
+                return response;
+            }
+
+
+            var data = DbClientFactory<DORepo>.Instance.GetDOByDONo(dbConn, DO_NO);
+
+            if ((data != null))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<DODETAILS> GetDOExists(string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<DODETAILS> response = new Response<DODETAILS>();
+            var data = DbClientFactory<DORepo>.Instance.GetDOExists(dbConn, BL_NO);
+
+            if ((data != null))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "DO is Already generate for this BL ";
+                response.Data = data;
+
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+
+            }
+
+            return response;
+        }
+
+        public Response<DO> CheckPaymentPaid(string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<DO> response = new Response<DO>();
+            var data = DbClientFactory<DORepo>.Instance.CheckPaymentPaid(dbConn, BL_NO);
+
+            if ((data != null))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Payment has received ";
+                response.Data = data;
+
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Payment has not received yet";
+
             }
 
             return response;

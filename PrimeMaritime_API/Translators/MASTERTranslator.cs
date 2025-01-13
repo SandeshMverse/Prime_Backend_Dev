@@ -537,6 +537,8 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("TERMINAL_NO"))
                 item.TERMINAL_NO = SqlHelper.GetNullableString(reader, "TERMINAL_NO");
 
+            if (reader.IsColumnExists("VESSEL_SCHEDULE"))
+                item.VESSEL_SCHEDULE = SqlHelper.GetNullableString(reader, "VESSEL_SCHEDULE");
 
             return item;
         }

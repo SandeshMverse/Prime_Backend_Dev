@@ -234,6 +234,7 @@ namespace PrimeMaritime_API.Models
         public DateTime UPDATED_DATE { get; set; }
         public string? VOYAGE_NO { get; set; }
         public string TERMINAL_NO { get; set; }
+        public string VESSEL_SCHEDULE { get; set; }
     }
     public class LOCATION_MASTER
     {
@@ -439,6 +440,8 @@ namespace PrimeMaritime_API.Models
         public string IMO_CLASS { get; set; }
         public string UN_NO { get; set; }
         public string TEMPERATURE { get; set; }
+        public string ISO_CODE { get; set; }
+        public bool STATUS { get; set; }
     }
     public class EAL
     {
@@ -928,6 +931,7 @@ namespace PrimeMaritime_API.Models
         public string SLOT_OPERATOR { get; set; }
         public string LINER_CODE { get; set; }
         public string SERVICES { get; set; }
+        public bool STATUS { get; set; }
     }
 
     public class SLOT_PURCHASE_LIST

@@ -141,6 +141,8 @@ namespace PrimeMaritime_API.IServices
 
         Response<List<SCHEDULE>> GetScheduleList(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD);
 
+        Response<SCHEDULE> GetDetailsByVesselAndVoyage(string VESSEL_NAME, string VOYAGE_NO);
+
         Response<SCHEDULE> GetScheduleDetails(int ID);
 
         Response<CommonResponse> UpdateSchedule(SCHEDULE request);

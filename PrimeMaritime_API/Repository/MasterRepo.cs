@@ -389,45 +389,101 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        //public CONTAINER_MASTER GetContainerMasterDetails(string connstring, int ID, string CONTAINER_NO, string DEPO_CODE)
+        //{
+        //    try
+        //    {
+        //        string ExistingContainerNo;
+
+        //        SqlParameter[] parameters4 =
+        //              {
+        //                      new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "EXSIT_CONTAINER_NO" },
+        //                      new SqlParameter("@RETRUN_CONTAINER_NO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+        //                      new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
+        //                      new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 100) { Value = DEPO_CODE },
+        //                     };
+
+
+        //        SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MNR", parameters4);
+        //        ExistingContainerNo = Convert.ToString(parameters4[1].Value);
+
+
+        //        if (ExistingContainerNo == CONTAINER_NO)
+        //        {
+        //            return null;
+        //        }
+
+        //        SqlParameter[] parameters =
+        //        {
+        //           new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+        //           new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 20) { Value = CONTAINER_NO },
+        //           new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_CONTAINERDETAILS" }
+        //        };
+
+        //        return SqlHelper.ExtecuteProcedureReturnData<CONTAINER_MASTER>(connstring, "SP_CRUD_CONTAINER_MASTER", r => r.TranslateAsContainer(), parameters);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
+
         public CONTAINER_MASTER GetContainerMasterDetails(string connstring, int ID, string CONTAINER_NO, string DEPO_CODE)
         {
             try
             {
+                // Check if container exists in TB_MR_REQUEST
                 string ExistingContainerNo;
 
                 SqlParameter[] parameters4 =
-                      {
-                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "EXSIT_CONTAINER_NO" },
-                              new SqlParameter("@RETRUN_CONTAINER_NO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
-                              new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
-                              new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 100) { Value = DEPO_CODE },
-                             };
-
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "EXSIT_CONTAINER_NO" },
+                  new SqlParameter("@RETRUN_CONTAINER_NO", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output },
+                  new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
+                  new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 100) { Value = DEPO_CODE },
+                };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MNR", parameters4);
                 ExistingContainerNo = Convert.ToString(parameters4[1].Value);
 
-
-                if (ExistingContainerNo == CONTAINER_NO)
+                // If not found in TB_MR_REQUEST
+                if (string.IsNullOrEmpty(ExistingContainerNo))
                 {
-                    return null;
+                    // Check if container exists in CONTAINER table
+                    SqlParameter[] parameters =
+                    {
+                      new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                      new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 20) { Value = CONTAINER_NO },
+                      new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_CONTAINERDETAILS" }
+                    };
+
+                    var containerDetails = SqlHelper.ExtecuteProcedureReturnData<CONTAINER_MASTER>(
+                        connstring,
+                        "SP_CRUD_CONTAINER_MASTER",
+                        r => r.TranslateAsContainer(),
+                        parameters
+                    );
+
+                    if (containerDetails == null)
+                    {
+                        throw new Exception("Container not found in MASTER CONTAINER table.");
+                    }
+
+                    return containerDetails;
                 }
 
-                SqlParameter[] parameters =
-                {
-                   new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
-                   new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 20) { Value = CONTAINER_NO },
-                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_CONTAINERDETAILS" }
-                };
-
-                return SqlHelper.ExtecuteProcedureReturnData<CONTAINER_MASTER>(connstring, "SP_CRUD_CONTAINER_MASTER", r => r.TranslateAsContainer(), parameters);
+                // If container exists in TB_MR_REQUEST, return null
+                return null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                // Log the error and rethrow
+                //throw new Exception($"Error fetching container details: {ex.Message}", ex);
+                throw new Exception(ex.Message);
             }
         }
+
 
         public void UpdateContainerMasterList(string connstring, CONTAINER_MASTER master)
         {
@@ -1064,7 +1120,8 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@CONTACT", SqlDbType.VarChar, 20) { Value = request.CONTACT },
                   new SqlParameter("@LOCATION", SqlDbType.VarChar,50) { Value = request.LOCATION },
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = request.AGENT_CODE },
-                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = request.CREATED_BY }
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 100) { Value = request.CREATED_BY },
+                  new SqlParameter("@CHA_NO", SqlDbType.VarChar, 100) { Value = request.CHA_NO }
 
                 };
 
@@ -1423,6 +1480,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar,255) { Value = master.CREATED_BY },
                   new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,100) { Value = master.VOYAGE_NO },
                   new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar,100) { Value = master.TERMINAL_NO },
+                  new SqlParameter("@VESSEL_SCHEDULE", SqlDbType.VarChar,100) { Value = master.VESSEL_SCHEDULE },
 
                 };
 
@@ -1454,6 +1512,27 @@ namespace PrimeMaritime_API.Repository
                 List<SCHEDULE> master = SqlHelper.CreateListFromTable<SCHEDULE>(dataTable);
 
                 return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public SCHEDULE GetDetailsByVesselAndVoyage(string dbConn, string VesselName, string VOYAGE_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_VESSEL_SCHEDULE_DETAILS" },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = VesselName },
+                  new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = VOYAGE_NO },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<SCHEDULE>(dbConn, "SP_CRUD_VESSEL_MASTER", r => r.TranslateAsSchedule(), parameters);
+
             }
             catch (Exception)
             {
@@ -1498,6 +1577,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
                   new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,100) { Value = master.VOYAGE_NO },
                   new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar,100) { Value = master.TERMINAL_NO },
+                  new SqlParameter("@VESSEL_SCHEDULE", SqlDbType.VarChar,100) { Value = master.VESSEL_SCHEDULE },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", parameters);
@@ -1542,6 +1622,7 @@ namespace PrimeMaritime_API.Repository
                 tbl.Columns.Add(new DataColumn("TERMINAL_NO", typeof(string)));
                 tbl.Columns.Add(new DataColumn("STATUS", typeof(bool)));
                 tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
+                tbl.Columns.Add(new DataColumn("VESSEL_SCHEDULE", typeof(string)));
 
                 foreach (var i in schedule)
                 {
@@ -1557,11 +1638,12 @@ namespace PrimeMaritime_API.Repository
                     dr["TERMINAL_NO"] = i.TERMINAL_NO;
                     dr["STATUS"] = i.STATUS;
                     dr["CREATED_BY"] = i.CREATED_BY;
+                    dr["VESSEL_SCHEDULE"] = i.VESSEL_SCHEDULE;
 
                     tbl.Rows.Add(dr);
                 }
 
-                string[] columns = new string[10];
+                string[] columns = new string[11];
                 columns[0] = "VESSEL_NAME";
                 columns[1] = "SERVICE_NAME";
                 columns[2] = "PORT_CODE";
@@ -1572,6 +1654,7 @@ namespace PrimeMaritime_API.Repository
                 columns[7] = "TERMINAL_NO";
                 columns[8] = "STATUS";
                 columns[9] = "CREATED_BY";
+                columns[10] = "VESSEL_SCHEDULE";
 
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "MST_VESSEL_SCHEDULE", columns);
@@ -1603,7 +1686,8 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@ETD", SqlDbType.DateTime) { Value = item.ETD },
                         new SqlParameter("@STATUS", SqlDbType.Bit) { Value = item.STATUS },
                         new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = item.VOYAGE_NO },
-                        new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar, 100) { Value = item.TERMINAL_NO }
+                        new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar, 100) { Value = item.TERMINAL_NO },
+                         new SqlParameter("@VESSEL_SCHEDULE", SqlDbType.VarChar, 100) { Value = item.VESSEL_SCHEDULE }
                     };
 
                             SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_VESSEL_MASTER", parameters1);
