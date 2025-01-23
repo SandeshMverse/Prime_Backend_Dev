@@ -73,10 +73,11 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpPost("CheckPaymentPaid")]
-        public ActionResult<Response<DO>> CheckPaymentPaid(string BL_NO)
+        public ActionResult<Response<INVOICE_DETAILS_FOR_DO>> CheckPaymentPaid(string BL_NO)
         {
             return Ok(JsonConvert.SerializeObject(_doService.CheckPaymentPaid(BL_NO)));
         }
+
 
 
 

@@ -200,27 +200,56 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<DO> CheckPaymentPaid(string BL_NO)
+        public Response<INVOICE_DETAILS_FOR_DO> CheckPaymentPaid(string BL_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            Response<DO> response = new Response<DO>();
+            Response<INVOICE_DETAILS_FOR_DO> response = new Response<INVOICE_DETAILS_FOR_DO>();
+
+            if ((BL_NO == "") || (BL_NO == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide BL No";
+                return response;
+            }
+
             var data = DbClientFactory<DORepo>.Instance.CheckPaymentPaid(dbConn, BL_NO);
 
-            if ((data != null))
+            if ((data != null) && (data.Tables[0].Rows.Count > 0))
             {
                 response.Succeeded = true;
                 response.ResponseCode = 200;
-                response.ResponseMessage = "Payment has received ";
-                response.Data = data;
+                response.ResponseMessage = "Success";
+                INVOICE_DETAILS_FOR_DO invoiceBL = new INVOICE_DETAILS_FOR_DO();
 
+                invoiceBL = DORepo.GetSingleDataFromDataSet<INVOICE_DETAILS_FOR_DO>(data.Tables[0]);
+
+                if (data.Tables.Contains("Table1"))
+                {
+                    invoiceBL.ICHARGES = DORepo.GetListFromDataSet<INVOICE_CHARGES>(data.Tables[1]);
+                }
+
+                if (data.Tables.Contains("Table2"))
+                {
+                    invoiceBL.RECEIPT = DORepo.GetListFromDataSet<RECEIPT_INVOICE>(data.Tables[2]);
+                }
+
+                if (data.Tables.Contains("Table3"))
+                {
+                    invoiceBL.RBANK = DORepo.GetListFromDataSet<RECEIPT_BANK>(data.Tables[3]);
+                }
+                if (data.Tables.Contains("Table4"))
+                {
+                    invoiceBL.RCHARGES = DORepo.GetListFromDataSet<RECEIPT_CHARGES>(data.Tables[4]);
+                }
+
+                response.Data = invoiceBL;
             }
             else
             {
                 response.Succeeded = false;
                 response.ResponseCode = 500;
-                response.ResponseMessage = "Payment has not received yet";
-
+                response.ResponseMessage = "No Data";
             }
 
             return response;

@@ -89,8 +89,12 @@ namespace PrimeMaritime_API.Models
         public string? CSC_NO { get; set; }
         public string? ACEP_NO { get; set; }
         public string? AGREEMENT_NO { get; set; }
-
         public string? DEPO_CODE { get; set; }
+        public string? TURN_IN_DATE { get; set; }
+        public string? LOCATION { get; set; }
+
+        public string? CONTAINER_SIZE { get; set; }
+
     }
     public class COUNTRY_MASTER
     {
@@ -157,6 +161,28 @@ namespace PrimeMaritime_API.Models
         public string CREATED_BY { get; set; }
 
         public string LINER_NAME { get; set; }
+    }
+
+    public class LINER_SERVICE 
+    {
+        public int ID { get; set; }
+        public string LINER_CODE { get; set; }
+        public string SERVICE_NAME { get; set; }
+        public string PORT_CODE { get; set; }
+        public string ORIGIN_PORT_CODE { get; set; }
+        public Boolean STATUS { get; set; }
+        public string CREATED_BY { get; set; }
+        public string LINER_NAME { get; set; }
+
+        public List<LINER_PORT> LINERPORT { get; set; } = new List<LINER_PORT>();
+    }
+
+    public class LINER_PORT
+    {
+        public int PORT_TRACK_ID { get; set; }
+        public int LINER_SERVICE_ID { get; set; }
+        public string PORT_CODE { get; set; }
+
     }
     public class CONTAINER_TYPE
     {
@@ -235,6 +261,7 @@ namespace PrimeMaritime_API.Models
         public string? VOYAGE_NO { get; set; }
         public string TERMINAL_NO { get; set; }
         public string VESSEL_SCHEDULE { get; set; }
+        public string TERMINAL_CODE { get; set; }
     }
     public class LOCATION_MASTER
     {

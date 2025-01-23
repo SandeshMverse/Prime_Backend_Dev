@@ -146,7 +146,7 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-        public List<RECEIPT_INVOICE> GetReceiptList(string connstring, string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE)
+        public List<RECEIPT_INVOICE> GetReceiptList(string connstring, string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string AGENT_CODE)
         {
             try
             {
@@ -157,6 +157,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@TODATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(TO_DATE) ? null : Convert.ToDateTime(TO_DATE) },
                   new SqlParameter("@ORG_CODE", SqlDbType.VarChar, 50) { Value = ORG_CODE },
                   new SqlParameter("@PORT", SqlDbType.VarChar, 100) { Value = PORT },
+                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = AGENT_CODE },
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_RECEIPT", parameters);

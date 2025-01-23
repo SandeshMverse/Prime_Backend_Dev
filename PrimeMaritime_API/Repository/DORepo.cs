@@ -233,7 +233,7 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public DO CheckPaymentPaid(string dbConn, string BL_NO)
+        public DataSet CheckPaymentPaid(string dbConn, string BL_NO)
         {
             try
             {
@@ -241,9 +241,9 @@ namespace PrimeMaritime_API.Repository
                 {
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_PAYMENT_PAID" },
                   new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
-                };
+                 };
 
-                return SqlHelper.ExtecuteProcedureReturnData<DO>(dbConn, "SP_CRUD_DO", r => r.TranslateDO(), parameters);
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DO", parameters);
 
             }
             catch (Exception)

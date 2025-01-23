@@ -95,10 +95,10 @@ namespace PrimeMaritime_API.Repository
             try
             {
                 SqlParameter[] parameters =
-            {
-                new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "DETENTION_CALCULATION" },
-                new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
-            };
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "DETENTION_CALCULATION" },
+                  new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = CONTAINER_NO },
+                };
 
                 return SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_DETENTION", parameters);
             }

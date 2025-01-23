@@ -515,11 +515,11 @@ namespace PrimeMaritime_API.Services
         }
 
 
-        public Response<string> UnlockBL(string BL_NO)
+        public Response<string> UnlockBL(string BL_NO, int ID, string AGENT_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            DbClientFactory<BLRepo>.Instance.UnlockBL(dbConn, BL_NO);
+            DbClientFactory<BLRepo>.Instance.UnlockBL(dbConn, BL_NO, ID, AGENT_CODE);
 
             Response<string> response = new Response<string>();
             response.Succeeded = true;

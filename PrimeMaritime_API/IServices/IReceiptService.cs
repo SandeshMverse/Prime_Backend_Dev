@@ -8,6 +8,6 @@ namespace PrimeMaritime_API.IServices
     public interface IReceiptService
     {
         Response<CommonResponse> InsertReceipt(RECEIPT request);
-        Response<List<RECEIPT_INVOICE>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE);
+        Response<List<RECEIPT_INVOICE>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string AGENT_CODE);
     }
 }

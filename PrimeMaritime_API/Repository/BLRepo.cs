@@ -260,7 +260,8 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
               new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
               new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
-              new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1}
+              new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+              new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,100) { Value = request.AGENT_CODE }
             };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
@@ -715,7 +716,8 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
               new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
               new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
-              new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1}
+              new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+              new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,100) { Value = request.AGENT_CODE }
             };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
@@ -750,12 +752,14 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-        public void UnlockBL(string connstring, string BL_NO)
+        public void UnlockBL(string connstring, string BL_NO, int ID, string AGENT_CODE)
         {
             SqlParameter[] parameters =
             {
               new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_UNLOCK_BLPM" },
               new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+               new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 100) { Value = AGENT_CODE },
             };
 
             SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);

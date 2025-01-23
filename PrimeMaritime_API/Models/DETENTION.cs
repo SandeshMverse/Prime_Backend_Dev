@@ -16,6 +16,7 @@ namespace PrimeMaritime_API.Models
         public string CURRENCY { get; set; }
         public string  REMARK { get; set; }
         public string CREATED_BY { get; set; }
+        public int POD_FREE_DAYS { get; set; }
 
     }
 

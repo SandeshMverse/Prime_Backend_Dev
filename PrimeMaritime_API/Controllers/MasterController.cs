@@ -385,11 +385,32 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.GetScheduleList(VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD)));
         }
 
+        [HttpGet("getScheduleListWithFilter")]
+
+        public ActionResult<Response<List<CommonResponse>>> getScheduleListWithFilter(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.getScheduleListWithFilter(VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD)));
+        }
+
         [HttpGet("GetDetailsByVesselAndVoyage")]
 
         public ActionResult<Response<SCHEDULE>> GetDetailsByVesselAndVoyage(string VESSEL_NAME, string VOYAGE_NO)
         {
             return Ok(JsonConvert.SerializeObject(_masterService.GetDetailsByVesselAndVoyage(VESSEL_NAME, VOYAGE_NO)));
+        }
+
+        [HttpGet("GetLinerServiceDetails")]
+
+        public ActionResult<Response<LINER_SERVICE>> GetLinerServiceDetails(string SERVICE_NAME, string PORT_CODE)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetLinerServiceDetails(SERVICE_NAME, PORT_CODE)));
+        }
+
+        [HttpGet("getVesselScheduleDetails")]
+
+        public ActionResult<Response<List<CommonResponse>>> getVesselScheduleDetails(string VESSEL_NAME, string VOYAGE_NO, string SERVICE_NAME)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.getVesselScheduleDetails(VESSEL_NAME, VOYAGE_NO, SERVICE_NAME)));
         }
 
         [HttpGet("GetScheduleDetails")]
@@ -1226,48 +1247,6 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.InsertSlotPurchase(request)));
         }
-
-        //[HttpPost("uploadslotpurchase")]
-        //public ActionResult<Response<string>> InsertSlotPurchase(List<SLOT_PURCHASE_LIST> request)
-        //{
-        //    // Preprocess the request to handle empty strings for nullable decimal fields
-        //    foreach (var item in request)
-        //    {
-        //        // Replace empty strings with null for all nullable decimal fields
-        //        item.OF_M20 = NormalizeDecimal(item.OF_M20);
-        //        item.OF_M40 = NormalizeDecimal(item.OF_M40);
-        //        item.OF_M45 = NormalizeDecimal(item.OF_M45);
-        //        item.OF_D20 = NormalizeDecimal(item.OF_D20);
-        //        item.OF_D40 = NormalizeDecimal(item.OF_D40);
-        //        item.OF_D45 = NormalizeDecimal(item.OF_D45);
-        //        item.OF_R20 = NormalizeDecimal(item.OF_R20);
-        //        item.OF_R40 = NormalizeDecimal(item.OF_R40);
-        //        item.OF_R45 = NormalizeDecimal(item.OF_R45);
-        //        item.HAZ_D20 = NormalizeDecimal(item.HAZ_D20);
-        //        item.HAZ_D40 = NormalizeDecimal(item.HAZ_D40);
-        //        item.HAZ_D45 = NormalizeDecimal(item.HAZ_D45);
-        //        item.FLEXI_D20 = NormalizeDecimal(item.FLEXI_D20);
-        //        item.FLEXI_D40 = NormalizeDecimal(item.FLEXI_D40);
-        //        item.FLEXI_D45 = NormalizeDecimal(item.FLEXI_D45);
-        //        item.BAF = NormalizeDecimal(item.BAF);
-        //        item.EWRI = NormalizeDecimal(item.EWRI);
-        //    }
-
-        //    // Pass the processed request to the service layer
-        //    return Ok(JsonConvert.SerializeObject(_masterService.InsertSlotPurchase(request)));
-        //}
-
-        //// Helper method to normalize decimal? values
-        //private decimal? NormalizeDecimal(decimal? value)
-        //{
-        //    if (value == null || value == 0) // Adjust conditions based on your requirements
-        //    {
-        //        return null;
-        //    }
-        //    return value;
-        //}
-
-
 
         [HttpPost("Updateslotpurchase")]
         public ActionResult<Response<string>> Updateslotpurchase(List<SLOT_PURCHASE_LIST> request)

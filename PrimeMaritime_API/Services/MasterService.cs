@@ -1097,12 +1097,93 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<List<SCHEDULE>> getScheduleListWithFilter(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SCHEDULE>> response = new Response<List<SCHEDULE>>();
+            var data = DbClientFactory<MasterRepo>.Instance.getScheduleListWithFilter(dbConn, VESSEL_NAME, PORT_CODE, STATUS, ETA, ETD);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
         public Response<SCHEDULE> GetDetailsByVesselAndVoyage(string VESSEL_NAME, string VOYAGE_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<SCHEDULE> response = new Response<SCHEDULE>();
             var data = DbClientFactory<MasterRepo>.Instance.GetDetailsByVesselAndVoyage(dbConn, VESSEL_NAME, VOYAGE_NO);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<LINER_SERVICE> GetLinerServiceDetails(string SERVICE_NAME, string PORT_CODE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<LINER_SERVICE> response = new Response<LINER_SERVICE>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetLinerServiceDetails(dbConn, SERVICE_NAME, PORT_CODE);
+
+            if ((data != null) && (data.Tables[0].Rows.Count > 0))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                LINER_SERVICE linerService = new LINER_SERVICE();
+
+                linerService = MasterRepo.GetSingleDataFromDataSet<LINER_SERVICE>(data.Tables[0]);
+
+                if (data.Tables.Contains("Table1"))
+                {
+                    linerService.LINERPORT = MasterRepo.GetListFromDataSet<LINER_PORT>(data.Tables[1]);
+                }
+
+                response.Data = linerService;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<List<SCHEDULE>> getVesselScheduleDetails(string VESSEL_NAME, string VOYAGE_NO, string SERVICE_NAME)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SCHEDULE>> response = new Response<List<SCHEDULE>>();
+            var data = DbClientFactory<MasterRepo>.Instance.getVesselScheduleDetails(dbConn, VESSEL_NAME, VOYAGE_NO, SERVICE_NAME);
 
             if (data != null)
             {

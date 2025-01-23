@@ -214,9 +214,9 @@ namespace PrimeMaritime_API.Controllers
 
 
         [HttpGet("GetUnlockBL")]
-        public ActionResult<Response<string>> UnlockBL(string BL_NO)
+        public ActionResult<Response<string>> UnlockBL(string BL_NO,  int ID, string AGENT_CODE)
         {
-            return Ok(_blService.UnlockBL(BL_NO));
+            return Ok(_blService.UnlockBL(BL_NO, ID, AGENT_CODE));
         }
     }
 }

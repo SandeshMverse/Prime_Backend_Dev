@@ -17,6 +17,6 @@ namespace PrimeMaritime_API.IServices
         Response<DO> GetDODetails(string BL_NO, string AGENT_CODE);
         Response<DODETAILS> GetDOByDONo(string BL_NO);
         Response<DODETAILS> GetDOExists(string BL_NO);
-        Response<DO> CheckPaymentPaid(string BL_NO); 
+        Response<INVOICE_DETAILS_FOR_DO> CheckPaymentPaid(string BL_NO);
     }
 }

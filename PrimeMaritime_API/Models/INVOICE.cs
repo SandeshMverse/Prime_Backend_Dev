@@ -251,6 +251,11 @@ namespace PrimeMaritime_API.Models
         public string RECEIPT_NO { get; set; }
         public string AGENT_NAME { get; set; }
         public string AGENT_CODE { get; set; }
+        public decimal OUTSTANDING_AMOUNT { get; set; }
+        public decimal INVOICE_AMOUNT { get; set; }
+        public decimal RECEIVED_AMOUNT { get; set; }
+        
+
     }
 
     public class INVOICE_DETAILS_FOR_RECEIPT_CHARGES

@@ -17,6 +17,7 @@ namespace PrimeMaritime_API.Models
         public decimal INVOICE_AMOUNT { get; set; }
         public decimal OUTSTANDING_AMOUNT { get; set; }
         public decimal RECEIVED_AMOUNT { get; set; }
+        public string RECEIVED_FROM { get; set; }
         public string DEPOSIT_CASH_BANK { get; set; }
         public string RECEIPT_REMARKS { get; set; }
         public string AGENT_CODE { get; set; }

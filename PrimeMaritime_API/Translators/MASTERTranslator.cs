@@ -171,6 +171,15 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("AGREEMENT_NO"))
                 item.AGREEMENT_NO = SqlHelper.GetNullableString(reader, "AGREEMENT_NO");
 
+            if (reader.IsColumnExists("TURN_IN_DATE"))
+                item.TURN_IN_DATE = SqlHelper.GetNullableString(reader, "TURN_IN_DATE");
+
+            if (reader.IsColumnExists("LOCATION"))
+                item.LOCATION = SqlHelper.GetNullableString(reader, "LOCATION");
+
+            if (reader.IsColumnExists("CONTAINER_SIZE"))
+                item.CONTAINER_SIZE = SqlHelper.GetNullableString(reader, "CONTAINER_SIZE");
+
             return item;
         }
 
@@ -539,6 +548,9 @@ namespace PrimeMaritime_API.Translators
 
             if (reader.IsColumnExists("VESSEL_SCHEDULE"))
                 item.VESSEL_SCHEDULE = SqlHelper.GetNullableString(reader, "VESSEL_SCHEDULE");
+
+            if (reader.IsColumnExists("TERMINAL_CODE"))
+                item.TERMINAL_CODE = SqlHelper.GetNullableString(reader, "TERMINAL_CODE");
 
             return item;
         }

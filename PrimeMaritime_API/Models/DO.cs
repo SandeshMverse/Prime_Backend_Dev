@@ -83,4 +83,32 @@ namespace PrimeMaritime_API.Models
 
 
     }
+
+    public class INVOICE_DETAILS_FOR_DO
+    {
+        public string INVOICE_NO { get; set; }
+        public string INVOICE_TYPE { get; set; }
+        public string BILL_TO { get; set; }
+        public string BILL_FROM { get; set; }
+        public string SHIPPER_NAME { get; set; }
+        public string CONSIGNEE_NAME { get; set; }
+        public string ADDRESS { get; set; }
+        public string PAYMENT_TERM { get; set; }
+        public string BL_NO { get; set; }
+        public DateTime INVOICE_DATE { get; set; }
+        public int BRANCH_ID { get; set; }
+        public int BANK_ID { get; set; }
+        public string CONTAINERS { get; set; }
+        public string SHIPPER_REF { get; set; }
+        public string REMARKS { get; set; }
+        public string AGENT_NAME { get; set; }
+        public string AGENT_CODE { get; set; }
+        public string STATUS { get; set; }
+
+        public List<INVOICE_CHARGES> ICHARGES { get; set; } = new List<INVOICE_CHARGES>();
+        public List<RECEIPT_INVOICE> RECEIPT { get; set; } = new List<RECEIPT_INVOICE>();
+        public List<RECEIPT_BANK> RBANK { get; set; } = new List<RECEIPT_BANK>();
+        public List<RECEIPT_CHARGES> RCHARGES { get; set; } = new List<RECEIPT_CHARGES>();
+
+    }
 }

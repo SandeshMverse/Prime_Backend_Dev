@@ -140,8 +140,12 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> InsertSchedule(SCHEDULE request);
 
         Response<List<SCHEDULE>> GetScheduleList(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD);
+        Response<List<SCHEDULE>> getScheduleListWithFilter(string VESSEL_NAME, string PORT_CODE, bool STATUS, string ETA, string ETD);
 
         Response<SCHEDULE> GetDetailsByVesselAndVoyage(string VESSEL_NAME, string VOYAGE_NO);
+        Response<List<SCHEDULE>> getVesselScheduleDetails(string VESSEL_NAME, string VOYAGE_NO, string SERVICE_NAME);
+
+        Response<LINER_SERVICE> GetLinerServiceDetails(string SERVICE_NAME, string PORT_CODE);
 
         Response<SCHEDULE> GetScheduleDetails(int ID);
 

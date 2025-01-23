@@ -734,7 +734,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@ID", SqlDbType.Int) { Value = master.ID},
                   new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,255) { Value = master.VESSEL_NAME},
                   new SqlParameter("@IMO_NO", SqlDbType.VarChar, 11) { Value = master.IMO_NO },
-                   new SqlParameter("@COUNTRY_CODE", SqlDbType.VarChar, 5) { Value = master.COUNTRY_CODE },
+                  new SqlParameter("@COUNTRY_CODE", SqlDbType.VarChar, 5) { Value = master.COUNTRY_CODE },
                   new SqlParameter("@VESSEL_CODE", SqlDbType.VarChar,8) { Value = master.VESSEL_CODE },
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS },
                   new SqlParameter("@CALL_SIGN", SqlDbType.VarChar,50) { Value = master.CALL_SIGN },
@@ -1485,6 +1485,21 @@ namespace PrimeMaritime_API.Repository
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", parameters);
+
+                SqlParameter[] updateParameters =
+                {
+                 new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "UPDATE_VESSEL_VOYAGE_FROM_VESSEL_SCHEDULE" },
+                 new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = master.VESSEL_NAME },
+                 new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = master.VOYAGE_NO },
+                 new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = master.PORT_CODE },
+                 new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = master.SERVICE_NAME },
+                 new SqlParameter("@ETA", SqlDbType.DateTime) { Value = master.ETA },
+                 new SqlParameter("@ETD", SqlDbType.DateTime) { Value = master.ETD },
+                 new SqlParameter("@VIA_NO",SqlDbType.VarChar,100){Value=master.VIA_NO},
+                 new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar,100) { Value = master.TERMINAL_NO },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", updateParameters);
             }
             catch (Exception)
             {
@@ -1520,6 +1535,32 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public List<SCHEDULE> getScheduleListWithFilter(string dbConn, string VesselName, string PortCode, bool status, string ETA, string ETD)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_VESSEL_SCHEDULELIST_WITH_FILTER" },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = VesselName },
+                  new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = PortCode },
+                  new SqlParameter("@STATUS", SqlDbType.Bit) { Value = status },
+                  new SqlParameter("@ETA", SqlDbType.DateTime) { Value = ETA },
+                   new SqlParameter("@ETD", SqlDbType.DateTime) { Value = ETD },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_VESSEL_MASTER", parameters);
+                List<SCHEDULE> master = SqlHelper.CreateListFromTable<SCHEDULE>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public SCHEDULE GetDetailsByVesselAndVoyage(string dbConn, string VesselName, string VOYAGE_NO)
         {
             try
@@ -1533,6 +1574,50 @@ namespace PrimeMaritime_API.Repository
 
                 return SqlHelper.ExtecuteProcedureReturnData<SCHEDULE>(dbConn, "SP_CRUD_VESSEL_MASTER", r => r.TranslateAsSchedule(), parameters);
 
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public DataSet GetLinerServiceDetails(string dbConn, string SERVICE_NAME, string PORT_CODE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_LINER_SERVICE_DETAILS" },
+                  new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = SERVICE_NAME },
+                  new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = PORT_CODE },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_SERVICE_MASTER", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public List<SCHEDULE> getVesselScheduleDetails(string dbConn, string VesselName, string VOYAGE_NO, string SERVICE_NAME)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_VESSEL_SCHEDULE_DETAILS_TRAK" },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = VesselName },
+                  new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = VOYAGE_NO },
+                   new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 100) { Value = SERVICE_NAME },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_VESSEL_MASTER", parameters);
+                List<SCHEDULE> master = SqlHelper.CreateListFromTable<SCHEDULE>(dataTable);
+
+                return master;
             }
             catch (Exception)
             {
@@ -1581,6 +1666,21 @@ namespace PrimeMaritime_API.Repository
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", parameters);
+
+                SqlParameter[] updateParameters =
+                {
+                 new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "UPDATE_VESSEL_VOYAGE_FROM_VESSEL_SCHEDULE" },
+                 new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = master.VESSEL_NAME },
+                 new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = master.VOYAGE_NO },
+                 new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = master.PORT_CODE },
+                 new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = master.SERVICE_NAME },
+                 new SqlParameter("@ETA", SqlDbType.DateTime) { Value = master.ETA },
+                 new SqlParameter("@ETD", SqlDbType.DateTime) { Value = master.ETD },
+                 new SqlParameter("@VIA_NO",SqlDbType.VarChar,100){Value=master.VIA_NO},
+                 new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar,100) { Value = master.TERMINAL_NO },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", updateParameters);
             }
             catch (Exception)
             {
@@ -1596,7 +1696,7 @@ namespace PrimeMaritime_API.Repository
                 SqlParameter[] parameters =
                 {
                   new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
-                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "DELETE_VESSEL_SCHEDULE" }
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "DELETE_VESSEL_SCHEDULE" }
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", parameters);
@@ -1658,6 +1758,26 @@ namespace PrimeMaritime_API.Repository
 
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "MST_VESSEL_SCHEDULE", columns);
+
+                // Loop through the schedule to update another table
+                foreach (var item in schedule)
+                {
+                    SqlParameter[] updateParameters =
+                    {
+                     new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "UPDATE_VESSEL_VOYAGE_FROM_VESSEL_SCHEDULE" },
+                     new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = item.VESSEL_NAME },
+                     new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = item.VOYAGE_NO },
+                     new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = item.PORT_CODE },
+                     new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = item.SERVICE_NAME },
+                     new SqlParameter("@ETA", SqlDbType.DateTime) { Value = item.ETA },
+                     new SqlParameter("@ETD", SqlDbType.DateTime) { Value = item.ETD },
+                     new SqlParameter("@VIA_NO", SqlDbType.VarChar, 100) { Value = item.VIA_NO },
+                     new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar, 100) { Value = item.TERMINAL_NO },
+                  };
+
+                    // Call stored procedure to update the other table
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", updateParameters);
+                }
             }
             catch (Exception)
             {
@@ -1677,20 +1797,35 @@ namespace PrimeMaritime_API.Repository
                         {
                             SqlParameter[] parameters1 =
                             {
-                        new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "UPDATE_EXCEL_VESSEL_SCHEDULE" },
-                        new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = item.VESSEL_NAME },
-                        new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = item.SERVICE_NAME },
-                        new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = item.PORT_CODE },
-                        new SqlParameter("@VIA_NO", SqlDbType.VarChar, 100) { Value = item.VIA_NO},
-                        new SqlParameter("@ETA", SqlDbType.DateTime) { Value = item.ETA },
-                        new SqlParameter("@ETD", SqlDbType.DateTime) { Value = item.ETD },
-                        new SqlParameter("@STATUS", SqlDbType.Bit) { Value = item.STATUS },
-                        new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = item.VOYAGE_NO },
-                        new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar, 100) { Value = item.TERMINAL_NO },
-                         new SqlParameter("@VESSEL_SCHEDULE", SqlDbType.VarChar, 100) { Value = item.VESSEL_SCHEDULE }
+                               new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "UPDATE_EXCEL_VESSEL_SCHEDULE" },
+                               new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = item.VESSEL_NAME },
+                               new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = item.SERVICE_NAME },
+                               new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = item.PORT_CODE },
+                               new SqlParameter("@VIA_NO", SqlDbType.VarChar, 100) { Value = item.VIA_NO},
+                               new SqlParameter("@ETA", SqlDbType.DateTime) { Value = item.ETA },
+                               new SqlParameter("@ETD", SqlDbType.DateTime) { Value = item.ETD },
+                               new SqlParameter("@STATUS", SqlDbType.Bit) { Value = item.STATUS },
+                               new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = item.VOYAGE_NO },
+                               new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar, 100) { Value = item.TERMINAL_NO },
+                               new SqlParameter("@VESSEL_SCHEDULE", SqlDbType.VarChar, 100) { Value = item.VESSEL_SCHEDULE }
                     };
 
                             SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_VESSEL_MASTER", parameters1);
+
+                            SqlParameter[] updateParameters =
+                            {
+                             new SqlParameter("@OPERATION", SqlDbType.VarChar,255) { Value = "UPDATE_VESSEL_VOYAGE_FROM_VESSEL_SCHEDULE" },
+                             new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = item.VESSEL_NAME },
+                             new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar, 100) { Value = item.VOYAGE_NO },
+                             new SqlParameter("@PORT_CODE", SqlDbType.VarChar, 100) { Value = item.PORT_CODE },
+                             new SqlParameter("@SERVICE_NAME", SqlDbType.VarChar, 255) { Value = item.SERVICE_NAME },
+                             new SqlParameter("@ETA", SqlDbType.DateTime) { Value = item.ETA },
+                             new SqlParameter("@ETD", SqlDbType.DateTime) { Value = item.ETD },
+                             new SqlParameter("@VIA_NO",SqlDbType.VarChar,100){Value=item.VIA_NO},
+                             new SqlParameter("@TERMINAL_NO", SqlDbType.VarChar,100) { Value = item.TERMINAL_NO },
+                           };
+
+                            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_VESSEL_MASTER", updateParameters);
                         }
                         transaction.Commit();
                     }

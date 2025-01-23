@@ -29,9 +29,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetReceiptList")]
-        public ActionResult<Response<List<RECEIPT_INVOICE>>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE)
+        public ActionResult<Response<List<RECEIPT_INVOICE>>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string AGENT_CODE)
         {
-            return Ok(JsonConvert.SerializeObject(_receiptService.GetReceiptList(FROM_DATE, TO_DATE, PORT, ORG_CODE)));
+            return Ok(JsonConvert.SerializeObject(_receiptService.GetReceiptList(FROM_DATE, TO_DATE, PORT, ORG_CODE, AGENT_CODE)));
         }
     }
 }
