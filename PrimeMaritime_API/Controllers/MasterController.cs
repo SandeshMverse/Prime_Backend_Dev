@@ -1205,10 +1205,16 @@ namespace PrimeMaritime_API.Controllers
 
         #region "VENDOR AGREEMENT REPORT"
 
+        //[HttpGet("GetVendorAgreementReport")]
+        //public ActionResult<Response<List<VENDOR_AGREEMENT_REPORT>>> GetVendorAgreementReport(string VENDOR_ID, string MONTH)
+        //{
+        //    return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementReport(VENDOR_ID, MONTH)));
+        //}
+
         [HttpGet("GetVendorAgreementReport")]
-        public ActionResult<Response<List<VENDOR_AGREEMENT_REPORT>>> GetVendorAgreementReport(string VENDOR_ID, string MONTH)
+        public ActionResult<Response<List<VENDOR_AGREEMENT_REPORT>>> GetVendorAgreementReport(string VENDOR_ID, string MONTH, int YEAR)
         {
-            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementReport(VENDOR_ID, MONTH)));
+            return Ok(JsonConvert.SerializeObject(_masterService.GetVendorAgreementReport(VENDOR_ID, MONTH, YEAR)));
         }
 
         #endregion

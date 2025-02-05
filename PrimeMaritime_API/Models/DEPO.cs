@@ -48,8 +48,8 @@ namespace PrimeMaritime_API.Models
         public string CSC_NO { get; set; }
         public string CONTAINER_TYPE { get; set; }
         public string MNRFILE_PATH { get; set; }
-
         public int ID {get; set;}
+        public string CONTAINER_SIZE { get; set; }
     }
 
     public class MNR_LIST

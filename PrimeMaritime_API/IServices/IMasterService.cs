@@ -406,7 +406,7 @@ namespace PrimeMaritime_API.IServices
         #endregion
 
         #region " VENDOR AGREEMENT REPORT"
-        Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH);
+        Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH, int YEAR);
 
         #endregion
 

@@ -131,6 +131,28 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public List<DETENTION_WAIVER_REQUEST> GetDODetailsForDetention(string dbConn, string DO_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_WAIVER_BY_DO_NO" },
+                   new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = DO_NO},
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
+                List<DETENTION_WAIVER_REQUEST> detention_Request = SqlHelper.CreateListFromTable<DETENTION_WAIVER_REQUEST>(dataTable);
+
+                return detention_Request;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
     }
 }
 

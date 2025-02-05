@@ -101,4 +101,12 @@ namespace PrimeMaritime_API.Models
         public string FAX { get; set; }
 
     }
+
+    public class ONLYBL
+    {
+        public string BL_NO { get; set; }
+        public string AGENT_CODE { get; set; }
+        public bool SWITCHBL_STATUS { get; set; } 
+
+    }
 }

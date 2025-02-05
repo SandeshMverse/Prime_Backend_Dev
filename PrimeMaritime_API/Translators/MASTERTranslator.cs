@@ -180,6 +180,15 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("CONTAINER_SIZE"))
                 item.CONTAINER_SIZE = SqlHelper.GetNullableString(reader, "CONTAINER_SIZE");
 
+            if (reader.IsColumnExists("TARE_WEIGHT_UNIT"))
+                item.TARE_WEIGHT_UNIT = SqlHelper.GetNullableString(reader, "TARE_WEIGHT_UNIT");
+
+            if (reader.IsColumnExists("PAYLOAD_CAPACITY_UNIT"))
+                item.PAYLOAD_CAPACITY_UNIT = SqlHelper.GetNullableString(reader, "PAYLOAD_CAPACITY_UNIT");
+
+            if (reader.IsColumnExists("GROSS_WEIGHT_UNIT"))
+                item.GROSS_WEIGHT_UNIT = SqlHelper.GetNullableString(reader, "GROSS_WEIGHT_UNIT");
+
             return item;
         }
 
@@ -1172,6 +1181,29 @@ namespace PrimeMaritime_API.Translators
 
             if (reader.IsColumnExists("TOTAL"))
                 item.TOTAL = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "TOTAL"));
+
+            return item;
+        }
+
+        public static ONLYBL TranslateAsBLDETAILS(this SqlDataReader reader, bool isList = false)
+        {
+            if (!isList)
+            {
+                if (!reader.HasRows)
+                    return null;
+                reader.Read();
+            }
+
+            var item = new ONLYBL();
+
+            if (reader.IsColumnExists("BL_NO"))
+                item.BL_NO = SqlHelper.GetNullableString(reader, "BL_NO");
+
+            if (reader.IsColumnExists("AGENT_CODE"))
+                item.AGENT_CODE = SqlHelper.GetNullableString(reader, "AGENT_CODE");
+
+            if (reader.IsColumnExists("SWITCHBL_STATUS"))
+                item.SWITCHBL_STATUS = SqlHelper.GetBoolean(reader, "SWITCHBL_STATUS");
 
             return item;
         }

@@ -528,6 +528,30 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<ONLYBL> CheckBLSwitched(string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<ONLYBL> response = new Response<ONLYBL>();
+            var data = DbClientFactory<BLRepo>.Instance.CheckBLSwitched(dbConn, BL_NO);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
     }
 
 }

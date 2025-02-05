@@ -92,8 +92,12 @@ namespace PrimeMaritime_API.Models
         public string? DEPO_CODE { get; set; }
         public string? TURN_IN_DATE { get; set; }
         public string? LOCATION { get; set; }
-
         public string? CONTAINER_SIZE { get; set; }
+
+        //ADDED
+        public string TARE_WEIGHT_UNIT { get; set; }
+        public string PAYLOAD_CAPACITY_UNIT { get; set; }
+        public string GROSS_WEIGHT_UNIT { get; set; }
 
     }
     public class COUNTRY_MASTER
@@ -893,6 +897,7 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_AGREEMENT_ID { get; set; }
         public string AGREEMENT_NO { get; set; }
+        public Boolean is_active { get; set; }
     }
 
     public class VENDOR_AGREEMENT_REPORT
@@ -913,6 +918,8 @@ namespace PrimeMaritime_API.Models
     {
         public int VENDOR_ID { get; set; }
         public string VENDOR_NAME { get; set; }
+
+        public Boolean STATUS { get; set; }
     }
 
     public class SERVICE

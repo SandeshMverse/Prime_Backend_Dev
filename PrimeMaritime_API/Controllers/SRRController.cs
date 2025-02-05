@@ -9,6 +9,7 @@ using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Request;
 using PrimeMaritime_API.Response;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -100,6 +101,70 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(_srrService.InsertSRR(request));
         }
+
+        //[HttpPost("InsertSRR")]
+        //public IActionResult InsertSRR([FromForm] SRRRequest sRRRequest, [FromForm] IFormFile file)
+        //{
+        //    try
+        //    {
+        //        // Step 1: Check if the file exists and handle it.
+        //        if (file != null && file.Length > 0)
+        //        {
+        //            // Define the base folder path for 'SRRFiles' inside 'Uploads'
+        //            string baseFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "SRRFiles");
+
+        //            // Check if the 'SRRFiles' folder exists, if not create it
+        //            if (!Directory.Exists(baseFolderPath))
+        //            {
+        //                Directory.CreateDirectory(baseFolderPath);
+        //            }
+
+        //            // Define the new folder path for 'SRRDangours' inside 'SRRFiles'
+        //            string sRRDangoursFolderPath = Path.Combine(baseFolderPath, "SRRDangours");
+
+        //            // Check if the 'SRRDangours' folder exists, if not create it
+        //            if (!Directory.Exists(sRRDangoursFolderPath))
+        //            {
+        //                Directory.CreateDirectory(sRRDangoursFolderPath);
+        //            }
+
+        //            // Define the full path for the file (using SRR_NO for the filename)
+        //            string filePath = Path.Combine(sRRDangoursFolderPath, $"{sRRRequest.SRR_NO}{Path.GetExtension(file.FileName)}");
+
+        //            // Save the file to the 'SRRDangours' folder
+        //            using (var stream = new FileStream(filePath, FileMode.Create))
+        //            {
+        //                file.CopyTo(stream);
+        //            }
+        //        }
+
+        //        // Step 2: Call the service method to insert SRR data
+        //        var result = _srrService.InsertSRR(sRRRequest);
+
+        //        // Step 3: Return the service response
+        //        if (result.Succeeded)
+        //        {
+        //            return Ok(result);
+        //        }
+        //        else
+        //        {
+        //            return StatusCode(500, result); // Return error response from service if needed
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle unexpected errors
+        //        return StatusCode(500, new Response<string>
+        //        {
+        //            Succeeded = false,
+        //            ResponseMessage = "An unexpected error occurred: " + ex.Message,
+        //            ResponseCode = 500,
+        //            Data = null
+        //        });
+        //    }
+        //}
+
+
 
         [HttpPost("InsertExcRate")]
         public ActionResult<Response<EXC_RATE>> InsertExcRate(List<EXC_RATE> excRateList)

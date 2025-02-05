@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using PrimeMaritime_API.Services;
 
 namespace PrimeMaritime_API.Controllers
 {
@@ -217,6 +218,13 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<string>> UnlockBL(string BL_NO,  int ID, string AGENT_CODE)
         {
             return Ok(_blService.UnlockBL(BL_NO, ID, AGENT_CODE));
+        }
+
+
+        [HttpGet("CheckBLSwitched")]
+        public ActionResult<Response<ONLYBL>> CheckBLSwitched(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_blService.CheckBLSwitched(BL_NO)));
         }
     }
 }

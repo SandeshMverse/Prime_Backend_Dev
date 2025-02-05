@@ -3476,12 +3476,12 @@ namespace PrimeMaritime_API.Services
 
         #region "VENDOR AGREEMENT REPORT"
 
-        public Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH)
+        public Response<List<VENDOR_AGREEMENT_REPORT>> GetVendorAgreementReport(string VENDOR_ID, string MONTH, int YEAR)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<VENDOR_AGREEMENT_REPORT>> response = new Response<List<VENDOR_AGREEMENT_REPORT>>();
-            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementReport(dbConn, VENDOR_ID, MONTH);
+            var data = DbClientFactory<MasterRepo>.Instance.GetVendorAgreementReport(dbConn, VENDOR_ID, MONTH, YEAR);
 
             if (data != null)
             {

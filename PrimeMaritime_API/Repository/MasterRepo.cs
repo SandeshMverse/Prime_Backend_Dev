@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 using System.Dynamic;
 using System.Linq;
@@ -232,46 +233,49 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+
         public void UpdatePartyMasterDetails(string connstring, PARTY_MASTER master)
         {
-            using (SqlConnection conn = new SqlConnection(connstring))
+
+            try
             {
-                conn.Open();
-                SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
-                try
+                SqlParameter[] parameters =
                 {
-                    SqlParameter[] parameters =
-                    {
-                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER" },
-                  new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
-                  new SqlParameter("@CUST_NAME", SqlDbType.VarChar,50) { Value = master.CUST_NAME},
-                  new SqlParameter("@CUST_ADDRESS", SqlDbType.VarChar, 100) { Value = master.CUST_ADDRESS },
-                  new SqlParameter("@CUST_EMAIL", SqlDbType.VarChar, 50) { Value = master.CUST_EMAIL },
-                  new SqlParameter("@CUST_CONTACT", SqlDbType.VarChar, 20) { Value = master.CUST_CONTACT },
-                  new SqlParameter("@CUST_TYPE", SqlDbType.VarChar,100) { Value = master.CUST_TYPE },
-                  new SqlParameter("@GSTIN", SqlDbType.VarChar,15) { Value = master.GSTIN },
-                  new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
-                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = master.AGENT_CODE },
-                  new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
-                  new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
-                  new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
-                  new SqlParameter("@PINCODE", SqlDbType.VarChar,50) { Value = master.PINCODE },
-                  new SqlParameter("@PAN", SqlDbType.VarChar,50) { Value = master.PAN },
-                  new SqlParameter("@CONTACT_PERSON_NAME", SqlDbType.VarChar,255) { Value = master.CONTACT_PERSON_NAME },
-                  new SqlParameter("@CONTACT_PERSON_NO", SqlDbType.VarChar,50) { Value = master.CONTACT_PERSON_NO },
-                  new SqlParameter("@IS_GROUP_COMPANIES", SqlDbType.Bit) { Value = master.IS_GROUP_COMPANIES },
-                  new SqlParameter("@SALES_NAME", SqlDbType.VarChar,255) { Value = master.SALES_NAME },
-                  new SqlParameter("@SALES_CODE", SqlDbType.VarChar,50) { Value = master.SALES_CODE },
-                  new SqlParameter("@SALES_LOC", SqlDbType.VarChar,255) { Value = master.SALES_LOC },
-                  new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? null : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)  },
-                };
+                     new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER" },
+                     new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
+                     new SqlParameter("@CUST_NAME", SqlDbType.VarChar,50) { Value = master.CUST_NAME},
+                     new SqlParameter("@CUST_ADDRESS", SqlDbType.VarChar, 100) { Value = master.CUST_ADDRESS },
+                     new SqlParameter("@CUST_EMAIL", SqlDbType.VarChar, 50) { Value = master.CUST_EMAIL },
+                     new SqlParameter("@CUST_CONTACT", SqlDbType.VarChar, 20) { Value = master.CUST_CONTACT },
+                     new SqlParameter("@CUST_TYPE", SqlDbType.VarChar,100) { Value = master.CUST_TYPE },
+                     new SqlParameter("@GSTIN", SqlDbType.VarChar,15) { Value = master.GSTIN },
+                     new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
+                     new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = master.AGENT_CODE },
+                     new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
+                     new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
+                     new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
+                     new SqlParameter("@PINCODE", SqlDbType.VarChar,50) { Value = master.PINCODE },
+                     new SqlParameter("@PAN", SqlDbType.VarChar,50) { Value = master.PAN },
+                     new SqlParameter("@CONTACT_PERSON_NAME", SqlDbType.VarChar,255) { Value = master.CONTACT_PERSON_NAME },
+                     new SqlParameter("@CONTACT_PERSON_NO", SqlDbType.VarChar,50) { Value = master.CONTACT_PERSON_NO },
+                     new SqlParameter("@IS_GROUP_COMPANIES", SqlDbType.Bit) { Value = master.IS_GROUP_COMPANIES },
+                     new SqlParameter("@SALES_NAME", SqlDbType.VarChar,255) { Value = master.SALES_NAME },
+                     new SqlParameter("@SALES_CODE", SqlDbType.VarChar,50) { Value = master.SALES_CODE },
+                     new SqlParameter("@SALES_LOC", SqlDbType.VarChar,255) { Value = master.SALES_LOC },
+                     //new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? null : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)  },
+                     new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime)
+                      {
+                       Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? (object)DBNull.Value : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)
+                      },
+                 };
 
-                    SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters);
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters);
 
-                    foreach (var items in master.BRANCH_LIST)
+                foreach (var items in master.BRANCH_LIST)
+                {
+                    SqlParameter[] parameters1 =
                     {
-                        SqlParameter[] parameters1 =
-                        {
                       new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BRANCH" },
                       new SqlParameter("@BRANCH_ID", SqlDbType.Int) { Value = items.ID},
                       new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
@@ -291,13 +295,13 @@ namespace PrimeMaritime_API.Repository
                       new SqlParameter("@IS_TAX_APPLICABLE", SqlDbType.Bit) { Value = items.IS_TAX_APPLICABLE },
                     };
 
-                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters1);
-                    }
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters1);
+                }
 
-                    foreach (var items in master.BANK_LIST)
+                foreach (var items in master.BANK_LIST)
+                {
+                    SqlParameter[] parameters2 =
                     {
-                        SqlParameter[] parameters2 =
-                        {
                       new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BANK" },
                       new SqlParameter("@BANK_ID", SqlDbType.Int) { Value = items.ID},
                       new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
@@ -309,18 +313,110 @@ namespace PrimeMaritime_API.Repository
                       new SqlParameter("@BANK_REMARKS", SqlDbType.VarChar,255) { Value = items.BANK_REMARKS },
                     };
 
-                        SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters2);
-                    }
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MASTER", parameters2);
+                }
 
-                }
-                catch (Exception ex)
-                {
-                    // Rollback the transaction on error
-                    transaction.Rollback();
-                    throw new Exception("An error occurred while inserting the party master: " + ex.Message);
-                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
+
+        //public void UpdatePartyMasterDetails(string connstring, PARTY_MASTER master)
+        //{
+        //    using (SqlConnection conn = new SqlConnection(connstring))
+        //    {
+        //        conn.Open();
+        //        SqlTransaction transaction = conn.BeginTransaction(); // Begin transaction
+        //        try
+        //        {
+        //            SqlParameter[] parameters =
+        //            {
+        //             new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER" },
+        //             new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
+        //             new SqlParameter("@CUST_NAME", SqlDbType.VarChar,50) { Value = master.CUST_NAME},
+        //             new SqlParameter("@CUST_ADDRESS", SqlDbType.VarChar, 100) { Value = master.CUST_ADDRESS },
+        //             new SqlParameter("@CUST_EMAIL", SqlDbType.VarChar, 50) { Value = master.CUST_EMAIL },
+        //             new SqlParameter("@CUST_CONTACT", SqlDbType.VarChar, 20) { Value = master.CUST_CONTACT },
+        //             new SqlParameter("@CUST_TYPE", SqlDbType.VarChar,100) { Value = master.CUST_TYPE },
+        //             new SqlParameter("@GSTIN", SqlDbType.VarChar,15) { Value = master.GSTIN },
+        //             new SqlParameter("@STATUS", SqlDbType.Bit) { Value = master.STATUS},
+        //             new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = master.AGENT_CODE },
+        //             new SqlParameter("@COUNTRY", SqlDbType.VarChar,20) { Value = master.COUNTRY },
+        //             new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = master.STATE },
+        //             new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = master.CITY },
+        //             new SqlParameter("@PINCODE", SqlDbType.VarChar,50) { Value = master.PINCODE },
+        //             new SqlParameter("@PAN", SqlDbType.VarChar,50) { Value = master.PAN },
+        //             new SqlParameter("@CONTACT_PERSON_NAME", SqlDbType.VarChar,255) { Value = master.CONTACT_PERSON_NAME },
+        //             new SqlParameter("@CONTACT_PERSON_NO", SqlDbType.VarChar,50) { Value = master.CONTACT_PERSON_NO },
+        //             new SqlParameter("@IS_GROUP_COMPANIES", SqlDbType.Bit) { Value = master.IS_GROUP_COMPANIES },
+        //             new SqlParameter("@SALES_NAME", SqlDbType.VarChar,255) { Value = master.SALES_NAME },
+        //             new SqlParameter("@SALES_CODE", SqlDbType.VarChar,50) { Value = master.SALES_CODE },
+        //             new SqlParameter("@SALES_LOC", SqlDbType.VarChar,255) { Value = master.SALES_LOC },
+        //             //new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? null : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)  },
+        //             new SqlParameter("@SALES_EFFECTIVE_DATE", SqlDbType.DateTime)
+        //              {
+        //               Value = String.IsNullOrEmpty(master.SALES_EFFECTIVE_DATE) ? (object)DBNull.Value : Convert.ToDateTime(master.SALES_EFFECTIVE_DATE)
+        //              },
+        //            };
+
+        //            SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters);
+
+        //            foreach (var items in master.BRANCH_LIST)
+        //            {
+        //                SqlParameter[] parameters1 =
+        //                {
+        //              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BRANCH" },
+        //              new SqlParameter("@BRANCH_ID", SqlDbType.Int) { Value = items.ID},
+        //              new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
+        //              new SqlParameter("@BRANCH_NAME", SqlDbType.VarChar, 255) { Value = items.BRANCH_NAME },
+        //              new SqlParameter("@BRANCH_CODE", SqlDbType.VarChar, 20) { Value = items.BRANCH_CODE },
+        //              new SqlParameter("@COUNTRY", SqlDbType.VarChar, 50) { Value = items.COUNTRY },
+        //              new SqlParameter("@STATE", SqlDbType.VarChar,255) { Value = items.STATE },
+        //              new SqlParameter("@CITY", SqlDbType.VarChar,255) { Value = items.CITY },
+        //              new SqlParameter("@TAN", SqlDbType.VarChar,50) { Value = items.TAN },
+        //              new SqlParameter("@TAX_NO", SqlDbType.VarChar,50) { Value = items.TAX_NO },
+        //              new SqlParameter("@TAX_TYPE", SqlDbType.VarChar,20) { Value = items.TAX_TYPE },
+        //              new SqlParameter("@PIC_NAME", SqlDbType.VarChar,255) { Value = items.PIC_NAME },
+        //              new SqlParameter("@PIC_CONTACT", SqlDbType.VarChar,50) { Value = items.PIC_CONTACT },
+        //              new SqlParameter("@PIC_EMAIL", SqlDbType.VarChar,255) { Value = items.PIC_EMAIL },
+        //              new SqlParameter("@ADDRESS", SqlDbType.VarChar,255) { Value = items.ADDRESS },
+        //              new SqlParameter("@IS_SEZ", SqlDbType.Bit) { Value = items.IS_SEZ },
+        //              new SqlParameter("@IS_TAX_APPLICABLE", SqlDbType.Bit) { Value = items.IS_TAX_APPLICABLE },
+        //            };
+
+        //                SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters1);
+        //            }
+
+        //            foreach (var items in master.BANK_LIST)
+        //            {
+        //                SqlParameter[] parameters2 =
+        //                {
+        //              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CUSTOMER_BANK" },
+        //              new SqlParameter("@BANK_ID", SqlDbType.Int) { Value = items.ID},
+        //              new SqlParameter("@CUST_ID", SqlDbType.Int) { Value = master.CUST_ID },
+        //              new SqlParameter("@BANK_NAME", SqlDbType.VarChar, 255) { Value = items.BANK_NAME },
+        //              new SqlParameter("@BRANCH_CODE", SqlDbType.VarChar, 20) { Value = items.BRANCH_CODE },
+        //              new SqlParameter("@BANK_ACC_NO", SqlDbType.VarChar, 50) { Value = items.BANK_ACC_NO },
+        //              new SqlParameter("@BANK_IFSC", SqlDbType.VarChar,50) { Value = items.BANK_IFSC },
+        //              new SqlParameter("@BANK_SWIFT", SqlDbType.VarChar,50) { Value = items.BANK_SWIFT },
+        //              new SqlParameter("@BANK_REMARKS", SqlDbType.VarChar,255) { Value = items.BANK_REMARKS },
+        //            };
+
+        //                SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", parameters2);
+        //            }
+
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            // Rollback the transaction on error
+        //            transaction.Rollback();
+        //            throw new Exception("An error occurred while inserting the party master: " + ex.Message);
+        //        }
+        //    }
+        //}
         #endregion
 
         #region "CONTAINER MASTER"
@@ -349,6 +445,11 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
                   new SqlParameter("@CSC_NO", SqlDbType.VarChar,100) { Value = master.CSC_NO },
                   new SqlParameter("@ACEP_NO", SqlDbType.VarChar,100) { Value = master.ACEP_NO },
+
+                  //ADDED
+                  new SqlParameter("@TARE_WEIGHT_UNIT", SqlDbType.VarChar,50) { Value = master.TARE_WEIGHT_UNIT },
+                  new SqlParameter("@PAYLOAD_CAPACITY_UNIT", SqlDbType.VarChar,50) { Value = master.PAYLOAD_CAPACITY_UNIT },
+                  new SqlParameter("@GROSS_WEIGHT_UNIT", SqlDbType.VarChar,50) { Value = master.GROSS_WEIGHT_UNIT },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -510,6 +611,11 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = master.GROSS_WEIGHT },
                   new SqlParameter("@CSC_NO", SqlDbType.VarChar,100) { Value = master.CSC_NO },
                   new SqlParameter("@ACEP_NO", SqlDbType.VarChar,100) { Value = master.ACEP_NO },
+
+                  //ADDED
+                  new SqlParameter("@TARE_WEIGHT_UNIT", SqlDbType.VarChar,50) { Value = master.TARE_WEIGHT_UNIT },
+                  new SqlParameter("@PAYLOAD_CAPACITY_UNIT", SqlDbType.VarChar,50) { Value = master.PAYLOAD_CAPACITY_UNIT },
+                  new SqlParameter("@GROSS_WEIGHT_UNIT", SqlDbType.VarChar,50) { Value = master.GROSS_WEIGHT_UNIT },
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
@@ -4514,7 +4620,9 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@modified_at", SqlDbType.DateTime) { Value = vendor.MODIFIED_AT },
                         new SqlParameter("@AttachmentPath", SqlDbType.VarChar, 200) { Value = vendor.AttachmentPath },
                         new SqlParameter("@BUILD_DOWN_PERIOD", SqlDbType.Int) { Value = vendor.BUILD_DOWN_PERIOD },
-                        new SqlParameter("@POST_BUILD_DOWN_LEASE_RENT", SqlDbType.Decimal) { Value = vendor.POST_BUILD_DOWN_LEASE_RENT }
+                        new SqlParameter("@POST_BUILD_DOWN_LEASE_RENT", SqlDbType.Decimal) { Value = vendor.POST_BUILD_DOWN_LEASE_RENT },
+                        new SqlParameter("@is_active", SqlDbType.Bit) { Value = vendor.IS_ACTIVE },
+
                     };
 
                     SqlHelper.ExecuteProcedureReturnStrings(conn, transaction, "SP_CRUD_MASTER", vendorParams);
@@ -4668,7 +4776,7 @@ namespace PrimeMaritime_API.Repository
         #endregion
 
         #region " VENDOR AGREEMENT REPORT"
-        public List<VENDOR_AGREEMENT_REPORT> GetVendorAgreementReport(string connstring,string VENDOR_ID, string MONTH)
+        public List<VENDOR_AGREEMENT_REPORT> GetVendorAgreementReport(string connstring,string VENDOR_ID, string MONTH, int YEAR)
         {
             try
             {
@@ -4677,6 +4785,7 @@ namespace PrimeMaritime_API.Repository
                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_VENDOR_AGR_REPORT" },
                    new SqlParameter("@VENDOR_ID", SqlDbType.VarChar, 255) { Value = VENDOR_ID },
                    new SqlParameter("@MONTH", SqlDbType.VarChar, 50) { Value = MONTH },
+                   new SqlParameter("@YEAR", SqlDbType.Int) { Value = YEAR },
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_VENDOR_AGR_REPORT", parameters);

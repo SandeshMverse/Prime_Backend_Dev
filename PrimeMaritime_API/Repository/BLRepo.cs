@@ -13,6 +13,7 @@ using System.Numerics;
 using System.Transactions;
 using System.ComponentModel;
 using System.Data.Common;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace PrimeMaritime_API.Repository
 {
@@ -83,44 +84,44 @@ namespace PrimeMaritime_API.Repository
             }
 
 
-            SqlParameter[] parameters =
-                {
-              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CREATE_BL" },
-              new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
-              new SqlParameter("@SRR_ID", SqlDbType.Int) { Value = request.SRR_ID },
-              new SqlParameter("@SRR_NO", SqlDbType.VarChar, 50) { Value = request.SRR_NO },
-              new SqlParameter("@SHIPPER", SqlDbType.VarChar, 50) { Value = request.SHIPPER },
-              new SqlParameter("@SHIPPER_ADDRESS", SqlDbType.VarChar, 255) { Value = request.SHIPPER_ADDRESS },
-              new SqlParameter("@CONSIGNEE", SqlDbType.VarChar, 50) { Value = request.CONSIGNEE },
-              new SqlParameter("@CONSIGNEE_ADDRESS", SqlDbType.VarChar, 255) { Value = request.CONSIGNEE_ADDRESS },
-              new SqlParameter("@NOTIFY_PARTY", SqlDbType.VarChar, 50) { Value = request.NOTIFY_PARTY },
-              new SqlParameter("@NOTIFY_PARTY_ADDRESS", SqlDbType.VarChar,255) { Value = request.NOTIFY_PARTY_ADDRESS },
-              new SqlParameter("@PRE_CARRIAGE_BY", SqlDbType.VarChar,50) { Value = request.PRE_CARRIAGE_BY },
-              new SqlParameter("@PLACE_OF_RECEIPT", SqlDbType.VarChar,255) { Value = request.PLACE_OF_RECEIPT },
-              new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,255) { Value = request.VESSEL_NAME },
-              new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,50) { Value = request.VOYAGE_NO },
-              new SqlParameter("@PORT_OF_LOADING", SqlDbType.VarChar,255) { Value = request.PORT_OF_LOADING },
-              new SqlParameter("@PORT_OF_DISCHARGE", SqlDbType.VarChar,255) { Value = request.PORT_OF_DISCHARGE },
-              new SqlParameter("@PLACE_OF_DELIVERY", SqlDbType.VarChar,255) { Value = request.PLACE_OF_DELIVERY },
-              new SqlParameter("@BL_ISSUE_PLACE", SqlDbType.VarChar,100) { Value = request.BL_ISSUE_PLACE },
-              new SqlParameter("@BL_ISSUE_DATE", SqlDbType.DateTime) { Value = request.BL_ISSUE_DATE },
-              new SqlParameter("@NO_OF_ORIGINAL_BL", SqlDbType.Int) { Value = request.NO_OF_ORIGINAL_BL },
-              new SqlParameter("@BL_STATUS", SqlDbType.VarChar,20) { Value = request.BL_STATUS },
-              new SqlParameter("@FINAL_DESTINATION", SqlDbType.VarChar, 255) { Value = request.FINAL_DESTINATION },
-              new SqlParameter("@PREPAID_AT", SqlDbType.VarChar, 255) { Value = request.PREPAID_AT },
-              new SqlParameter("@PAYABLE_AT", SqlDbType.VarChar, 255) { Value = request.PAYABLE_AT },
-              new SqlParameter("@TOTAL_PREPAID", SqlDbType.Decimal) { Value = request.TOTAL_PREPAID },
-              new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,20) { Value = request.AGENT_CODE },
-              new SqlParameter("@AGENT_NAME", SqlDbType.VarChar,255) { Value = request.AGENT_NAME },
-              new SqlParameter("@CREATED_BY", SqlDbType.VarChar,255) { Value = request.CREATED_BY },
-              new SqlParameter("@DESTINATION_AGENT_CODE", SqlDbType.VarChar,20) { Value = request.DESTINATION_AGENT_CODE },
-              new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
-              new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
-              new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
-              new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
-              new SqlParameter("@IS_SWITCHBL",SqlDbType.VarChar, 50) {Value = request.IS_SWITCHBL},  //SWITCHBL
-              new SqlParameter("@SWITCHBL_AGENT_CODE",SqlDbType.VarChar, 50) {Value = request.SWITCHBL_AGENT_CODE},  //SWITCHBL
-            };
+              SqlParameter[] parameters =
+              {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CREATE_BL" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
+                  new SqlParameter("@SRR_ID", SqlDbType.Int) { Value = request.SRR_ID },
+                  new SqlParameter("@SRR_NO", SqlDbType.VarChar, 50) { Value = request.SRR_NO },
+                  new SqlParameter("@SHIPPER", SqlDbType.VarChar, 50) { Value = request.SHIPPER },
+                  new SqlParameter("@SHIPPER_ADDRESS", SqlDbType.VarChar, 255) { Value = request.SHIPPER_ADDRESS },
+                  new SqlParameter("@CONSIGNEE", SqlDbType.VarChar, 50) { Value = request.CONSIGNEE },
+                  new SqlParameter("@CONSIGNEE_ADDRESS", SqlDbType.VarChar, 255) { Value = request.CONSIGNEE_ADDRESS },
+                  new SqlParameter("@NOTIFY_PARTY", SqlDbType.VarChar, 50) { Value = request.NOTIFY_PARTY },
+                  new SqlParameter("@NOTIFY_PARTY_ADDRESS", SqlDbType.VarChar,255) { Value = request.NOTIFY_PARTY_ADDRESS },
+                  new SqlParameter("@PRE_CARRIAGE_BY", SqlDbType.VarChar,50) { Value = request.PRE_CARRIAGE_BY },
+                  new SqlParameter("@PLACE_OF_RECEIPT", SqlDbType.VarChar,255) { Value = request.PLACE_OF_RECEIPT },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,255) { Value = request.VESSEL_NAME },
+                  new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,50) { Value = request.VOYAGE_NO },
+                  new SqlParameter("@PORT_OF_LOADING", SqlDbType.VarChar,255) { Value = request.PORT_OF_LOADING },
+                  new SqlParameter("@PORT_OF_DISCHARGE", SqlDbType.VarChar,255) { Value = request.PORT_OF_DISCHARGE },
+                  new SqlParameter("@PLACE_OF_DELIVERY", SqlDbType.VarChar,255) { Value = request.PLACE_OF_DELIVERY },
+                  new SqlParameter("@BL_ISSUE_PLACE", SqlDbType.VarChar,100) { Value = request.BL_ISSUE_PLACE },
+                  new SqlParameter("@BL_ISSUE_DATE", SqlDbType.DateTime) { Value = request.BL_ISSUE_DATE },
+                  new SqlParameter("@NO_OF_ORIGINAL_BL", SqlDbType.Int) { Value = request.NO_OF_ORIGINAL_BL },
+                  new SqlParameter("@BL_STATUS", SqlDbType.VarChar,20) { Value = request.BL_STATUS },
+                  new SqlParameter("@FINAL_DESTINATION", SqlDbType.VarChar, 255) { Value = request.FINAL_DESTINATION },
+                  new SqlParameter("@PREPAID_AT", SqlDbType.VarChar, 255) { Value = request.PREPAID_AT },
+                  new SqlParameter("@PAYABLE_AT", SqlDbType.VarChar, 255) { Value = request.PAYABLE_AT },
+                  new SqlParameter("@TOTAL_PREPAID", SqlDbType.Decimal) { Value = request.TOTAL_PREPAID },
+                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,20) { Value = request.AGENT_CODE },
+                  new SqlParameter("@AGENT_NAME", SqlDbType.VarChar,255) { Value = request.AGENT_NAME },
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar,255) { Value = request.CREATED_BY },
+                  new SqlParameter("@DESTINATION_AGENT_CODE", SqlDbType.VarChar,20) { Value = request.DESTINATION_AGENT_CODE },
+                  new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
+                  new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
+                  new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+                  new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
+                  new SqlParameter("@IS_SWITCHBL",SqlDbType.VarChar, 50) {Value = request.IS_SWITCHBL},  //SWITCHBL
+                  new SqlParameter("@SWITCHBL_AGENT_CODE",SqlDbType.VarChar, 50) {Value = request.SWITCHBL_AGENT_CODE},  //SWITCHBL
+              };
 
                 var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
@@ -152,39 +153,6 @@ namespace PrimeMaritime_API.Repository
                 }
             return "sucess";
 
-
-
-            //foreach (var i in request.CONTAINER_LIST)
-            //{
-            //    i.BL_NO = BLNO;
-            //    i.BOOKING_NO = request.BOOKING_NO;
-            //    i.CRO_NO = request.CRO_NO;
-            //    i.MARKS_NOS = request.MARKS_NOS;
-            //    i.DESC_OF_GOODS = request.DESC_OF_GOODS;
-            //    i.CONTAINER_SIZE = 0;
-
-            //}
-
-            //string[] columns2 = new string[17];
-            //columns2[0] = "BL_NO";
-            //columns2[1] = "BOOKING_NO";
-            //columns2[2] = "CRO_NO";
-            //columns2[3] = "CONTAINER_NO";
-            //columns2[4] = "CONTAINER_TYPE";
-            //columns2[5] = "CONTAINER_SIZE";
-            //columns2[6] = "SEAL_NO";
-            //columns2[7] = "MARKS_NOS";
-            //columns2[8] = "DESC_OF_GOODS";
-            //columns2[9] = "PKG_COUNT";
-            //columns2[10] = "PKG_DESC";
-            //columns2[11] = "GROSS_WEIGHT";
-            //columns2[12] = "NET_WEIGHT";
-            //columns2[13] = "MEASUREMENT";
-            //columns2[14] = "AGENT_CODE";
-            //columns2[15] = "AGENT_NAME";
-            //columns2[16] = "CREATED_BY";
-
-            //SqlHelper.UpdateData<CONTAINERS>(request.CONTAINER_LIST, "TB_CONTAINER", connstring, columns2);
         }
 
 
@@ -763,6 +731,26 @@ namespace PrimeMaritime_API.Repository
             };
 
             SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
+        }
+
+
+        public ONLYBL CheckBLSwitched(string connstring, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,100) { Value = "CHECK_BL_SWITCHED" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<ONLYBL>(connstring, "SP_CRUD_BL", r => r.TranslateAsBLDETAILS(), parameters);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }
