@@ -49,12 +49,12 @@ namespace PrimeMaritime_API.Services
         }
 
 
-        public Response<List<MNR_LIST>> GetMNRList(string OPERATION, string DEPO_CODE)
+        public Response<List<MNR_LIST>> GetMNRList(string OPERATION, string DEPO_CODE, string MR_NO, string STATUS, string FROMDATE, string TODATE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<MNR_LIST>> response = new Response<List<MNR_LIST>>();
-            var data = DbClientFactory<DEPORepo>.Instance.GetMNRList(dbConn, OPERATION, DEPO_CODE);
+            var data = DbClientFactory<DEPORepo>.Instance.GetMNRList(dbConn, OPERATION, DEPO_CODE, MR_NO, STATUS, FROMDATE, TODATE);
 
             if (data.Count > 0)
             {

@@ -51,9 +51,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetMNRList")]
-        public ActionResult<Response<List<MNR_LIST>>> GetMNRList(string OPERATION, string DEPO_CODE)
+        public ActionResult<Response<List<MNR_LIST>>> GetMNRList(string connstring, string OPERATION, string DEPO_CODE, string MR_NO, string STATUS, string FROMDATE, string TODATE)
         {
-            return Ok(JsonConvert.SerializeObject(_depoService.GetMNRList(OPERATION, DEPO_CODE)));
+            return Ok(JsonConvert.SerializeObject(_depoService.GetMNRList(OPERATION, DEPO_CODE, MR_NO, STATUS, FROMDATE, TODATE)));
         }
 
         [HttpGet("GetMNRTariff")]

@@ -122,9 +122,9 @@ namespace PrimeMaritime_API.Repository
             tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
             tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
             tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
-            tbl.Columns.Add(new DataColumn("LENGTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("WIDTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("LENGTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("WIDTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(string)));
             tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
             tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
             tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));
@@ -192,14 +192,21 @@ namespace PrimeMaritime_API.Repository
             SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
         }
 
-        public List<MNR_LIST> GetMNRList(string connstring, string OPERATION, string DEPO_CODE)
+        public List<MNR_LIST> GetMNRList(string connstring, string OPERATION, string DEPO_CODE, string MR_NO, string STATUS, string FROMDATE, string TODATE)
         {
             try
             {
                 SqlParameter[] parameters =
                 {
+                  //new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = OPERATION },
+                  //new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = DEPO_CODE },
+
                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = OPERATION },
                   new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = DEPO_CODE },
+                  new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = MR_NO },
+                  new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = STATUS },
+                  new SqlParameter("@FROMDATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(FROMDATE) ? null : Convert.ToDateTime(FROMDATE) },
+                  new SqlParameter("@TODATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(TODATE) ? null : Convert.ToDateTime(TODATE) },
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
@@ -298,9 +305,9 @@ namespace PrimeMaritime_API.Repository
             tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
             tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
             tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
-            tbl.Columns.Add(new DataColumn("LENGTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("WIDTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("LENGTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("WIDTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(string)));
             tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
             tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
             tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));
@@ -426,105 +433,235 @@ namespace PrimeMaritime_API.Repository
 
         public void InsertMNRFiles(string connstring, List<MR_LIST> newMNR, List<string> attachmentPaths)
         {
-            SqlParameter[] parameters =
-                         {
-                            new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "INSERT_MNR" },
-                            new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = newMNR[0].MR_NO },
-                            new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = newMNR[0].DEPO_CODE },
-                            new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
-                            new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = newMNR[0].CREATED_BY },
-                        };
+            //SqlParameter[] parameters =
+            //             {
+            //                new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "INSERT_MNR" },
+            //                new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = newMNR[0].MR_NO },
+            //                new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = newMNR[0].DEPO_CODE },
+            //                new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
+            //                new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = newMNR[0].CREATED_BY },
+            //            };
 
-            SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", parameters);
+            //SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", parameters);
 
-            DataTable tbl = new DataTable();
-            tbl.Columns.Add(new DataColumn("MR_NO", typeof(string)));
-            tbl.Columns.Add(new DataColumn("CONTAINER_NO", typeof(string)));
-            tbl.Columns.Add(new DataColumn("LOCATION", typeof(string)));
-            tbl.Columns.Add(new DataColumn("COMPONENT", typeof(string)));
-            tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
-            tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
-            tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
-            tbl.Columns.Add(new DataColumn("LENGTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("WIDTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
-            tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
-            tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("LABOUR", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("MATERIAL", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("TOTAL", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("TAX", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("FINAL_TOTAL", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("REMARKS", typeof(string)));
-            tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
-            tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
-            tbl.Columns.Add(new DataColumn("MNRFILE_PATH", typeof(string))); // Add the column for file path
+            //DataTable tbl = new DataTable();
+            //tbl.Columns.Add(new DataColumn("MR_NO", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("CONTAINER_NO", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("LOCATION", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("COMPONENT", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("LENGTH", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("WIDTH", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("HEIGHT", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("LABOUR", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("MATERIAL", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("TOTAL", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("TAX", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("FINAL_TOTAL", typeof(decimal)));
+            //tbl.Columns.Add(new DataColumn("REMARKS", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
+            //tbl.Columns.Add(new DataColumn("MNRFILE_PATH", typeof(string))); // Add the column for file path
 
-            for (int index = 0; index < newMNR.Count; index++)
+            //for (int index = 0; index < newMNR.Count; index++)
+            //{
+            //    DataRow dr = tbl.NewRow();
+
+            //    dr["MR_NO"] = newMNR[index].MR_NO;
+            //    dr["CONTAINER_NO"] = newMNR[index].CONTAINER_NO;
+            //    dr["LOCATION"] = newMNR[index].LOCATION;
+            //    dr["COMPONENT"] = newMNR[index].COMPONENT;
+            //    dr["DAMAGE"] = newMNR[index].DAMAGE;
+            //    dr["REPAIR"] = newMNR[index].REPAIR;
+            //    dr["DESC"] = newMNR[index].DESC;
+            //    dr["LENGTH"] = newMNR[index].LENGTH;
+            //    dr["WIDTH"] = newMNR[index].WIDTH;
+            //    dr["HEIGHT"] = newMNR[index].HEIGHT;
+            //    dr["UNIT"] = newMNR[index].UNIT;
+            //    dr["RESPONSIBILITY"] = newMNR[index].RESPONSIBILITY;
+            //    dr["MAN_HOUR"] = newMNR[index].MAN_HOUR;
+            //    dr["LABOUR"] = newMNR[index].LABOUR;
+            //    dr["MATERIAL"] = newMNR[index].MATERIAL;
+            //    dr["TOTAL"] = newMNR[index].LABOUR + newMNR[index].MATERIAL;
+            //    dr["TAX"] = newMNR[index].TAX;
+            //    dr["FINAL_TOTAL"] = newMNR[index].FINAL_TOTAL;
+            //    dr["REMARKS"] = newMNR[index].REMARKS;
+            //    dr["STATUS"] = "Requested";
+            //    dr["CREATED_BY"] = newMNR[index].CREATED_BY;
+
+            //    // Check if there is an attachment for the current index
+            //    if (index < attachmentPaths.Count)
+            //    {
+            //        dr["MNRFILE_PATH"] = attachmentPaths[index]; // Associate the correct file path
+            //    }
+            //    else
+            //    {
+            //        dr["MNRFILE_PATH"] = DBNull.Value; // No attachment available
+            //    }
+
+            //    tbl.Rows.Add(dr);
+            //}
+
+            //string[] columns = new string[22];
+            //columns[0] = "LOCATION";
+            //columns[1] = "COMPONENT";
+            //columns[2] = "DAMAGE";
+            //columns[3] = "REPAIR";
+            //columns[4] = "DESC";
+            //columns[5] = "LENGTH";
+            //columns[6] = "WIDTH";
+            //columns[7] = "HEIGHT";
+            //columns[8] = "UNIT";
+            //columns[9] = "RESPONSIBILITY";
+            //columns[10] = "MAN_HOUR";
+            //columns[11] = "LABOUR";
+            //columns[12] = "MATERIAL";
+            //columns[13] = "TOTAL";
+            //columns[14] = "CONTAINER_NO";
+            //columns[15] = "TAX";
+            //columns[16] = "FINAL_TOTAL";
+            //columns[17] = "STATUS";
+            //columns[18] = "MR_NO";
+            //columns[19] = "REMARKS";
+            //columns[20] = "CREATED_BY";
+            //columns[21] = "MNRFILE_PATH";
+
+            //SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
+
+            try
             {
-                DataRow dr = tbl.NewRow();
+                // Check if container exists in TB_MR_REQUEST
+                string ExistingMRNo;
 
-                dr["MR_NO"] = newMNR[index].MR_NO;
-                dr["CONTAINER_NO"] = newMNR[index].CONTAINER_NO;
-                dr["LOCATION"] = newMNR[index].LOCATION;
-                dr["COMPONENT"] = newMNR[index].COMPONENT;
-                dr["DAMAGE"] = newMNR[index].DAMAGE;
-                dr["REPAIR"] = newMNR[index].REPAIR;
-                dr["DESC"] = newMNR[index].DESC;
-                dr["LENGTH"] = newMNR[index].LENGTH;
-                dr["WIDTH"] = newMNR[index].WIDTH;
-                dr["HEIGHT"] = newMNR[index].HEIGHT;
-                dr["UNIT"] = newMNR[index].UNIT;
-                dr["RESPONSIBILITY"] = newMNR[index].RESPONSIBILITY;
-                dr["MAN_HOUR"] = newMNR[index].MAN_HOUR;
-                dr["LABOUR"] = newMNR[index].LABOUR;
-                dr["MATERIAL"] = newMNR[index].MATERIAL;
-                dr["TOTAL"] = newMNR[index].LABOUR + newMNR[index].MATERIAL;
-                dr["TAX"] = newMNR[index].TAX;
-                dr["FINAL_TOTAL"] = newMNR[index].FINAL_TOTAL;
-                dr["REMARKS"] = newMNR[index].REMARKS;
-                dr["STATUS"] = "Requested";
-                dr["CREATED_BY"] = newMNR[index].CREATED_BY;
+                SqlParameter[] parameters4 =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "EXISTS_MRNO" },
+                  new SqlParameter("@RETURN_MRNO", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output },
+                  new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = newMNR[0].MR_NO },
+                };
 
-                // Check if there is an attachment for the current index
-                if (index < attachmentPaths.Count)
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MNR", parameters4);
+                ExistingMRNo = Convert.ToString(parameters4[1].Value);
+
+                // If not found in TB_MR_REQUEST
+                if (string.IsNullOrEmpty(ExistingMRNo))
                 {
-                    dr["MNRFILE_PATH"] = attachmentPaths[index]; // Associate the correct file path
-                }
-                else
-                {
-                    dr["MNRFILE_PATH"] = DBNull.Value; // No attachment available
+                    SqlParameter[] parameters =
+                             {
+                     new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "INSERT_MNR" },
+                     new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = newMNR[0].MR_NO },
+                     new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = newMNR[0].DEPO_CODE },
+                     new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
+                     new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = newMNR[0].CREATED_BY },
+                 };
+
+                    SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", parameters);
+
                 }
 
-                tbl.Rows.Add(dr);
+                DataTable tbl = new DataTable();
+                tbl.Columns.Add(new DataColumn("MR_NO", typeof(string)));
+                tbl.Columns.Add(new DataColumn("CONTAINER_NO", typeof(string)));
+                tbl.Columns.Add(new DataColumn("LOCATION", typeof(string)));
+                tbl.Columns.Add(new DataColumn("COMPONENT", typeof(string)));
+                tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
+                tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
+                tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
+                tbl.Columns.Add(new DataColumn("LENGTH", typeof(string)));
+                tbl.Columns.Add(new DataColumn("WIDTH", typeof(string)));
+                tbl.Columns.Add(new DataColumn("HEIGHT", typeof(string)));
+                tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
+                tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
+                tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("LABOUR", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("MATERIAL", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("TOTAL", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("TAX", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("FINAL_TOTAL", typeof(decimal)));
+                tbl.Columns.Add(new DataColumn("REMARKS", typeof(string)));
+                tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
+                tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
+                tbl.Columns.Add(new DataColumn("MNRFILE_PATH", typeof(string))); // Add the column for file path
+
+                for (int index = 0; index < newMNR.Count; index++)
+                {
+                    DataRow dr = tbl.NewRow();
+
+                    dr["MR_NO"] = newMNR[index].MR_NO;
+                    dr["CONTAINER_NO"] = newMNR[index].CONTAINER_NO;
+                    dr["LOCATION"] = newMNR[index].LOCATION;
+                    dr["COMPONENT"] = newMNR[index].COMPONENT;
+                    dr["DAMAGE"] = newMNR[index].DAMAGE;
+                    dr["REPAIR"] = newMNR[index].REPAIR;
+                    dr["DESC"] = newMNR[index].DESC;
+                    dr["LENGTH"] = newMNR[index].LENGTH;
+                    dr["WIDTH"] = newMNR[index].WIDTH;
+                    dr["HEIGHT"] = newMNR[index].HEIGHT;
+                    dr["UNIT"] = newMNR[index].UNIT;
+                    dr["RESPONSIBILITY"] = newMNR[index].RESPONSIBILITY;
+                    dr["MAN_HOUR"] = newMNR[index].MAN_HOUR;
+                    dr["LABOUR"] = newMNR[index].LABOUR;
+                    dr["MATERIAL"] = newMNR[index].MATERIAL;
+                    dr["TOTAL"] = newMNR[index].LABOUR + newMNR[index].MATERIAL;
+                    dr["TAX"] = newMNR[index].TAX;
+                    dr["FINAL_TOTAL"] = newMNR[index].FINAL_TOTAL;
+                    dr["REMARKS"] = newMNR[index].REMARKS;
+                    dr["STATUS"] = "Requested";
+                    dr["CREATED_BY"] = newMNR[index].CREATED_BY;
+
+                    // Check if there is an attachment for the current index
+                    if (index < attachmentPaths.Count)
+                    {
+                        dr["MNRFILE_PATH"] = attachmentPaths[index]; // Associate the correct file path
+                    }
+                    else
+                    {
+                        dr["MNRFILE_PATH"] = DBNull.Value; // No attachment available
+                    }
+
+                    tbl.Rows.Add(dr);
+                }
+
+                string[] columns = new string[22];
+                columns[0] = "LOCATION";
+                columns[1] = "COMPONENT";
+                columns[2] = "DAMAGE";
+                columns[3] = "REPAIR";
+                columns[4] = "DESC";
+                columns[5] = "LENGTH";
+                columns[6] = "WIDTH";
+                columns[7] = "HEIGHT";
+                columns[8] = "UNIT";
+                columns[9] = "RESPONSIBILITY";
+                columns[10] = "MAN_HOUR";
+                columns[11] = "LABOUR";
+                columns[12] = "MATERIAL";
+                columns[13] = "TOTAL";
+                columns[14] = "CONTAINER_NO";
+                columns[15] = "TAX";
+                columns[16] = "FINAL_TOTAL";
+                columns[17] = "STATUS";
+                columns[18] = "MR_NO";
+                columns[19] = "REMARKS";
+                columns[20] = "CREATED_BY";
+                columns[21] = "MNRFILE_PATH";
+
+                SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
+
+
+
             }
-
-            string[] columns = new string[22];
-            columns[0] = "LOCATION";
-            columns[1] = "COMPONENT";
-            columns[2] = "DAMAGE";
-            columns[3] = "REPAIR";
-            columns[4] = "DESC";
-            columns[5] = "LENGTH";
-            columns[6] = "WIDTH";
-            columns[7] = "HEIGHT";
-            columns[8] = "UNIT";
-            columns[9] = "RESPONSIBILITY";
-            columns[10] = "MAN_HOUR";
-            columns[11] = "LABOUR";
-            columns[12] = "MATERIAL";
-            columns[13] = "TOTAL";
-            columns[14] = "CONTAINER_NO";
-            columns[15] = "TAX";
-            columns[16] = "FINAL_TOTAL";
-            columns[17] = "STATUS";
-            columns[18] = "MR_NO";
-            columns[19] = "REMARKS";
-            columns[20] = "CREATED_BY";
-            columns[21] = "MNRFILE_PATH";
-
-            SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
+            catch (Exception ex)
+            {
+                // Log the error and rethrow
+                //throw new Exception($"Error fetching container details: {ex.Message}", ex);
+                throw new Exception(ex.Message);
+            }
         }
 
         public void updateMRRequest(string connstring, List<MR_LIST> updateMNRList, List<string> attachmentPaths)
@@ -569,7 +706,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@TAX", SqlDbType.Decimal) { Value = mrList.TAX, Precision =18, Scale=2 },
                   new SqlParameter("@FINAL_TOTAL", SqlDbType.Decimal) { Value = mrList.FINAL_TOTAL, Precision =18, Scale=2 },
                   new SqlParameter("@REMARKS", SqlDbType.VarChar, 255) { Value = mrList.REMARKS },
-                  new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
+                  //new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = mrList.CREATED_BY },
                   new SqlParameter("@MNRFILE_PATH", SqlDbType.VarChar, 255) { Value = filePath }
                 };
@@ -591,9 +728,9 @@ namespace PrimeMaritime_API.Repository
             tbl.Columns.Add(new DataColumn("DAMAGE", typeof(string)));
             tbl.Columns.Add(new DataColumn("REPAIR", typeof(string)));
             tbl.Columns.Add(new DataColumn("DESC", typeof(string)));
-            tbl.Columns.Add(new DataColumn("LENGTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("WIDTH", typeof(decimal)));
-            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(decimal)));
+            tbl.Columns.Add(new DataColumn("LENGTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("WIDTH", typeof(string)));
+            tbl.Columns.Add(new DataColumn("HEIGHT", typeof(string)));
             tbl.Columns.Add(new DataColumn("UNIT", typeof(string)));
             tbl.Columns.Add(new DataColumn("RESPONSIBILITY", typeof(string)));
             tbl.Columns.Add(new DataColumn("MAN_HOUR", typeof(decimal)));

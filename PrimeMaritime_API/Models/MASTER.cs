@@ -90,7 +90,7 @@ namespace PrimeMaritime_API.Models
         public string? ACEP_NO { get; set; }
         public string? AGREEMENT_NO { get; set; }
         public string? DEPO_CODE { get; set; }
-        public string? TURN_IN_DATE { get; set; }
+        public DateTime TURN_IN_DATE { get; set; }
         public string? LOCATION { get; set; }
         public string? CONTAINER_SIZE { get; set; }
 

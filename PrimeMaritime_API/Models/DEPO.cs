@@ -23,9 +23,9 @@ namespace PrimeMaritime_API.Models
         public string DAMAGE { get; set; }
         public string REPAIR { get; set; }
         public string DESC { get; set; }
-        public decimal LENGTH { get; set; }
-        public decimal WIDTH { get; set; }
-        public decimal HEIGHT { get; set; }
+        public string LENGTH { get; set; }
+        public string WIDTH { get; set; }
+        public string HEIGHT { get; set; }
         public string UNIT { get; set; }
         public string RESPONSIBILITY { get; set; }
         public decimal MAN_HOUR { get; set; }
@@ -50,6 +50,8 @@ namespace PrimeMaritime_API.Models
         public string MNRFILE_PATH { get; set; }
         public int ID {get; set;}
         public string CONTAINER_SIZE { get; set; }
+        public string CONTAINER_LOCATION { get; set; }
+        public DateTime TURN_IN_DATE { get; set; }
     }
 
     public class MNR_LIST

@@ -172,7 +172,7 @@ namespace PrimeMaritime_API.Translators
                 item.AGREEMENT_NO = SqlHelper.GetNullableString(reader, "AGREEMENT_NO");
 
             if (reader.IsColumnExists("TURN_IN_DATE"))
-                item.TURN_IN_DATE = SqlHelper.GetNullableString(reader, "TURN_IN_DATE");
+                item.TURN_IN_DATE = SqlHelper.GetDateTime(reader, "TURN_IN_DATE");
 
             if (reader.IsColumnExists("LOCATION"))
                 item.LOCATION = SqlHelper.GetNullableString(reader, "LOCATION");
