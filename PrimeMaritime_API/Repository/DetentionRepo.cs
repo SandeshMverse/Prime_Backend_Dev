@@ -1,17 +1,24 @@
 ﻿using IdentityModel.Client;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Models;
+using PrimeMaritime_API.Translators;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace PrimeMaritime_API.Repository
 {
     public class DetentionRepo
     {
+
+        public static T GetSingleDataFromDataSet<T>(DataTable dataTable) where T : new()
+        {
+            return SqlHelper.CreateItemFromRow<T>(dataTable.Rows[0]);
+        }
 
 
         public List<DETENTION_WAIVER_REQUEST> GetDetentionList(string dbConn, string DO_NO)
@@ -131,26 +138,46 @@ namespace PrimeMaritime_API.Repository
 
         }
 
-        public List<DETENTION_WAIVER_REQUEST> GetDODetailsForDetention(string dbConn, string DO_NO)
+        public DataSet GetDODetailsForDetention(string dbConn, string DO_NO)
         {
             try
             {
                 SqlParameter[] parameters =
                 {
-                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_WAIVER_BY_DO_NO" },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DO_DETAILS_FOR_DETEINTION" },
                    new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = DO_NO},
                 };
 
-                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
-                List<DETENTION_WAIVER_REQUEST> detention_Request = SqlHelper.CreateListFromTable<DETENTION_WAIVER_REQUEST>(dataTable);
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);
 
-                return detention_Request;
             }
             catch (Exception)
             {
                 throw;
             }
 
+        }
+
+        public DETENTION_MASTER GetDetentionCharges(string connstring, string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 255) { Value = "GET_DETENTION_CHARGES" },
+                   new SqlParameter("@ACCEPTANCE_LOCATION", SqlDbType.VarChar, 100) { Value = ACCEPTANCE_LOCATION },
+                   new SqlParameter("@DAYS", SqlDbType.Int) { Value = DAYS },
+                   new SqlParameter("@CURRENCY_CODE", SqlDbType.VarChar, 50) { Value = CURRENCY_CODE },
+                   new SqlParameter("@CONTAINER_TYPE", SqlDbType.VarChar, 100) { Value = CONTAINER_TYPE },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<DETENTION_MASTER>(connstring, "SP_CRUD_DETENTION", r => r.TranslateAsDetentionMaster(), parameters);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
     }

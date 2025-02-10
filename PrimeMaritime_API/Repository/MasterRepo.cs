@@ -167,7 +167,7 @@ namespace PrimeMaritime_API.Repository
                 }
             }
         }
-        public List<PARTY_MASTER> GetPartyMasterList(string dbConn, string AgentCode, string CustName, string CustType, bool Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
+        public List<PARTY_MASTER> GetPartyMasterList(string dbConn, string AgentCode, string CustName, string CustType, string Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
         {
             try
             {
@@ -177,7 +177,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = AgentCode },
                   new SqlParameter("@CUST_NAME", SqlDbType.VarChar, 255) { Value = CustName },
                   new SqlParameter("@CUST_TYPE", SqlDbType.VarChar, 10) { Value = CustType },
-                  new SqlParameter("@STATUS", SqlDbType.Bit) { Value = Status },
+                  new SqlParameter("@STATUS", SqlDbType.VarChar, 10) { Value = Status },
                   new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = FROM_DATE },
                   new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = TO_DATE },
                   new SqlParameter("@IS_VENDOR", SqlDbType.Bit) { Value = IS_VENDOR },
@@ -794,8 +794,10 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar, 255) { Value = VESSEL_NAME },
                   new SqlParameter("@IMO_NO", SqlDbType.VarChar, 11) { Value = IMO_NO },
                   new SqlParameter("@STATUS", SqlDbType.Bit) { Value = STATUS },
-                  new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = FROM_DATE },
-                  new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = TO_DATE },
+                  //new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = FROM_DATE },
+                  //new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = TO_DATE },
+                  new SqlParameter("@FROM_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(FROM_DATE) ? null : Convert.ToDateTime(FROM_DATE) },
+                  new SqlParameter("@TO_DATE", SqlDbType.DateTime) { Value = String.IsNullOrEmpty(TO_DATE) ? null : Convert.ToDateTime(TO_DATE) },
 
                 };
 
@@ -4472,7 +4474,8 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_VENDOR_AGREEMENT" },
                     new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = vendor.AGREEMENT_NO },
                     new SqlParameter("@vendor_id", SqlDbType.Int) { Value = vendor.VENDOR_ID },
-                    new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                    //new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                     new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE ?? (object)DBNull.Value },
                     new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
                     new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
                     new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },
@@ -4594,7 +4597,8 @@ namespace PrimeMaritime_API.Repository
                         new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_VENDOR_AGREEMENT" },
                         new SqlParameter("@vendor_agreement_id", SqlDbType.VarChar, 50) { Value = vendor.VENDOR_AGREEMENT_ID },
                         new SqlParameter("@agreement_no", SqlDbType.VarChar, 50) { Value = vendor.AGREEMENT_NO },
-                        new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                        //new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE },
+                         new SqlParameter("@procurement_date", SqlDbType.DateTime) { Value = vendor.PROCUREMENT_DATE ?? (object)DBNull.Value },
                         new SqlParameter("@start_date", SqlDbType.DateTime) { Value = vendor.START_DATE },
                         new SqlParameter("@end_date", SqlDbType.DateTime) { Value = vendor.END_DATE },
                         new SqlParameter("@equipment_type_id", SqlDbType.Int) { Value = vendor.EQUIPMENT_TYPE_ID },

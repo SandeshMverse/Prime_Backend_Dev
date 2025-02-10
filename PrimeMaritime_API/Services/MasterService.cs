@@ -36,7 +36,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<List<PARTY_MASTER>> GetPartyMasterList(string Agent_code, string CustName, string CustType, bool Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
+        public Response<List<PARTY_MASTER>> GetPartyMasterList(string Agent_code, string CustName, string CustType, string Status, string FROM_DATE, string TO_DATE, bool IS_VENDOR)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 

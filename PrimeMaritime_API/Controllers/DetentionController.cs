@@ -5,6 +5,7 @@ using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Response;
+using PrimeMaritime_API.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,9 +49,15 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetDODetailsForDetention")]
-        public ActionResult<Response<List<DETENTION_WAIVER_REQUEST>>> GetDODetailsForDetention(string DO_NO)
+        public ActionResult<Response<DO_DETENTION_DETAILS>> GetDODetailsForDetention(string DO_NO)
         {
             return Ok(JsonConvert.SerializeObject(_detentionService.GetDODetailsForDetention(DO_NO)));
+        }
+
+        [HttpGet("GetDetentionCharges")]
+        public ActionResult<Response<DETENTION_MASTER>> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE)
+        {
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionCharges(ACCEPTANCE_LOCATION, DAYS, CURRENCY_CODE, CONTAINER_TYPE)));
         }
 
 
