@@ -52,7 +52,38 @@ namespace PrimeMaritime_API.Models
         public string CONTAINER_SIZE { get; set; }
         public string CONTAINER_LOCATION { get; set; }
         public DateTime TURN_IN_DATE { get; set; }
+        public List<string> FilePaths { get; set; }
+
+        //public List<string> IMAGES { get; set; }
+
+        public List<ImageData> IMAGES { get; set; }
+
+        public string IMAGE_PATHS { get; set; }
+        // Store raw JSON string from SQL
+        public string IMAGE_DETAILS_JSON { get; set; }
+
+        // Deserialize into a list of ImageDetail objects
+        public List<ImageDetail> IMAGE_DETAILS { get; set; } = new List<ImageDetail>();
+
+        public string fileName { get; set; }
     }
+
+    public class ImageDetail
+    {
+        public int ID { get; set; }
+        public string? IMAGE_PATH { get; set; }
+
+        public string? fileName { get; set; }
+
+        public string? filePath { get; set; }
+    }
+
+    public class ImageData
+    {
+        public string Base64 { get; set; }
+        public string FileName { get; set; }
+    }
+
 
     public class MNR_LIST
     {
@@ -73,5 +104,11 @@ namespace PrimeMaritime_API.Models
         public decimal LABOUR_CHARGE { get; set; }
         public decimal MATERIAL_COST { get; set; }
         public decimal TOTAL { get; set; }     
+    }
+
+    public class DeleteMRImageRequest
+    {
+        public int MR_ID { get; set; }
+        public string ImagePath { get; set; }
     }
 }
