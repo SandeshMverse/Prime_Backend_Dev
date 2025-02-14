@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
@@ -156,62 +157,142 @@ namespace PrimeMaritime_API.Controllers
         }
 
 
+        //[HttpPost("InsertMNRFiles")]
+        //public async Task<ActionResult<Response<string>>> InsertMNRFiles()
+        //{
+        //    try
+        //    {
+        //        if (Request.Form.Files.Count == 0)
+        //        {
+        //            return BadRequest(new
+        //            {
+        //                status = "error",
+        //                code = 400,
+        //                message = "No files uploaded."
+        //            });
+        //        }
+
+        //        // Retrieve and deserialize payload
+        //        string payload = Request.Form["PAYLOAD2"];
+        //        var data = Request.Form.Files;
+        //        var newMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
+
+        //        if (newMNRList == null || newMNRList.Count == 0)
+        //        {
+        //            return BadRequest(new { status = "error", message = "Invalid MR List data." });
+        //        }
+
+        //        string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
+        //        if (!Directory.Exists(uploadPath))
+        //        {
+        //            Directory.CreateDirectory(uploadPath);
+        //        }
+
+        //        // ✅ Step 1: Save images to folder
+        //        foreach (var mrItem in newMNRList)
+        //        {
+        //            // Dictionary to store images associated with each MR_NO
+        //            Dictionary<string, List<string>> mnrAttachments = new Dictionary<string, List<string>>();
+
+        //            // Loop through each file and assign it to the current MR_NO
+        //            foreach (IFormFile postedFile in Request.Form.Files)
+        //            {
+        //                string fileName = Path.GetFileName(postedFile.FileName);
+        //                string mrNo = mrItem.MR_NO ?? "UNKNOWN"; // Assign MR_NO from current item
+
+        //                // Save file as {MR_NO}_{ImageName}
+        //                string uniqueFileName = $"{mrNo}_{fileName}";
+        //                string fullFilePath = Path.Combine(uploadPath, uniqueFileName);
+
+        //                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+        //                {
+        //                    await postedFile.CopyToAsync(stream);
+        //                }
+
+        //                // Store the file path
+        //                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", uniqueFileName).Replace('/', '\\');
+
+        //                if (!mnrAttachments.ContainsKey(mrNo))
+        //                {
+        //                    mnrAttachments[mrNo] = new List<string>();
+        //                }
+
+        //                mnrAttachments[mrNo].Add(storedPath);
+        //            }
+
+        //            // ✅ Step 2: Insert the current MR record into the database (AFTER saving images)
+        //            _depoService.InsertMNRFiles(new List<MR_LIST> { mrItem }, mnrAttachments);  // Pass only the current record
+
+        //        }
+
+        //        return Ok(new { status = "success", message = "Files saved and records inserted successfully." });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        //    }
+        //}
+
         [HttpPost("InsertMNRFiles")]
-        public async Task<ActionResult<Response<string>>> InsertMNRFiles()
+        public async Task<ActionResult<Response<string>>> InsertMNRFiles([FromBody] List<MR_LIST> newMNRList)
         {
             try
             {
-                // Check if there are files in the request
-                if (Request.Form.Files.Count == 0)
+                if (newMNRList == null || newMNRList.Count == 0)
                 {
-                    return BadRequest(new
-                    {
-                        status = "error",
-                        code = 400,
-                        message = "No files uploaded."
-                    });
+                    return BadRequest(new { status = "error", message = "Invalid MR List data." });
                 }
 
-                // Retrieve the payload as a list of MR_LIST items
-                string payload = Request.Form["PAYLOAD2"];
-                var newMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
-
-                // Define base paths
-                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
-                string attachmentPath = Path.Combine(uploadPath, "NEWMNRFiles");
-
-                // Create directories if they do not exist
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
                 if (!Directory.Exists(uploadPath))
                 {
                     Directory.CreateDirectory(uploadPath);
                 }
 
-                if (!Directory.Exists(attachmentPath))
+                // Process each MR_LIST record
+                foreach (var mrItem in newMNRList)
                 {
-                    Directory.CreateDirectory(attachmentPath);
-                }
+                    Dictionary<string, List<string>> mnrAttachments = new Dictionary<string, List<string>>();
 
-                List<string> uploadedFiles = new List<string>();
+                    string mrNo = mrItem.MR_NO ?? "UNKNOWN";
 
-                // Save each file with an associated MR_NO
-                foreach (IFormFile postedFile in Request.Form.Files)
-                {
-                    // Generate file name with MR_NO and original file name
-                    string fileName = $"{newMNRList[0].MR_NO}_{Path.GetFileName(postedFile.FileName)}";
-                    string fullFilePath = Path.Combine(attachmentPath, fileName);
-
-                    using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                    if (mrItem.IMAGES != null && mrItem.IMAGES.Count > 0)
                     {
-                        postedFile.CopyTo(stream);
-                        string relativePath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace('/', '\\');
-                        uploadedFiles.Add(relativePath);
+                        foreach (var imageData in mrItem.IMAGES)
+                        {
+                            if (!string.IsNullOrEmpty(imageData.Base64))
+                            {
+                                // Get the file extension from the base64 string
+                                string extension = GetFileExtensionFromBase64(imageData.Base64);
+
+                                // Generate file name using original file name (or GUID) and extension
+                                //string fileName = $"{mrNo}_{imageData.FileName ?? Guid.NewGuid().ToString()}.{extension}";
+                                string fileName = $"{mrNo}_{Path.GetFileNameWithoutExtension(imageData.FileName) ?? Guid.NewGuid().ToString()}{extension}";
+
+                                string fullFilePath = Path.Combine(uploadPath, fileName);
+
+                                // Convert base64 to byte array
+                                byte[] imageBytes = Convert.FromBase64String(imageData.Base64.Split(',')[1]);
+
+                                // Save image file
+                                await System.IO.File.WriteAllBytesAsync(fullFilePath, imageBytes);
+
+                                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace('/', '\\');
+
+                                if (!mnrAttachments.ContainsKey(mrNo))
+                                {
+                                    mnrAttachments[mrNo] = new List<string>();
+                                }
+                                mnrAttachments[mrNo].Add(storedPath);
+                            }
+                        }
                     }
+
+                    // Insert the current MR record into the database (after saving images)
+                    _depoService.InsertMNRFiles(new List<MR_LIST> { mrItem }, mnrAttachments);
                 }
 
-                // Pass the list of MR_LIST items and the list of file paths to the service
-                _depoService.InsertMNRFiles(newMNRList, uploadedFiles);
-
-                return Ok();
+                return Ok(new { status = "success", message = "Records inserted successfully." });
             }
             catch (Exception ex)
             {
@@ -219,60 +300,143 @@ namespace PrimeMaritime_API.Controllers
             }
         }
 
+
+        // Helper method to extract file extension from Base64 string
+        private string GetFileExtensionFromBase64(string base64Image)
+        {
+            if (base64Image.StartsWith("data:image/jpeg")) return ".jpg";
+            if (base64Image.StartsWith("data:image/png")) return ".png";
+            if (base64Image.StartsWith("data:image/gif")) return ".gif";
+            return ".png"; // Default fallback
+        }
+
+        [HttpPost("DeleteMRImage")]
+        public ActionResult<Response<string>> DeleteMRImage(int ID, int MR_ID)
+        {
+            return Ok(_depoService.DeleteMRImage(ID, MR_ID));
+        }
+
+
+
+        //[HttpPost("updateMRRequest")]
+        //public async Task<ActionResult<Response<string>>> updateMRRequest()
+        //{
+        //    try
+        //    {
+        //        // Retrieve the payload as a list of MR_LIST items
+        //        string payload = Request.Form["PAYLOAD2"];
+        //        var updateMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
+
+        //        if (updateMNRList == null || updateMNRList.Count == 0)
+        //        {
+        //            return BadRequest(new { status = "error", message = "Invalid MR List data." });
+        //        }
+
+        //        // Define base paths
+        //        string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
+
+        //        // Create directories if they do not exist
+        //        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
+
+        //        // Dictionary to store multiple image paths for each MR_NO
+        //        Dictionary<string, List<string>> mrImagePaths = new Dictionary<string, List<string>>();
+
+        //        // Check if files are uploaded
+        //        if (Request.Form.Files.Count > 0)
+        //        {
+        //            foreach (IFormFile postedFile in Request.Form.Files)
+        //            {
+        //                string fileName = Path.GetFileName(postedFile.FileName);
+
+        //                // Use the first MR_NO from updateMNRList
+        //                string mrNo = updateMNRList[0].MR_NO ?? "UNKNOWN";
+
+        //                // Generate a unique file name with MR_NO and original file name
+        //                string uniqueFileName = $"{mrNo}_{fileName}";
+        //                string fullFilePath = Path.Combine(uploadPath, uniqueFileName);
+
+        //                // Save file
+        //                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+        //                {
+        //                    await postedFile.CopyToAsync(stream);
+        //                }
+
+        //                // Convert the file path to a relative URL
+        //                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", uniqueFileName).Replace("\\", "/");
+
+        //                // Store the file path in the dictionary
+        //                if (!mrImagePaths.ContainsKey(mrNo))
+        //                {
+        //                    mrImagePaths[mrNo] = new List<string>();
+        //                }
+
+        //                mrImagePaths[mrNo].Add(storedPath);
+        //            }
+        //        }
+
+        //        // Pass the updated MR_LIST and multiple image paths to the service
+        //        _depoService.updateMRRequest(updateMNRList, mrImagePaths);
+
+        //        return Ok(new { message = "Request updated successfully", responseCode = 200 });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
+        //    }
+        //}
+
         [HttpPost("updateMRRequest")]
-        public async Task<ActionResult<Response<string>>> updateMRRequest()
+        public async Task<ActionResult<Response<string>>> updateMRRequest([FromBody] List<MR_LIST> updateMNRList)
         {
             try
             {
-                // Retrieve the payload as a list of MR_LIST items
-                string payload = Request.Form["PAYLOAD2"];
-                var updateMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
-
-                // Define base paths
-                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads");
-                string attachmentPath = Path.Combine(uploadPath, "NEWMNRFiles");
-
-                // Create directories if they do not exist
-                if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-                if (!Directory.Exists(attachmentPath)) Directory.CreateDirectory(attachmentPath);
-
-                string newFilePath = null;
-
-                // Check if files are uploaded
-                if (Request.Form.Files.Count > 0)
+                if (updateMNRList == null || updateMNRList.Count == 0)
                 {
-                    foreach (IFormFile postedFile in Request.Form.Files)
+                    return BadRequest(new { status = "error", message = "Invalid MR List data." });
+                }
+
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                // Dictionary to store multiple image paths for each MR_NO
+                Dictionary<string, List<string>> mrImagePaths = new Dictionary<string, List<string>>();
+
+                foreach (var mrItem in updateMNRList)
+                {
+                    string mrNo = mrItem.MR_NO ?? "UNKNOWN";
+
+                    if (mrItem.IMAGES != null && mrItem.IMAGES.Count > 0)
                     {
-                        // Generate a unique file name with MR_NO and original file name
-                        string fileName = $"{updateMNRList[0].MR_NO}_{Path.GetFileName(postedFile.FileName)}";
-                        string fullFilePath = Path.Combine(attachmentPath, fileName);
-
-                        using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                        foreach (var imageData in mrItem.IMAGES)
                         {
-                            postedFile.CopyTo(stream);
+                            if (!string.IsNullOrEmpty(imageData.Base64))
+                            {
+                                // Get file extension
+                                string extension = GetFileExtensionFromBase64(imageData.Base64);
+                                string fileName = $"{mrNo}_{imageData.FileName ?? Guid.NewGuid().ToString()}{extension}";
+                                string fullFilePath = Path.Combine(uploadPath, fileName);
 
-                            // Convert the file path to a relative URL
-                            newFilePath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace("\\", "/");
+                                // Convert base64 to byte array and save
+                                byte[] imageBytes = Convert.FromBase64String(imageData.Base64.Split(',')[1]);
+                                await System.IO.File.WriteAllBytesAsync(fullFilePath, imageBytes);
+
+                                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", fileName).Replace("\\", "/");
+
+                                if (!mrImagePaths.ContainsKey(mrNo))
+                                {
+                                    mrImagePaths[mrNo] = new List<string>();
+                                }
+                                mrImagePaths[mrNo].Add(storedPath);
+                            }
                         }
                     }
                 }
 
-                // If no new file uploaded, keep the old file path
-                if (string.IsNullOrEmpty(newFilePath))
-                {
-                    //newFilePath = GetExistingImagePath(updateMNRList[0].MR_NO);
-                    newFilePath = null;
-                }
-
-                // Convert the file path to a List<string>
-                List<string> filePaths = new List<string>();
-                if (!string.IsNullOrEmpty(newFilePath))
-                {
-                    filePaths.Add(newFilePath);
-                }
-
-                // Pass the updated MR_LIST and new file path to the service
-                _depoService.updateMRRequest(updateMNRList, filePaths);
+                // Pass updated MR_LIST and image paths to the service
+                _depoService.updateMRRequest(updateMNRList, mrImagePaths);
 
                 return Ok(new { message = "Request updated successfully", responseCode = 200 });
             }
@@ -281,28 +445,6 @@ namespace PrimeMaritime_API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
             }
         }
-
-        // Helper method to get the existing image path based on MR_NO
-        //private string GetExistingImagePath(string mrNo)
-        //{
-        //    string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
-        //    string fileNamePattern = $"{mrNo}_*";
-
-        //    // Ensure the directory exists before attempting to get files
-        //    if (!Directory.Exists(uploadPath)) return null;
-
-        //    // Search for files matching the pattern
-        //    string[] files = Directory.GetFiles(uploadPath, fileNamePattern);
-
-        //    // Return the first matching file path (if any)
-        //    if (files.Length > 0)
-        //    {
-        //        return Path.Combine("Uploads", "NEWMNRFiles", Path.GetFileName(files[0])).Replace("\\", "/");
-        //    }
-
-        //    return null; // No files found
-        //}
-
 
 
         [HttpPost("InsertPrinMNRFiles")]

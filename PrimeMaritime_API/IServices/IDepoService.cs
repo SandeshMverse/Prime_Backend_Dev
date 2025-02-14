@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static IdentityModel.OidcConstants;
 
 namespace PrimeMaritime_API.IServices
 {
@@ -21,9 +22,10 @@ namespace PrimeMaritime_API.IServices
         Response<string> DeleteMRRequest(string MR_NO, string LOCATION);
 
 
-        void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
-
-        void updateMRRequest(List<MR_LIST> updateMNRList, List<string> attachmentPaths);
+        //void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
+        void InsertMNRFiles(List<MR_LIST> newMNRList, Dictionary<string, List<string>> attachmentPaths);
+        Response<string> DeleteMRImage(int ID, int MR_ID);
+        void updateMRRequest(List<MR_LIST> updateMNRList, Dictionary<string, List<string>> attachmentPaths);
         void InsertPrinMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
     }
 }

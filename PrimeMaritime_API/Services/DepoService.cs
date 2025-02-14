@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using static IdentityModel.OidcConstants;
 
 namespace PrimeMaritime_API.Services
 {
@@ -185,16 +186,39 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths)
+        //public void InsertMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths)
+        //{
+        //    string dbConn = _config.GetConnectionString("ConnectionString");
+
+        //    // Pass the list directly to the repository
+        //    DbClientFactory<DEPORepo>.Instance.InsertMNRFiles(dbConn, newMNRList, attachmentPaths);
+
+        //}
+
+        public void InsertMNRFiles(List<MR_LIST> newMNRList, Dictionary<string, List<string>> attachmentPaths)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            // Pass the list directly to the repository
+            // Pass the correct dictionary type to the repository
             DbClientFactory<DEPORepo>.Instance.InsertMNRFiles(dbConn, newMNRList, attachmentPaths);
-
         }
 
-        public void updateMRRequest(List<MR_LIST> updateMNRList, List<string> attachmentPaths)
+        public Response<string> DeleteMRImage(int ID, int MR_ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<DEPORepo>.Instance.DeleteMRImage(dbConn, ID, MR_ID);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Image deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+
+        public void updateMRRequest(List<MR_LIST> updateMNRList, Dictionary<string, List<string>> attachmentPaths)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
