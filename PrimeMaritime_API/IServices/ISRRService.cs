@@ -15,6 +15,8 @@ namespace PrimeMaritime_API.IServices
         Response<string> GetRate(string POL, string POD, string CHARGE, string CONT_TYPE);
         Response<List<SRRList>> GetSRRList(string OPERATION, string SRR_NO, string CUSTOMER_NAME, string STATUS,string FROMDATE,string TODATE, string AGENT_CODE, string ORG_CODE, string PORT);
         Response<string> InsertSRR(SRRRequest sRRRequest);
+        void UploadDangerousFiles(int SRRId, string attachmentpath);
+
         Response<string> UpdateSRR(List<SRR_RATES> request);
         Response<string> InsertContainer(List<SRR_CONTAINERS> request);
         Response<CommonResponse> ApproveRate(List<SRR_RATES> request, int POL_FREE_DAYS, int POD_FREE_DAYS, string SLOT_OPERATOR_NAME, int RATE20, int RF20, int HAZ20);

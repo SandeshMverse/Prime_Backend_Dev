@@ -31,5 +31,7 @@ namespace PrimeMaritime_API.Models
         public string UPDATED_BY { get; set; }
         public DateTime UPDATED_DATE { get; set; }
 
+        public string DANGEROUS_FILE_PATH { get; set; }
+
     }
 }

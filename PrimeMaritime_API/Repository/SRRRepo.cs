@@ -428,6 +428,18 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public void UploadDangerousFiles(string connstring, int SRRId, string attachmentpath)
+        {
+            SqlParameter[] parameters =
+            {
+                new SqlParameter("@OPERATION", SqlDbType.VarChar, 100) { Value = "UPDATE_DANGEROUS_FILE_PATH" },
+                new SqlParameter("@SRR_Id", SqlDbType.Int) { Value = SRRId },
+                new SqlParameter("@DANGEROUS_FILE_PATH", SqlDbType.VarChar, 500) { Value = attachmentpath },
+             };
+
+            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_SRR", parameters);
+        }
+
         public void UpdateSRR(string connstring, List<SRR_RATES> request)
         {
             try

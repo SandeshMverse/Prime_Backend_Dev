@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Org.BouncyCastle.Asn1.Ocsp;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
@@ -477,6 +478,13 @@ namespace PrimeMaritime_API.Services
             response.Data = SRRID;
 
             return response;
+        }
+
+        public void UploadDangerousFiles(int SRRId, string attachmentpath)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<SRRRepo>.Instance.UploadDangerousFiles(dbConn, SRRId, attachmentpath);
         }
 
         public Response<string> InsertExcRate(List<EXC_RATE> excRateList)

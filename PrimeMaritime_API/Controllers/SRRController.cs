@@ -9,6 +9,7 @@ using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Request;
 using PrimeMaritime_API.Response;
+using PrimeMaritime_API.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -102,67 +103,101 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_srrService.InsertSRR(request));
         }
 
-        //[HttpPost("InsertSRR")]
-        //public IActionResult InsertSRR([FromForm] SRRRequest sRRRequest, [FromForm] IFormFile file)
+        //[HttpPost("UploadDangerousFiles")]
+        //public IActionResult UploadDangerousFiles(string SRRId)
         //{
-        //    try
+        //    var formFile = Request.Form.Files;
+
+        //    // Define base paths
+        //    string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "SRRFiles");
+        //    string attachmentPath = Path.Combine(uploadPath, "SRRDangerous");
+
+        //    // Create directories if they do not exist
+        //    if (!Directory.Exists(attachmentPath))
         //    {
-        //        // Step 1: Check if the file exists and handle it.
-        //        if (file != null && file.Length > 0)
-        //        {
-        //            // Define the base folder path for 'SRRFiles' inside 'Uploads'
-        //            string baseFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Uploads", "SRRFiles");
-
-        //            // Check if the 'SRRFiles' folder exists, if not create it
-        //            if (!Directory.Exists(baseFolderPath))
-        //            {
-        //                Directory.CreateDirectory(baseFolderPath);
-        //            }
-
-        //            // Define the new folder path for 'SRRDangours' inside 'SRRFiles'
-        //            string sRRDangoursFolderPath = Path.Combine(baseFolderPath, "SRRDangours");
-
-        //            // Check if the 'SRRDangours' folder exists, if not create it
-        //            if (!Directory.Exists(sRRDangoursFolderPath))
-        //            {
-        //                Directory.CreateDirectory(sRRDangoursFolderPath);
-        //            }
-
-        //            // Define the full path for the file (using SRR_NO for the filename)
-        //            string filePath = Path.Combine(sRRDangoursFolderPath, $"{sRRRequest.SRR_NO}{Path.GetExtension(file.FileName)}");
-
-        //            // Save the file to the 'SRRDangours' folder
-        //            using (var stream = new FileStream(filePath, FileMode.Create))
-        //            {
-        //                file.CopyTo(stream);
-        //            }
-        //        }
-
-        //        // Step 2: Call the service method to insert SRR data
-        //        var result = _srrService.InsertSRR(sRRRequest);
-
-        //        // Step 3: Return the service response
-        //        if (result.Succeeded)
-        //        {
-        //            return Ok(result);
-        //        }
-        //        else
-        //        {
-        //            return StatusCode(500, result); // Return error response from service if needed
-        //        }
+        //        Directory.CreateDirectory(attachmentPath);
         //    }
-        //    catch (Exception ex)
+
+        //    List<string> uploadedFiles = new List<string>();
+
+        //    foreach (IFormFile postedFile in formFile)
         //    {
-        //        // Handle unexpected errors
-        //        return StatusCode(500, new Response<string>
+        //        string sanitizedFileName = Path.GetFileName(SRRId + "_" + postedFile.FileName);
+        //        string fullFilePath = Path.Combine(attachmentPath, sanitizedFileName);
+
+        //        using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
         //        {
-        //            Succeeded = false,
-        //            ResponseMessage = "An unexpected error occurred: " + ex.Message,
-        //            ResponseCode = 500,
-        //            Data = null
-        //        });
+        //            postedFile.CopyTo(stream);
+        //        }
+
+        //        // Construct relative path with forward slashes (standard convention)
+        //        string relativePath = Path.Combine("Uploads", "SRRFiles", "SRRDangerous", sanitizedFileName);
+        //        uploadedFiles.Add(relativePath);
         //    }
+
+        //    // Use the first uploaded file's path
+        //    string attachmentPathToSave = uploadedFiles.FirstOrDefault();
+
+        //    // Pass only the relative path to the service
+        //    _srrService.UploadDangerousFiles(SRRId, attachmentPathToSave);
+        //    return Ok();
         //}
+
+        [HttpPost("UploadDangerousFiles")]
+        public IActionResult UploadDangerousFiles(int SRRId)
+        {
+            try
+            {
+                var formFiles = Request.Form.Files;
+
+                if (formFiles == null || formFiles.Count == 0)
+                {
+                    return BadRequest("No files were uploaded.");
+                }
+
+                // Define base paths
+                string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "SRRFiles");
+                string attachmentPath = Path.Combine(uploadPath, "SRRDangerous");
+
+                // Create directory if it doesn't exist
+                if (!Directory.Exists(attachmentPath))
+                {
+                    Directory.CreateDirectory(attachmentPath);
+                }
+
+                List<string> uploadedFiles = new List<string>();
+
+                foreach (IFormFile postedFile in formFiles)
+                {
+                    // Sanitize the file name
+                    string sanitizedFileName = Path.GetFileName(SRRId + "_" + postedFile.FileName);
+                    string fullFilePath = Path.Combine(attachmentPath, sanitizedFileName);
+
+                    using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
+                    {
+                        postedFile.CopyTo(stream);
+                    }
+
+                    // Construct relative path using forward slashes
+                    string relativePath = $"Uploads/SRRFiles/SRRDangerous/{sanitizedFileName}";
+                    uploadedFiles.Add(relativePath);
+                }
+
+                // Use the first uploaded file's path
+                string attachmentPathToSave = uploadedFiles.FirstOrDefault();
+
+                if (!string.IsNullOrEmpty(attachmentPathToSave))
+                {
+                    _srrService.UploadDangerousFiles(SRRId, attachmentPathToSave);
+                }
+
+                return Ok(new { Message = "File(s) uploaded successfully", Paths = uploadedFiles });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
 
 
 
@@ -267,7 +302,7 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetSRRFiles")]
-        public ActionResult<Response<List<ALL_FILE>>> GetSRRFiles([FromQuery(Name = "SRR_NO")] string SRR_NO, [FromQuery(Name = "COMM_TYPE")] string COMM_TYPE)
+        public ActionResult<Response<List<ALL_FILE>>> GetSRRFiles([FromQuery(Name = "SRR_NO")] string SRR_NO, [FromQuery(Name = "COMM_TYPE")] string COMM_TYPE, [FromQuery(Name = "ID")] string ID)
         {
             string[] commodityList = COMM_TYPE.Split(",");
 
@@ -286,6 +321,10 @@ namespace PrimeMaritime_API.Controllers
                 if (type == "SP")
                 {
                     files.Add(Directory.GetFiles("Uploads/SRRFiles/SPFiles/").Where(file => file.Contains(SRR_NO)).ToList());
+                }
+                if (type == "HAZ")
+                {
+                    files.Add(Directory.GetFiles("Uploads/SRRFiles/SRRDangerous/").Where(file => file.Contains(ID)).ToList());
                 }
             }
 

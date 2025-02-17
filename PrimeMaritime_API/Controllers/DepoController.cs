@@ -157,82 +157,6 @@ namespace PrimeMaritime_API.Controllers
         }
 
 
-        //[HttpPost("InsertMNRFiles")]
-        //public async Task<ActionResult<Response<string>>> InsertMNRFiles()
-        //{
-        //    try
-        //    {
-        //        if (Request.Form.Files.Count == 0)
-        //        {
-        //            return BadRequest(new
-        //            {
-        //                status = "error",
-        //                code = 400,
-        //                message = "No files uploaded."
-        //            });
-        //        }
-
-        //        // Retrieve and deserialize payload
-        //        string payload = Request.Form["PAYLOAD2"];
-        //        var data = Request.Form.Files;
-        //        var newMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
-
-        //        if (newMNRList == null || newMNRList.Count == 0)
-        //        {
-        //            return BadRequest(new { status = "error", message = "Invalid MR List data." });
-        //        }
-
-        //        string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
-        //        if (!Directory.Exists(uploadPath))
-        //        {
-        //            Directory.CreateDirectory(uploadPath);
-        //        }
-
-        //        // ✅ Step 1: Save images to folder
-        //        foreach (var mrItem in newMNRList)
-        //        {
-        //            // Dictionary to store images associated with each MR_NO
-        //            Dictionary<string, List<string>> mnrAttachments = new Dictionary<string, List<string>>();
-
-        //            // Loop through each file and assign it to the current MR_NO
-        //            foreach (IFormFile postedFile in Request.Form.Files)
-        //            {
-        //                string fileName = Path.GetFileName(postedFile.FileName);
-        //                string mrNo = mrItem.MR_NO ?? "UNKNOWN"; // Assign MR_NO from current item
-
-        //                // Save file as {MR_NO}_{ImageName}
-        //                string uniqueFileName = $"{mrNo}_{fileName}";
-        //                string fullFilePath = Path.Combine(uploadPath, uniqueFileName);
-
-        //                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
-        //                {
-        //                    await postedFile.CopyToAsync(stream);
-        //                }
-
-        //                // Store the file path
-        //                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", uniqueFileName).Replace('/', '\\');
-
-        //                if (!mnrAttachments.ContainsKey(mrNo))
-        //                {
-        //                    mnrAttachments[mrNo] = new List<string>();
-        //                }
-
-        //                mnrAttachments[mrNo].Add(storedPath);
-        //            }
-
-        //            // ✅ Step 2: Insert the current MR record into the database (AFTER saving images)
-        //            _depoService.InsertMNRFiles(new List<MR_LIST> { mrItem }, mnrAttachments);  // Pass only the current record
-
-        //        }
-
-        //        return Ok(new { status = "success", message = "Files saved and records inserted successfully." });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-        //    }
-        //}
-
         [HttpPost("InsertMNRFiles")]
         public async Task<ActionResult<Response<string>>> InsertMNRFiles([FromBody] List<MR_LIST> newMNRList)
         {
@@ -292,7 +216,7 @@ namespace PrimeMaritime_API.Controllers
                     _depoService.InsertMNRFiles(new List<MR_LIST> { mrItem }, mnrAttachments);
                 }
 
-                return Ok(new { status = "success", message = "Records inserted successfully." });
+                return Ok(new { status = "success", message = "Records inserted successfully.", responseCode = 200 });
             }
             catch (Exception ex)
             {
@@ -316,74 +240,6 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_depoService.DeleteMRImage(ID, MR_ID));
         }
 
-
-
-        //[HttpPost("updateMRRequest")]
-        //public async Task<ActionResult<Response<string>>> updateMRRequest()
-        //{
-        //    try
-        //    {
-        //        // Retrieve the payload as a list of MR_LIST items
-        //        string payload = Request.Form["PAYLOAD2"];
-        //        var updateMNRList = JsonConvert.DeserializeObject<List<MR_LIST>>(payload);
-
-        //        if (updateMNRList == null || updateMNRList.Count == 0)
-        //        {
-        //            return BadRequest(new { status = "error", message = "Invalid MR List data." });
-        //        }
-
-        //        // Define base paths
-        //        string uploadPath = Path.Combine(_environment.ContentRootPath, "Uploads", "NEWMNRFiles");
-
-        //        // Create directories if they do not exist
-        //        if (!Directory.Exists(uploadPath)) Directory.CreateDirectory(uploadPath);
-
-        //        // Dictionary to store multiple image paths for each MR_NO
-        //        Dictionary<string, List<string>> mrImagePaths = new Dictionary<string, List<string>>();
-
-        //        // Check if files are uploaded
-        //        if (Request.Form.Files.Count > 0)
-        //        {
-        //            foreach (IFormFile postedFile in Request.Form.Files)
-        //            {
-        //                string fileName = Path.GetFileName(postedFile.FileName);
-
-        //                // Use the first MR_NO from updateMNRList
-        //                string mrNo = updateMNRList[0].MR_NO ?? "UNKNOWN";
-
-        //                // Generate a unique file name with MR_NO and original file name
-        //                string uniqueFileName = $"{mrNo}_{fileName}";
-        //                string fullFilePath = Path.Combine(uploadPath, uniqueFileName);
-
-        //                // Save file
-        //                using (FileStream stream = new FileStream(fullFilePath, FileMode.Create))
-        //                {
-        //                    await postedFile.CopyToAsync(stream);
-        //                }
-
-        //                // Convert the file path to a relative URL
-        //                string storedPath = Path.Combine("Uploads", "NEWMNRFiles", uniqueFileName).Replace("\\", "/");
-
-        //                // Store the file path in the dictionary
-        //                if (!mrImagePaths.ContainsKey(mrNo))
-        //                {
-        //                    mrImagePaths[mrNo] = new List<string>();
-        //                }
-
-        //                mrImagePaths[mrNo].Add(storedPath);
-        //            }
-        //        }
-
-        //        // Pass the updated MR_LIST and multiple image paths to the service
-        //        _depoService.updateMRRequest(updateMNRList, mrImagePaths);
-
-        //        return Ok(new { message = "Request updated successfully", responseCode = 200 });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return StatusCode(StatusCodes.Status500InternalServerError, new { message = ex.Message });
-        //    }
-        //}
 
         [HttpPost("updateMRRequest")]
         public async Task<ActionResult<Response<string>>> updateMRRequest([FromBody] List<MR_LIST> updateMNRList)
