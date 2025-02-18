@@ -505,7 +505,7 @@ namespace PrimeMaritime_API.Repository
             SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", parameters);
         }
 
-        public MNR_TARIFF GetMNRTariff(string connstring, string COMPONENT, string REPAIR, string LENGTH, string WIDTH, string HEIGHT, string QUANTITY, string DEPO_CODE)
+        public MNR_TARIFF GetMNRTariff(string connstring, string COMPONENT, string DAMAGE_LOCATION, string REPAIR, string LENGTH, string WIDTH, string HEIGHT, string QUANTITY, string DEPO_CODE)
         {
             try
             {
@@ -513,6 +513,7 @@ namespace PrimeMaritime_API.Repository
             {
                 new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_MNR_TARIFF" },
                 new SqlParameter("@COMPONENT", SqlDbType.VarChar, 50) { Value = COMPONENT },
+                new SqlParameter("@DAMAGE_LOCATION", SqlDbType.VarChar, 50) { Value = DAMAGE_LOCATION },
                 new SqlParameter("@REPAIR", SqlDbType.VarChar, 50) { Value = REPAIR },
                 new SqlParameter("@LENGTH", SqlDbType.VarChar, 50) { Value = LENGTH },
                 new SqlParameter("@WIDTH", SqlDbType.VarChar, 50) { Value = WIDTH },
@@ -593,6 +594,7 @@ namespace PrimeMaritime_API.Repository
                            new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
                            new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = items.CREATED_BY },
                           //new SqlParameter("@MNRFILE_PATH", SqlDbType.VarChar, 255) { Value = filePath }
+                          new SqlParameter("@DAMAGE_LOCATION", SqlDbType.VarChar, 50) { Value = items.DAMAGE_LOCATION }
                         };
 
                     var ID = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_MNR", updateMRData);
@@ -698,7 +700,8 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@REMARKS", SqlDbType.VarChar, 255) { Value = mrList.REMARKS },
                   //new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
                   new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = mrList.CREATED_BY },
-                  //new SqlParameter("@MNRFILE_PATH", SqlDbType.VarChar, 255) { Value = filePath }
+                  //new SqlParameter("@MNRFILE_PATH", SqlDbType.VarChar, 255) { Value = filePath },
+                  new SqlParameter("@DAMAGE_LOCATION", SqlDbType.VarChar, 50) { Value = mrList.DAMAGE_LOCATION }
                 };
 
                 // Execute stored procedure
@@ -754,6 +757,7 @@ namespace PrimeMaritime_API.Repository
             tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
             tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
             tbl.Columns.Add(new DataColumn("MNRFILE_PATH", typeof(string))); // Add the column for file path
+            tbl.Columns.Add(new DataColumn("DAMAGE_LOCATION", typeof(string)));
 
             for (int index = 0; index < newMNR.Count; index++)
             {
@@ -791,10 +795,12 @@ namespace PrimeMaritime_API.Repository
                     dr["MNRFILE_PATH"] = DBNull.Value; // No attachment available
                 }
 
+                dr["DAMAGE_LOCATION"] = newMNR[index].DAMAGE_LOCATION;
+
                 tbl.Rows.Add(dr);
             }
 
-            string[] columns = new string[22];
+            string[] columns = new string[23];
             columns[0] = "LOCATION";
             columns[1] = "COMPONENT";
             columns[2] = "DAMAGE";
@@ -817,6 +823,7 @@ namespace PrimeMaritime_API.Repository
             columns[19] = "REMARKS";
             columns[20] = "CREATED_BY";
             columns[21] = "MNRFILE_PATH";
+            columns[22] = "DAMAGE_LOCATION";
 
             SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
         }

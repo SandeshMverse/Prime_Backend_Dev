@@ -162,12 +162,12 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<MNR_TARIFF> GetMNRTariff(string COMPONENT, string REPAIR, string LENGTH, string WIDTH, string HEIGHT, string QUANTITY, string DEPO_CODE)
+        public Response<MNR_TARIFF> GetMNRTariff(string COMPONENT, string DAMAGE_LOCATION, string REPAIR, string LENGTH, string WIDTH, string HEIGHT, string QUANTITY, string DEPO_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
             Response<MNR_TARIFF> response = new Response<MNR_TARIFF>();
 
-            var data = DbClientFactory<DEPORepo>.Instance.GetMNRTariff(dbConn, COMPONENT,REPAIR,LENGTH,WIDTH,HEIGHT,QUANTITY,DEPO_CODE);
+            var data = DbClientFactory<DEPORepo>.Instance.GetMNRTariff(dbConn, COMPONENT, DAMAGE_LOCATION, REPAIR,LENGTH,WIDTH,HEIGHT,QUANTITY,DEPO_CODE);
 
             if(data != null)
             {

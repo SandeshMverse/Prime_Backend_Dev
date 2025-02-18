@@ -66,6 +66,8 @@ namespace PrimeMaritime_API.Models
         public List<ImageDetail> IMAGE_DETAILS { get; set; } = new List<ImageDetail>();
 
         public string fileName { get; set; }
+
+        public string DAMAGE_LOCATION { get; set; }
     }
 
     public class ImageDetail
