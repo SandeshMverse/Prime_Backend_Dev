@@ -361,5 +361,17 @@ namespace PrimeMaritime_API.Controllers
             }
         }
 
+        [HttpGet("GetComponentList")]
+        public ActionResult<Response<List<COMPONENT_DROPDOWN>>> GetComponentList(string DAMAGE_LOCATION, string DEPO_CODE)
+        {
+            return Ok(JsonConvert.SerializeObject(_depoService.GetComponentList(DAMAGE_LOCATION, DEPO_CODE)));
+        }
+
+        [HttpGet("GetRepairDropdownData")]
+        public ActionResult<Response<List<REPAIR_DROPDOWN>>> GetRepairDropdownData(string DAMAGE_LOCATION, string COMPONENT, string DEPO_CODE)
+        {
+            return Ok(JsonConvert.SerializeObject(_depoService.GetRepairDropdownData(DAMAGE_LOCATION, COMPONENT, DEPO_CODE)));
+        }
+
     }
 }

@@ -113,4 +113,17 @@ namespace PrimeMaritime_API.Models
         public int MR_ID { get; set; }
         public string ImagePath { get; set; }
     }
+
+    public class COMPONENT_DROPDOWN 
+    {
+       public string COMPONENT { get; set; }
+      public string DAMAGE_LOCATION { get; set; }
+    }
+
+    public class REPAIR_DROPDOWN
+    {
+        public string REPAIR { get; set; }
+        public string DAMAGE_LOCATION { get; set; }
+    }
+
 }

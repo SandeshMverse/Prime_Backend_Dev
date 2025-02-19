@@ -20,7 +20,7 @@ namespace PrimeMaritime_API.IServices
         Response<INVOICE_MASTER> GetInvoiceDetails(int INVOICE_ID,string INVOICE_NO, string PORT, string ORG_CODE);
         Response<List<INVOICE_BL_CHECK>> GetBLExists(string INVOICE_TYPE, string BL_NO);
         Response<List<INVOICE_PAYMENT_TERM_CHECK>> PaymentTerm(string BL_NO);
-        Response<INVOICE_DETAILS_FOR_RECEIPT> GetInvoiceDetailsForReceipt(string INVOICE_NO, string PORT, string ORG_CODE);
+        Response<INVOICE_DETAILS_FOR_RECEIPT> GetInvoiceDetailsForReceipt(string INVOICE_NO, string PORT, string ORG_CODE, string USER_CODE);
         
         //new ADDED siddhesh
         Response<List<INVOICE_RATE_CHECK>> GetRateExists();

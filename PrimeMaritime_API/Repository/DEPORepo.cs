@@ -827,5 +827,52 @@ namespace PrimeMaritime_API.Repository
 
             SqlHelper.ExecuteProcedureBulkInsert(connstring, tbl, "TB_MR_REQUEST", columns);
         }
+
+        public List<COMPONENT_DROPDOWN> GetComponentList(string connstring, string DAMAGE_LOCATION, string DEPO_CODE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_COMPONENT_DROPDOWN" },
+                  new SqlParameter("@DAMAGE_LOCATION", SqlDbType.VarChar, 50) { Value = DAMAGE_LOCATION },
+                  new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = DEPO_CODE },
+
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
+                List<COMPONENT_DROPDOWN> Responses = SqlHelper.CreateListFromTable<COMPONENT_DROPDOWN>(dataTable);
+
+                return Responses;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public List<REPAIR_DROPDOWN> GetRepairDropdownData(string connstring, string DAMAGE_LOCATION, string COMPONENT, string DEPO_CODE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_REPAIR_DROPDOWN" },
+                  new SqlParameter("@DAMAGE_LOCATION", SqlDbType.VarChar, 50) { Value = DAMAGE_LOCATION },
+                   new SqlParameter("@COMPONENT", SqlDbType.VarChar, 50) { Value = COMPONENT },
+                  new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = DEPO_CODE },
+
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
+                List<REPAIR_DROPDOWN> Responses = SqlHelper.CreateListFromTable<REPAIR_DROPDOWN>(dataTable);
+
+                return Responses;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

@@ -348,7 +348,7 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
-        public DataSet GetInvoiceDetailsForReceipt(string connstring, string INVOICE_NO, string PORT, string ORG_CODE)
+        public DataSet GetInvoiceDetailsForReceipt(string connstring, string INVOICE_NO, string PORT, string ORG_CODE, string USER_CODE)
         {
             using (var table = new DataTable())
             {
@@ -358,6 +358,7 @@ namespace PrimeMaritime_API.Repository
                     new SqlParameter("@INVOICE_NOLIST", SqlDbType.VarChar,255) { Value = INVOICE_NO },
                     new SqlParameter("@PORT", SqlDbType.VarChar, 100) { Value = PORT },
                     new SqlParameter("@ORG_CODE", SqlDbType.VarChar, 50) { Value = ORG_CODE },
+                    new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = USER_CODE },
                 };
 
                 return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_INVOICE", parameters);

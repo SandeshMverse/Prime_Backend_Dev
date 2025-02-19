@@ -246,7 +246,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<INVOICE_DETAILS_FOR_RECEIPT> GetInvoiceDetailsForReceipt(string INVOICE_NO, string PORT, string ORG_CODE)
+        public Response<INVOICE_DETAILS_FOR_RECEIPT> GetInvoiceDetailsForReceipt(string INVOICE_NO, string PORT, string ORG_CODE, string USER_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -259,7 +259,7 @@ namespace PrimeMaritime_API.Services
                 return response;
             }
 
-            var data = DbClientFactory<InvoiceRepo>.Instance.GetInvoiceDetailsForReceipt(dbConn, INVOICE_NO, PORT, ORG_CODE);
+            var data = DbClientFactory<InvoiceRepo>.Instance.GetInvoiceDetailsForReceipt(dbConn, INVOICE_NO, PORT, ORG_CODE, USER_CODE);
 
             if ((data != null) && (data.Tables[0].Rows.Count > 0))
             {

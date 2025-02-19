@@ -228,5 +228,53 @@ namespace PrimeMaritime_API.Services
 
         }
 
+
+        public Response<List<COMPONENT_DROPDOWN>> GetComponentList(string DAMAGE_LOCATION, string DEPO_CODE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<COMPONENT_DROPDOWN>> response = new Response<List<COMPONENT_DROPDOWN>>();
+            var data = DbClientFactory<DEPORepo>.Instance.GetComponentList(dbConn, DAMAGE_LOCATION, DEPO_CODE);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<List<REPAIR_DROPDOWN>> GetRepairDropdownData(string DAMAGE_LOCATION, string COMPONENT, string DEPO_CODE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<REPAIR_DROPDOWN>> response = new Response<List<REPAIR_DROPDOWN>>();
+            var data = DbClientFactory<DEPORepo>.Instance.GetRepairDropdownData(dbConn, DAMAGE_LOCATION, COMPONENT, DEPO_CODE);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
     }
 }

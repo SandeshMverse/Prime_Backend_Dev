@@ -27,5 +27,9 @@ namespace PrimeMaritime_API.IServices
         Response<string> DeleteMRImage(int ID, int MR_ID);
         void updateMRRequest(List<MR_LIST> updateMNRList, Dictionary<string, List<string>> attachmentPaths);
         void InsertPrinMNRFiles(List<MR_LIST> newMNRList, List<string> attachmentPaths);
+
+        Response<List<COMPONENT_DROPDOWN>> GetComponentList(string DAMAGE_LOCATION, string DEPO_CODE);
+
+        Response<List<REPAIR_DROPDOWN>> GetRepairDropdownData(string DAMAGE_LOCATION, string COMPONENT, string DEPO_CODE);
     }
 }
