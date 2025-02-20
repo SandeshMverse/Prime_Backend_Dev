@@ -372,6 +372,32 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<List<BL_FINALIZED>> CheckBlFinalized(string BL_NO, string AGENT_CODE)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<BL_FINALIZED>> response = new Response<List<BL_FINALIZED>>();
+            var data = DbClientFactory<InvoiceRepo>.Instance.CheckBlFinalized(dbConn, BL_NO, AGENT_CODE);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+
+            }
+
+            return response;
+        }
         public Response<List<CREDIT_NOTE>> GetCreditList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string CREDIT_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

@@ -95,6 +95,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_invoiceService.PaymentTerm(BL_NO)));
         }
 
+        [HttpPost("CheckBlFinalized")]
+        public ActionResult<Response<BL_FINALIZED>> CheckBlFinalized(string BL_NO, string AGENT_CODE)
+        {
+            return Ok(JsonConvert.SerializeObject(_invoiceService.CheckBlFinalized(BL_NO, AGENT_CODE)));
+        }
+
         //NEW ADDED SIDDHESH
         [HttpPost("GetRateExists")]
         public ActionResult<Response<INVOICE_RATE_CHECK>> GetRateExists()

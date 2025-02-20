@@ -348,6 +348,29 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public List<BL_FINALIZED> CheckBlFinalized(string dbConn, string BL_NO, string AGENT_CODE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_BL_FINALIZED" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 100) { Value = AGENT_CODE },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_INVOICE", parameters);
+
+                List<BL_FINALIZED> master = SqlHelper.CreateListFromTable<BL_FINALIZED>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public DataSet GetInvoiceDetailsForReceipt(string connstring, string INVOICE_NO, string PORT, string ORG_CODE, string USER_CODE)
         {
             using (var table = new DataTable())

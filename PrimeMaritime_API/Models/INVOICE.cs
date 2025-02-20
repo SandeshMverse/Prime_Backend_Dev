@@ -184,6 +184,14 @@ namespace PrimeMaritime_API.Models
         public string  PAYMENT_TERM { get; set; }
 
     }
+
+    public class BL_FINALIZED
+    {
+        public string BL_NO { get; set; }
+        public string BL_STATUS { get; set; }
+        public string AGENT_CODE { get; set; }
+
+    }
     public class CREDIT_NOTE_DETAILS
     {
         public string INVOICE_NO { get; set; }
