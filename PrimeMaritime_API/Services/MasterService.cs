@@ -130,13 +130,28 @@ namespace PrimeMaritime_API.Services
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
-            DbClientFactory<MasterRepo>.Instance.InsertContainerMaster(dbConn, request);
-
+            string result = DbClientFactory<MasterRepo>.Instance.InsertContainerMaster(dbConn, request);
 
             Response<CommonResponse> response = new Response<CommonResponse>();
-            response.Succeeded = true;
-            response.ResponseMessage = "Master saved Successfully.";
-            response.ResponseCode = 200;
+
+            if (result == "Container already exists")
+            {
+                response.Succeeded = false;
+                response.ResponseMessage = "Container number already exists.";
+                response.ResponseCode = 409; // 409 Conflict
+            }
+            else if (result == "success")
+            {
+                response.Succeeded = true;
+                response.ResponseMessage = "Master saved successfully.";
+                response.ResponseCode = 200;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseMessage = "An error occurred: " + result;
+                response.ResponseCode = 500;
+            }
 
             return response;
         }

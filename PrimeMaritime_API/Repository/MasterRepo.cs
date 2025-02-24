@@ -420,8 +420,25 @@ namespace PrimeMaritime_API.Repository
         #endregion
 
         #region "CONTAINER MASTER"
-        public void InsertContainerMaster(string connstring, CONTAINER_MASTER master)
+        public string InsertContainerMaster(string connstring, CONTAINER_MASTER master)
         {
+            string ContainerNoExists;
+
+            SqlParameter[] parameters3 =
+                    {
+                      new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_CONTAINER_EXISTS" },
+                      new SqlParameter("@RETURNCONTAINERNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                      new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 100) { Value = master.CONTAINER_NO },
+                   };
+
+
+            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters3);
+            ContainerNoExists = Convert.ToString(parameters3[1].Value);
+            if (ContainerNoExists == master.CONTAINER_NO)
+            {
+                return "Container already exists";
+            }
+
             try
             {
                 SqlParameter[] parameters =
@@ -453,12 +470,11 @@ namespace PrimeMaritime_API.Repository
                 };
 
                 SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CONTAINER_MASTER", parameters);
-
+                return "success";
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                return "error: " + ex.Message;
             }
 
         }

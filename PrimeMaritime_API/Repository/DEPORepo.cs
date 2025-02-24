@@ -222,63 +222,6 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
-
-        //public List<MR_LIST> GetMRREQDetails(string connstring, string OPERATION, string MR_NO)
-        //{
-        //    try
-        //    {
-        //        SqlParameter[] parameters =
-        //        {
-        //    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = OPERATION },
-        //    new SqlParameter("@MR_NO", SqlDbType.VarChar, 50) { Value = MR_NO },
-        //};
-
-        //        DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_MNR", parameters);
-        //        List<MR_LIST> Responses = SqlHelper.CreateListFromTable<MR_LIST>(dataTable);
-
-        //        // **Manually deserialize IMAGE_DETAILS**
-        //        foreach (var response in Responses)
-        //        {
-        //            if (!string.IsNullOrWhiteSpace(response.IMAGE_DETAILS_JSON))
-        //            {
-        //                try
-        //                {
-        //                    string json = response.IMAGE_DETAILS_JSON.Trim();
-
-        //                    // Fix JSON escape sequences by replacing double backslashes
-        //                    json = json.Replace("\\", "/");  // Converts Windows-style paths
-
-        //                    // Debugging Log
-        //                    Console.WriteLine("Normalized JSON: " + json);
-
-        //                    // Deserialize JSON
-        //                    response.IMAGE_DETAILS = JsonConvert.DeserializeObject<List<ImageDetail>>(json) ?? new List<ImageDetail>();
-
-        //                    Console.WriteLine("Deserialized IMAGE_DETAILS Count: " + response.IMAGE_DETAILS.Count);
-        //                }
-        //                catch (JsonException ex)
-        //                {
-        //                    Console.WriteLine("JSON Deserialization Error: " + ex.Message);
-        //                    response.IMAGE_DETAILS = new List<ImageDetail>();
-        //                }
-        //            }
-        //            else
-        //            {
-        //                response.IMAGE_DETAILS = new List<ImageDetail>();
-        //            }
-        //        }
-
-
-
-        //        return Responses;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Error: " + ex.Message);
-        //        throw;
-        //    }
-        //}
-
         public List<MR_LIST> GetMRREQDetails(string connstring, string OPERATION, string MR_NO)
         {
             try
@@ -659,18 +602,7 @@ namespace PrimeMaritime_API.Repository
 
         public void updateMRRequest(string connstring, List<MR_LIST> updateMNRList, Dictionary<string, List<string>> attachmentPaths)
         {
-            //SqlParameter[] updateMRParameters =
-            //             {
-            //        new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_MNR" },
-            //        new SqlParameter("@MR_NO", SqlDbType.VarChar, 100) { Value = updateMNRList[0].MR_NO },
-            //        new SqlParameter("@DEPO_CODE", SqlDbType.VarChar, 50) { Value = updateMNRList[0].DEPO_CODE },
-            //        new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = "Requested" },
-            //        new SqlParameter("@CREATED_BY", SqlDbType.VarChar, 255) { Value = updateMNRList[0].CREATED_BY },
-            //    };
-
-            //SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_MNR", updateMRParameters);
-
-
+            
             for (int i = 0; i < updateMNRList.Count; i++)
             {
                 var mrList = updateMNRList[i];
