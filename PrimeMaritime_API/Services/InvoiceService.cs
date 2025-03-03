@@ -501,5 +501,31 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<List<GET_INVOICE_LIST>> GetInvoicesByBLNo(string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<GET_INVOICE_LIST>> response = new Response<List<GET_INVOICE_LIST>>();
+            var data = DbClientFactory<InvoiceRepo>.Instance.GetInvoicesByBLNo(dbConn, BL_NO);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+
+            }
+
+            return response;
+        }
+
     }
 }

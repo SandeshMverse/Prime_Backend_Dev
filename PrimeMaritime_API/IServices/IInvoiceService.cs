@@ -29,5 +29,7 @@ namespace PrimeMaritime_API.IServices
         Response<List<GET_CUST_LIST>> GetBLCustList(string BL_NO);
 
         Response<List<GET_CUST_LIST>> GetPrimeDetails();
+
+        Response<List<GET_INVOICE_LIST>> GetInvoicesByBLNo(string BL_NO);
     }
 }

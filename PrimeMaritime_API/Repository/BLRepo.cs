@@ -63,7 +63,7 @@ namespace PrimeMaritime_API.Repository
 
 
             string ContainerNoExists;
-            foreach (var item in request.CONTAINER_LIST2)
+            foreach (var item in request.CONTAINER_LIST)
             {
                 SqlParameter[] parameters3 =
                      {
@@ -126,7 +126,7 @@ namespace PrimeMaritime_API.Repository
                 var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
 
 
-                foreach (var i in request.CONTAINER_LIST2)
+                foreach (var i in request.CONTAINER_LIST)
                 {
                     SqlParameter[] parameters2 =
                          {

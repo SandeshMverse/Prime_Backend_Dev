@@ -297,4 +297,10 @@ namespace PrimeMaritime_API.Models
         public string CODE { get; set; }
         public string CODE_DESC { get; set; }
     }
+
+    public class GET_INVOICE_LIST
+    {
+        public string INVOICE_NO { get; set; }
+
+    }
 }

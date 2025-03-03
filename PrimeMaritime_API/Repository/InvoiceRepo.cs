@@ -454,5 +454,27 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public List<GET_INVOICE_LIST> GetInvoicesByBLNo(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_INVOICE_LIST_BY_BL" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = BL_NO },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_INVOICE", parameters);
+
+                List<GET_INVOICE_LIST> master = SqlHelper.CreateListFromTable<GET_INVOICE_LIST>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }

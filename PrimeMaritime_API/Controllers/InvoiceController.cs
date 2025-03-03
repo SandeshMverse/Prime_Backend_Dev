@@ -119,5 +119,11 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_invoiceService.GetPrimeDetails()));
         }
+
+        [HttpGet("GetInvoicesByBLNo")]
+        public ActionResult<Response<GET_INVOICE_LIST>> GetInvoicesByBLNo(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoicesByBLNo(BL_NO)));
+        }
     }
 }

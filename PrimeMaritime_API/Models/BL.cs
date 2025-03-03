@@ -63,7 +63,12 @@ namespace PrimeMaritime_API.Models
 
         public int BL_ID { get; set; } //SWITCHBL ADDED
         public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDED
- 
+
+        public DateTime ARRIVAL_DATE { get; set; }
+
+        public int NO_OF_PACKAGES { get; set; }
+
+
     }
 
     public class CONTAINERS
