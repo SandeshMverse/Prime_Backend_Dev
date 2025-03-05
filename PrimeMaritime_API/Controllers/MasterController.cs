@@ -683,6 +683,39 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_masterService.UploadMNRTariff(master)));
         }
+
+        [HttpPost("UploadSurchargeTariff")] 
+        public ActionResult<Response<string>> UploadSurchargeTariff(List<SURCHARGE_MASTER> master)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.UploadSurchargeTariff(master)));
+        }
+        #endregion
+
+        #region "SURCHARGE MASTER"
+
+        [HttpGet("GetSurchargeMasterList")]
+        public ActionResult<Response<List<SURCHARGE_MASTER>>> GetSurchargeMasterList()
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetSurchargeMasterList()));
+        }
+
+        [HttpGet("GetSurchargeMasterDetails")]
+        public ActionResult<Response<SURCHARGE_MASTER>> GetSurchargeMasterDetails(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetSurchargeMasterDetails(ID)));
+        }
+
+        [HttpPost("UpdateSurchargeMasterList")]
+        public ActionResult<Response<CommonResponse>> UpdateSurchargeMasterList(SURCHARGE_MASTER request)
+        {
+            return Ok(_masterService.UpdateSurchargeMasterList(request));
+        }
+
+        [HttpDelete("DeleteSurchargeMasterList")]
+        public ActionResult<Response<CommonResponse>> DeleteSurchargeMasterList(int ID)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.DeleteSurchargeMasterList(ID)));
+        }
         #endregion
 
         #region "ORGANISATION MASTER"

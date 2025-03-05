@@ -309,6 +309,32 @@ namespace PrimeMaritime_API.Models
         public decimal SEQ40 { get; set; }
         public List<CHARGE_MASTER> CHARGELIST { get; set; } = new List<CHARGE_MASTER>();
     }
+
+    public class SURCHARGE_MASTER
+    {
+        public int ID { get; set; }
+        public string POL { get; set; }
+        public string POD { get; set; }
+        public string Charge { get; set; }
+        public string Currency { get; set; }
+        public string LadenStatus { get; set; }
+        public string ServiceMode { get; set; }
+        public decimal DRY20 { get; set; }
+        public decimal DRY40 { get; set; }
+        public decimal DRY40HC { get; set; }
+        public decimal DRY45 { get; set; }
+        public decimal RF20 { get; set; }
+        public decimal RF40 { get; set; }
+        public decimal RF40HC { get; set; }
+        public decimal RF45 { get; set; }
+        public decimal HAZ20 { get; set; }
+        public decimal HAZ40 { get; set; }
+        public decimal HAZ40HC { get; set; }
+        public decimal HAZ45 { get; set; }
+        public decimal SEQ20 { get; set; }
+        public decimal SEQ40 { get; set; }
+        public List<CHARGE_MASTER> CHARGELIST { get; set; } = new List<CHARGE_MASTER>();
+    }
     public class CHARGE_MASTER
     {
         public int ID { get; set; }

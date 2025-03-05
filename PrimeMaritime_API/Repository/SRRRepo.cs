@@ -331,6 +331,32 @@ namespace PrimeMaritime_API.Repository
                     tbl1.Rows.Add(dr);
                 }
 
+                if (request.SURCHARGES != null && request.SURCHARGES.Any()) // Ensure it's not null and has elements
+                {
+                    foreach (var i in request.SURCHARGES)
+                    {
+                        DataRow dr = tbl1.NewRow();
+
+                        dr["SRR_ID"] = Convert.ToInt32(SRRID);
+                        dr["SRR_NO"] = request.SRR_NO;
+                        dr["CONTAINER_TYPE"] = i.CONTAINER_TYPE;
+                        dr["CHARGE_CODE"] = i.CHARGE_CODE;
+                        dr["TRANSPORT_TYPE"] = i.TRANSPORT_TYPE;
+                        dr["CURRENCY"] = i.CURRENCY;
+                        dr["PAYMENT_TERM"] = i.PAYMENT_TERM;
+                        dr["RATE_TYPE"] = "SURCHARGES";
+                        dr["STANDARD_RATE"] = i.RATE;
+                        dr["RATE_REQUESTED"] = i.RATE_REQUESTED;
+                        dr["CREATED_BY"] = request.CREATED_BY;
+                        dr["STATUS"] = "Requested";
+                        dr["COST"] = i.COST;
+                        dr["AGENT_REMARKS"] = i.AGENT_REMARKS;
+
+                        tbl1.Rows.Add(dr);
+                    }
+                }
+
+
                 string[] columns1 = new string[14];
                 columns1[0] = "SRR_ID";
                 columns1[1] = "SRR_NO";

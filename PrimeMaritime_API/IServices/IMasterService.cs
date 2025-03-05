@@ -225,6 +225,15 @@ namespace PrimeMaritime_API.IServices
         Response<string> UploadMandatoryTariff(List<MANDATORY_MASTER> request);
         Response<string> UploadSlotRateTariff(List<SLOT_RATE_MASTER> request);  //SIDDHESH
         Response<string> UploadMNRTariff(List<MNR_TARIFF_LIST> request);  //SIDDHESH
+
+        Response<string> UploadSurchargeTariff(List<SURCHARGE_MASTER> request);
+        #endregion
+
+        #region "SURCHARGE MASTER"
+        Response<List<SURCHARGE_MASTER>> GetSurchargeMasterList();
+        Response<SURCHARGE_MASTER> GetSurchargeMasterDetails(int ID);
+        Response<CommonResponse> UpdateSurchargeMasterList(SURCHARGE_MASTER request);
+        Response<CommonResponse> DeleteSurchargeMasterList(int ID);
         #endregion
 
         #region "ORGANISATION MASTER"

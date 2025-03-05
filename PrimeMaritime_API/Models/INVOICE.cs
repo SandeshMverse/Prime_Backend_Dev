@@ -244,6 +244,7 @@ namespace PrimeMaritime_API.Models
         public int INVOICE_ID { get; set; }
         public string INVOICE_NO { get; set; }
         public string INVOICE_TYPE { get; set; }
+        public DateTime INVOICE_DATE { get; set; }
         public string BILL_TO { get; set; }
         public string BILL_FROM { get; set; }
         public string BL_NO { get; set; }

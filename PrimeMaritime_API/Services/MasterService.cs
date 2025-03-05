@@ -2022,6 +2022,108 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<string> UploadSurchargeTariff(List<SURCHARGE_MASTER> request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<string> response = new Response<string>();
+            DbClientFactory<MasterRepo>.Instance.UploadSurchargeTariff(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseCode = 200;
+            response.ResponseMessage = "Success";
+            response.Data = "Uploaded Successfully !";
+
+            return response;
+        }
+        #endregion
+
+        #region "SURCHARGE MASTER"
+
+        public Response<List<SURCHARGE_MASTER>> GetSurchargeMasterList()
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<SURCHARGE_MASTER>> response = new Response<List<SURCHARGE_MASTER>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetSurchargeMasterList(dbConn);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<SURCHARGE_MASTER> GetSurchargeMasterDetails(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<SURCHARGE_MASTER> response = new Response<SURCHARGE_MASTER>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetSurchargeMasterDetails(dbConn, ID);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<CommonResponse> UpdateSurchargeMasterList(SURCHARGE_MASTER request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            DbClientFactory<MasterRepo>.Instance.UpdateSurchargeMasterList(dbConn, request);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Master updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
+        public Response<CommonResponse> DeleteSurchargeMasterList(int ID)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+
+            if (ID == 0)
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide ID ";
+                return response;
+            }
+
+            DbClientFactory<MasterRepo>.Instance.DeleteSurchargeMasterList(dbConn, ID);
+
+            response.Succeeded = true;
+            response.ResponseMessage = "Master deleted Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
         #endregion
 
         #region "ORGANISATION MASTER"

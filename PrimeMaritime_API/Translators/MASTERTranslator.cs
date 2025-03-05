@@ -649,6 +649,47 @@ namespace PrimeMaritime_API.Translators
 
             return item;
         }
+
+        public static SURCHARGE_MASTER TranslateAsSurchargeMaster(this SqlDataReader reader, bool isList = false)
+        {
+            if (!isList)
+            {
+                if (!reader.HasRows)
+                    return null;
+                reader.Read();
+            }
+
+            var item = new SURCHARGE_MASTER();
+
+            if (reader.IsColumnExists("ID"))
+                item.ID = SqlHelper.GetNullableInt32(reader, "ID");
+
+            if (reader.IsColumnExists("POL"))
+                item.POL = SqlHelper.GetNullableString(reader, "POL");
+
+            if (reader.IsColumnExists("POD"))
+                item.POD = SqlHelper.GetNullableString(reader, "POD");
+
+            if (reader.IsColumnExists("Charge"))
+                item.Charge = SqlHelper.GetNullableString(reader, "Charge");
+
+            if (reader.IsColumnExists("Currency"))
+                item.Currency = SqlHelper.GetNullableString(reader, "Currency");
+
+            if (reader.IsColumnExists("LadenStatus"))
+                item.LadenStatus = SqlHelper.GetNullableString(reader, "LadenStatus");
+
+            if (reader.IsColumnExists("ServiceMode"))
+                item.ServiceMode = SqlHelper.GetNullableString(reader, "ServiceMode");
+
+            if (reader.IsColumnExists("DRY20"))
+                item.DRY20 = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "DRY20"));
+
+            if (reader.IsColumnExists("HAZ20"))
+                item.HAZ20 = Convert.ToDecimal(SqlHelper.GetNullableString(reader, "HAZ20"));
+
+            return item;
+        }
         public static CHARGE_MASTER TranslateAsChargeMaster(this SqlDataReader reader, bool isList = false)
         {
             if (!isList)

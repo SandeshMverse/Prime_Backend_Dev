@@ -4,6 +4,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Translators;
+using PrimeMaritime_API.Utility;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -14,6 +15,7 @@ using System.Dynamic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Transactions;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 namespace PrimeMaritime_API.Repository
 {
@@ -2905,6 +2907,133 @@ namespace PrimeMaritime_API.Repository
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public void UploadSurchargeTariff(string connstring, List<SURCHARGE_MASTER> master)
+        {
+            try
+            {
+                foreach (var i in master)
+                {
+                    SqlParameter[] parameters =
+                    {
+                      new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "INSERT_SURCHARGE" },
+                      new SqlParameter("@POL", SqlDbType.VarChar,100) { Value = i.POL},
+                      new SqlParameter("@POD", SqlDbType.VarChar, 100) { Value = i.POD },
+                      new SqlParameter("@Charge", SqlDbType.VarChar,100) { Value = i.Charge },
+                      new SqlParameter("@Currency", SqlDbType.VarChar, 10) { Value = i.Currency },
+                      new SqlParameter("@LadenStatus", SqlDbType.Char,1) { Value = i.LadenStatus },
+                      new SqlParameter("@ServiceMode", SqlDbType.VarChar,20) { Value = i.ServiceMode },
+                      new SqlParameter("@DRY20", SqlDbType.Decimal) { Value = i.DRY20 },
+                      new SqlParameter("@DRY40", SqlDbType.Decimal) { Value = i.DRY40 },
+                      new SqlParameter("@DRY40HC", SqlDbType.Decimal) { Value = i.DRY40HC },
+                      new SqlParameter("@DRY45", SqlDbType.Decimal) { Value = i.DRY45 },
+                      new SqlParameter("@RF20", SqlDbType.Decimal) { Value = i.RF20 },
+                      new SqlParameter("@RF40", SqlDbType.Decimal) { Value = i.RF40 },
+                      new SqlParameter("@RF40HC", SqlDbType.Decimal) { Value = i.RF40HC },
+                      new SqlParameter("@RF45", SqlDbType.Decimal) { Value = i.RF45 },
+                      new SqlParameter("@HAZ20", SqlDbType.Decimal) { Value = i.HAZ20 },
+                      new SqlParameter("@HAZ40", SqlDbType.Decimal) { Value = i.HAZ40 },
+                      new SqlParameter("@HAZ40HC", SqlDbType.Decimal) { Value = i.HAZ40HC },
+                      new SqlParameter("@HAZ45", SqlDbType.Decimal) { Value = i.HAZ45 },
+                      new SqlParameter("@SEQ20", SqlDbType.Decimal) { Value = i.SEQ20 },
+                      new SqlParameter("@SEQ40", SqlDbType.Decimal) { Value = i.SEQ40 },
+                    };
+
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CHARGE_MASTER", parameters);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+        #endregion
+
+        #region "SURCHARGE MASTER"
+
+        public List<SURCHARGE_MASTER> GetSurchargeMasterList(string dbConn)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_SURCHARGE_LIST" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_CHARGE_MASTER", parameters);
+                List<SURCHARGE_MASTER> master = SqlHelper.CreateListFromTable<SURCHARGE_MASTER>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public SURCHARGE_MASTER GetSurchargeMasterDetails(string connstring, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "GET_SURCHARGEDETAILS" }
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<SURCHARGE_MASTER>(connstring, "SP_CRUD_CHARGE_MASTER", r => r.TranslateAsSurchargeMaster(), parameters);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public void UpdateSurchargeMasterList(string connstring, SURCHARGE_MASTER master)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_SURCHARGE" },
+                  new SqlParameter("@ID", SqlDbType.Int) { Value = master.ID },
+                  new SqlParameter("@POL", SqlDbType.VarChar,100) { Value = master.POL},
+                  new SqlParameter("@POD", SqlDbType.VarChar, 100) { Value = master.POD },
+                  new SqlParameter("@Charge", SqlDbType.VarChar,100) { Value = master.Charge },
+                  new SqlParameter("@Currency", SqlDbType.VarChar, 10) { Value = master.Currency },
+                  new SqlParameter("@LadenStatus", SqlDbType.Char,1) { Value = master.LadenStatus },
+                  new SqlParameter("@ServiceMode", SqlDbType.VarChar,20) { Value = master.ServiceMode },
+                  new SqlParameter("@DRY20", SqlDbType.Decimal) { Value = master.DRY20 },
+                   new SqlParameter("@HAZ20", SqlDbType.Decimal) { Value = master.HAZ20 },
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CHARGE_MASTER", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public void DeleteSurchargeMasterList(string connstring, int ID)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@ID", SqlDbType.Int) { Value = ID },
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 20) { Value = "DELETE_SURCHARGE" }
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_CHARGE_MASTER", parameters);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

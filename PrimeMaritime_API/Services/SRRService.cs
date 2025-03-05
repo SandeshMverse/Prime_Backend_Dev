@@ -439,6 +439,15 @@ namespace PrimeMaritime_API.Services
                     rates.IMP_OTHERINCOMELIST = new List<CHARGE>();
                 }
 
+                if (data.Tables[5].Rows.Count > 0)
+                {
+                    rates.SURCHARGELIST = SRRRepo.GetListFromDataSet<CHARGE>(data.Tables[5]);
+                }
+                else
+                {
+                    rates.SURCHARGELIST = new List<CHARGE>();
+                }
+
                 response.Data = rates;
             }
             else

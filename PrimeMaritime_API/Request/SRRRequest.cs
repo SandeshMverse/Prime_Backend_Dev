@@ -44,5 +44,7 @@ namespace PrimeMaritime_API.Request
         public List<SRR_RATES> POL_CHARGES { get; set; } = new List<SRR_RATES>();
         public List<SRR_RATES> POD_CHARGES { get; set; } = new List<SRR_RATES>();
         public List<SRR_COMMODITIES> SRR_COMMODITIES { get; set; } = new List<SRR_COMMODITIES>();
+
+        public List<SRR_RATES> SURCHARGES { get; set; } = new List<SRR_RATES>();
     }
 }

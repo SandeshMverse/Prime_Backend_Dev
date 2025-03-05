@@ -37,6 +37,8 @@ namespace PrimeMaritime_API.Models
         public List<CHARGE> EXP_OTHERINCOMELIST { get; set; } = new List<CHARGE>();
         public List<CHARGE> IMP_INCOMELIST { get; set; } = new List<CHARGE>();
         public List<CHARGE> IMP_OTHERINCOMELIST { get; set; } = new List<CHARGE>();
+
+        public List<CHARGE> SURCHARGELIST { get; set; } = new List<CHARGE>();
     }
 
     public class INVOICELIST
