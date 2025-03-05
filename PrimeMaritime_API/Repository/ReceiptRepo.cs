@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Data;
 using System;
 using System.Collections.Generic;
+using PrimeMaritime_API.Translators;
 
 namespace PrimeMaritime_API.Repository
 {
@@ -131,7 +132,8 @@ namespace PrimeMaritime_API.Repository
 
                     dr["RECEIPT_NO"] = request.INVOICE_LIST[0].RECEIPT_NO;
                     dr["CHARGE_NAME"] = i.CHARGE_NAME;
-                    dr["INVOICE_AMOUNT"] = i.INVOICE_AMOUNT;
+                    //dr["INVOICE_AMOUNT"] = i.INVOICE_AMOUNT;
+                    dr["INVOICE_AMOUNT"] = i.TOTAL_AMOUNT;
                     dr["RECEIPT_COLLECTED"] = i.RECEIPT_COLLECTED;
                     dr["OUTSTANDING_AMOUNT"] = i.OUTSTANDING_AMOUNT;
                     dr["RECEIPT_AMOUNT"] = i.RECEIPT_AMOUNT;
@@ -169,6 +171,26 @@ namespace PrimeMaritime_API.Repository
             {
                 throw;
             }
+        }
+
+        public RECEIPT_INVOICE CheckReceiptExist(string connstring, string BL_NO, string INVOICE_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+            {
+                new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_RECEIPT_EXIST" },
+                //new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                new SqlParameter("@INVOICE_NO", SqlDbType.VarChar, 50) { Value = INVOICE_NO },
+            };
+
+                return SqlHelper.ExtecuteProcedureReturnData<RECEIPT_INVOICE>(connstring, "SP_CRUD_RECEIPT", r => r.TranslateReceipt(), parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
     }
 }

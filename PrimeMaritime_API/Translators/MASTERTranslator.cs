@@ -1248,5 +1248,25 @@ namespace PrimeMaritime_API.Translators
 
             return item;
         }
+
+        public static RECEIPT_INVOICE TranslateReceipt(this SqlDataReader reader, bool isList = false)
+        {
+            if (!isList)
+            {
+                if (!reader.HasRows)
+                    return null;
+                reader.Read();
+            }
+
+            var item = new RECEIPT_INVOICE();
+
+            if (reader.IsColumnExists("RECEIPT_NO"))
+                item.RECEIPT_NO = SqlHelper.GetNullableString(reader, "RECEIPT_NO");
+
+            if (reader.IsColumnExists("INVOICE_NO"))
+                item.INVOICE_NO = SqlHelper.GetNullableString(reader, "INVOICE_NO");
+
+            return item;
+        }
     }
 }

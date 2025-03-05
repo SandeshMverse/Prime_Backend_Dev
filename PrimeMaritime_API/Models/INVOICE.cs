@@ -120,6 +120,7 @@ namespace PrimeMaritime_API.Models
         public string CREDIT_NO { get; set; }
         public string AGENT_CODE { get; set; }
         public string AGENT_NAME { get; set; }
+        public decimal EX_RATE  { get; set; }
     }
     public class CREDIT_NOTE
     {

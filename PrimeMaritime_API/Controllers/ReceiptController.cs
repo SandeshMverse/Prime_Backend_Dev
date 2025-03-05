@@ -6,6 +6,7 @@ using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.IServices;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Response;
+using PrimeMaritime_API.Services;
 using System.Collections.Generic;
 
 namespace PrimeMaritime_API.Controllers
@@ -32,6 +33,12 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<List<RECEIPT_INVOICE>>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string AGENT_CODE)
         {
             return Ok(JsonConvert.SerializeObject(_receiptService.GetReceiptList(FROM_DATE, TO_DATE, PORT, ORG_CODE, AGENT_CODE)));
+        }
+
+        [HttpGet("CheckReceiptExist")]
+        public ActionResult<Response<RECEIPT_INVOICE>> CheckReceiptExist(string BL_NO, string INVOICE_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_receiptService.CheckReceiptExist(BL_NO, INVOICE_NO)));
         }
     }
 }

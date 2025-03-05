@@ -54,5 +54,29 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<RECEIPT_INVOICE> CheckReceiptExist(string BL_NO, string INVOICE_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<RECEIPT_INVOICE> response = new Response<RECEIPT_INVOICE>();
+            var data = DbClientFactory<ReceiptRepo>.Instance.CheckReceiptExist(dbConn, BL_NO, INVOICE_NO);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
     }
 }

@@ -42,5 +42,6 @@ namespace PrimeMaritime_API.Models
         public decimal RECEIPT_COLLECTED { get; set; }
         public decimal OUTSTANDING_AMOUNT { get; set; }
         public decimal RECEIPT_AMOUNT { get; set; }
+        public decimal TOTAL_AMOUNT { get; set; }
     }
 }

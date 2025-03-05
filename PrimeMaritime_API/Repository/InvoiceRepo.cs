@@ -174,6 +174,80 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public void UpdateInvoice(string connstring, INVOICE_MASTER master)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                    new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_INVOICE" },
+                    new SqlParameter("@INVOICE_NO", SqlDbType.VarChar, 100) { Value = master.INVOICE_NO},
+                    new SqlParameter("@INVOICE_ID", SqlDbType.Int) { Value = master.INVOICE_ID},
+                    new SqlParameter("@INVOICE_TYPE", SqlDbType.VarChar, 100) { Value = master.INVOICE_TYPE },
+                    new SqlParameter("@BILL_TO", SqlDbType.VarChar, 255) { Value = master.BILL_TO },
+                    new SqlParameter("@BILL_FROM", SqlDbType.VarChar, 255) { Value = master.BILL_FROM },
+                    new SqlParameter("@SHIPPER_NAME", SqlDbType.NVarChar, 255) { Value = master.SHIPPER_NAME },
+                    new SqlParameter("@CONSIGNEE_NAME", SqlDbType.NVarChar, 255) { Value = master.CONSIGNEE_NAME },
+                    new SqlParameter("@PAYMENT_TERM", SqlDbType.VarChar, 50) { Value = master.PAYMENT_TERM },
+                    new SqlParameter("@ADDRESS", SqlDbType.VarChar) { Value = master.ADDRESS },
+                    new SqlParameter("@BRANCH_ID", SqlDbType.Int ) { Value = master.BRANCH_ID },
+                    new SqlParameter("@BANK_ID", SqlDbType.Int ) { Value = master.BANK_ID },
+                    new SqlParameter("@INVOICE_DATE", SqlDbType.DateTime ) { Value = master.INVOICE_DATE },
+                    new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = master.BL_NO },
+                    new SqlParameter("@AGENT_NAME", SqlDbType.VarChar, 50) { Value = master.AGENT_NAME},
+                    new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = master.AGENT_CODE},
+                    new SqlParameter("@UPDATED_BY", SqlDbType.VarChar, 50) { Value = master.UPDATED_BY},
+                    new SqlParameter("@STATUS", SqlDbType.VarChar, 50) { Value = master.STATUS},
+                    new SqlParameter("@CONTAINERS", SqlDbType.VarChar) { Value = master.CONTAINERS},
+                    new SqlParameter("@SHIPPER_REF", SqlDbType.VarChar, 100) { Value = master.SHIPPER_REF},
+                    new SqlParameter("@REMARKS", SqlDbType.VarChar, 255) { Value = master.REMARKS},
+                };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_INVOICE", parameters);
+
+ 
+
+                foreach (var charge in master.BL_LIST)
+                {
+                    SqlParameter[] param1 =
+                    {
+                        new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_INVOICE_CHARGES" },
+                        new SqlParameter("@ID", SqlDbType.Int) { Value = charge.ID },
+                        new SqlParameter("@INVOICE_NO", SqlDbType.VarChar, 100) { Value = charge.INVOICE_NO },
+                        new SqlParameter("@INVOICE_ID", SqlDbType.Int) { Value = charge.INVOICE_ID },
+                        new SqlParameter("@CHARGE_NAME", SqlDbType.VarChar, 100) { Value = charge.CHARGE_NAME },
+                        new SqlParameter("@QUANTITY", SqlDbType.Int) { Value = charge.QUANTITY },
+                        new SqlParameter("@HSN_CODE", SqlDbType.VarChar, 100) { Value = charge.HSN_CODE },
+                        new SqlParameter("@CURRENCY", SqlDbType.VarChar, 100) { Value = charge.CURRENCY },
+                        new SqlParameter("@IS_SRRCHARGE", SqlDbType.Bit) { Value = charge.IS_SRRCHARGE },
+                        new SqlParameter("@APPROVED_RATE", SqlDbType.Decimal) { Value = charge.APPROVED_RATE },
+                        new SqlParameter("@AMOUNT", SqlDbType.Decimal) { Value = charge.AMOUNT },
+                        new SqlParameter("@EXCHANGE_RATE", SqlDbType.Decimal) { Value = charge.EXCHANGE_RATE },
+                        new SqlParameter("@NEW_EXCHANGE_RATE", SqlDbType.Decimal) { Value = charge.NEW_EXCHANGE_RATE },
+                        new SqlParameter("@TAXABLE_AMOUNT", SqlDbType.Decimal) { Value = charge.TAXABLE_AMOUNT },
+                        new SqlParameter("@RATE_PER", SqlDbType.Decimal) { Value = charge.RATE_PER },
+                        new SqlParameter("@SGST", SqlDbType.Decimal) { Value = charge.SGST },
+                        new SqlParameter("@CGST", SqlDbType.Decimal) { Value = charge.CGST },
+                        new SqlParameter("@IGST", SqlDbType.Decimal) { Value = charge.IGST },
+                        new SqlParameter("@TAX_AMOUNT", SqlDbType.Decimal) { Value = charge.TAX_AMOUNT },
+                        new SqlParameter("@TOTAL_AMOUNT", SqlDbType.Decimal) { Value = charge.TOTAL_AMOUNT },
+                        new SqlParameter("@VAT", SqlDbType.Decimal) { Value = charge.VAT },
+                        new SqlParameter("@VAT_AMOUNT", SqlDbType.Decimal) { Value = charge.VAT_AMOUNT },
+
+                    };
+
+                    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_INVOICE", param1);
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating invoice: " + ex.Message);
+            }
+        }
+
+
         public void InsertCreditNote(string connstring, List<CREDIT_NOTE> master)
         {
             try

@@ -9,5 +9,7 @@ namespace PrimeMaritime_API.IServices
     {
         Response<CommonResponse> InsertReceipt(RECEIPT request);
         Response<List<RECEIPT_INVOICE>> GetReceiptList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string AGENT_CODE);
+
+        Response<RECEIPT_INVOICE> CheckReceiptExist(string BL_NO, string INVOICE_NO);
     }
 }

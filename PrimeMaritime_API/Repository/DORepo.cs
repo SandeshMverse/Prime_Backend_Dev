@@ -251,5 +251,25 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public RECEIPT_INVOICE CheckReceiptGenerate(string dbConn, string INVOICE_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "CHECK_RECEIPT_GENERATE" },
+                  new SqlParameter("@INVOICE_NO", SqlDbType.VarChar, 100) { Value = INVOICE_NO },
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnData<RECEIPT_INVOICE>(dbConn, "SP_CRUD_DO", r => r.TranslateReceipt(), parameters);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }

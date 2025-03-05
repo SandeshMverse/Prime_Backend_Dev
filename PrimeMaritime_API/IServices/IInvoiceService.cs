@@ -13,6 +13,7 @@ namespace PrimeMaritime_API.IServices
         Response<INVOICE_BL> GetBLDetails(string BL_NO, string PORT, string ORG_CODE, string AGENT_CODE);
         Response<CREDIT_NOTE_DETAILS> GetCreditNoteDetails(string CREDIT_NOTE, string PORT, string ORG_CODE);
         Response<CommonResponse> InsertInvoice(INVOICE_MASTER request);
+        Response<CommonResponse> UpdateInvoice(INVOICE_MASTER request);
         Response<CommonResponse> InsertCreditNote(List<CREDIT_NOTE> request);
         Response<CommonResponse> FinalizeInvoice(INVOICE_FINALIZE request);
         Response<List<CREDIT_NOTE>> GetCreditList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string CREDIT_NO);

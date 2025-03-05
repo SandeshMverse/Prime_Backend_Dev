@@ -140,6 +140,20 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<CommonResponse> UpdateInvoice(INVOICE_MASTER request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<InvoiceRepo>.Instance.UpdateInvoice(dbConn, request);
+
+            Response<CommonResponse> response = new Response<CommonResponse>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Invoice Updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
         public Response<CommonResponse> InsertCreditNote(List<CREDIT_NOTE> request)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

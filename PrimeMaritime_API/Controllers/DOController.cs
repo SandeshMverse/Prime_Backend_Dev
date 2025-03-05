@@ -78,7 +78,11 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_doService.CheckPaymentPaid(BL_NO)));
         }
 
-
+        [HttpPost("CheckReceiptGenerate")]
+        public ActionResult<Response<RECEIPT_INVOICE>> CheckReceiptGenerate(string INVOICE_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_doService.CheckReceiptGenerate(INVOICE_NO)));
+        }
 
 
 

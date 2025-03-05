@@ -44,6 +44,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_invoiceService.InsertInvoice(request));
         }
 
+        [HttpPost("UpdateInvoice")]
+        public ActionResult<Response<CommonResponse>> UpdateInvoice(INVOICE_MASTER request)
+        {
+            return Ok(_invoiceService.UpdateInvoice(request));
+        }
+
         [HttpPost("InsertCreditNote")]
         public ActionResult<Response<CommonResponse>> InsertCreditNote(List<CREDIT_NOTE> request)
         {
