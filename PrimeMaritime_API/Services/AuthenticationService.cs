@@ -96,7 +96,7 @@ namespace PrimeMaritime_API.Services
             response.countrycode = user.COUNTRYCODE;
             response.currency = user.CURRENCY;
             response.orgcode = user.ORG_CODE;
-
+            response.location = user.LOCATION;
             return response;
         }
 

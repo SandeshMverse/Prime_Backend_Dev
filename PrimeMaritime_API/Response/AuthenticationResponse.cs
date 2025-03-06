@@ -22,5 +22,7 @@ namespace PrimeMaritime_API.Response
         public string Token { get; set; }
         public string RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiration { get; set; }
+        public string location { get; set; }
+        
     }
 }

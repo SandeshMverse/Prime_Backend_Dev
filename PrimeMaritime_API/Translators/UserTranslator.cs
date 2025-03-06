@@ -58,6 +58,9 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("RESET_PASSWORD_EXPIRY"))
                 item.RESET_PASSWORD_EXPIRY = SqlHelper.GetDateTime(reader, "RESET_PASSWORD_EXPIRY");
 
+            if (reader.IsColumnExists("LOCATION"))
+                item.LOCATION = SqlHelper.GetNullableString(reader, "LOCATION");
+
             return item;
         }
 
