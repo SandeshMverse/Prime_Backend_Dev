@@ -72,7 +72,7 @@ namespace PrimeMaritime_API.Models
         public string CONTAINERS { get; set; }
         public string CONTAINER_NOS { get; set; }
         public int BRANCH_ID { get; set; }
-        public int BANK_ID { get; set; }
+        public int? BANK_ID { get; set; }
         public string SHIPPER_REF { get; set; }
         public string FINAL_DESTINATION { get; set; }
         public string REMARKS { get; set; }
