@@ -479,6 +479,7 @@ namespace PrimeMaritime_API.Models
         public decimal IGST { get; set; }
         public decimal CGST { get; set; }
         public decimal SGST { get; set; }
+        public decimal VAT { get; set; }
         public string EFFECTIVE_FROM { get; set; }
         public string EFFECTIVE_TO { get; set; }
     }
