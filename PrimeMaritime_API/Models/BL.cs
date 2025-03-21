@@ -23,6 +23,8 @@ namespace PrimeMaritime_API.Models
         public string PLACE_OF_RECEIPT { get; set; }
         public string VESSEL_NAME { get; set; }
         public string VOYAGE_NO { get; set; }
+        public string? MOTHER_VESSEL_NAME { get; set; }
+        public string? MOTHER_VOYAGE_NO { get; set; }
         public string PORT_OF_LOADING { get; set; }
         public string PORT_OF_DISCHARGE { get; set; }
         public string PLACE_OF_DELIVERY { get; set; }
