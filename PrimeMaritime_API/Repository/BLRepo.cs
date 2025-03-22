@@ -753,5 +753,18 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public string UpdateItemNo(string connstring,BL request)
+        {
+            SqlParameter[] parameters =
+            {
+            new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "UPDATE_ITEM_NO" },
+            new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
+            new SqlParameter("@LINE_ITEM_NO", SqlDbType.VarChar, 50) { Value = request.LINE_ITEM_NO }
+        };
+
+            var result = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
+            return result;
+        }
+
     }
 }

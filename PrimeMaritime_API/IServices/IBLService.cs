@@ -41,5 +41,7 @@ namespace PrimeMaritime_API.IServices
         Response<string> UnlockBL(string BL_NO, int ID, string AGENT_CODE);
 
         Response<ONLYBL> CheckBLSwitched(string BL_NO);
+
+        Response<string> UpdateItemNo(BL request);
     }
 }

@@ -226,5 +226,13 @@ namespace PrimeMaritime_API.Controllers
         {
             return Ok(JsonConvert.SerializeObject(_blService.CheckBLSwitched(BL_NO)));
         }
+
+        [HttpPost("UpdateItemNo")]
+        public ActionResult<Response<string>> UpdateItemNo(BL request)
+        {
+            return Ok(_blService.UpdateItemNo(request));
+        }
+
+
     }
 }
