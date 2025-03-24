@@ -49,6 +49,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_blService.GetBLHistory(AGENT_CODE,ORG_CODE,PORT)));
         }
 
+        [HttpGet("GetBLALLHistory")]
+        public ActionResult<Response<List<BL>>> GetBLALLHistory(string AGENT_CODE, string ORG_CODE, string PORT)
+        {
+            return Ok(JsonConvert.SerializeObject(_blService.GetBLALLHistory(AGENT_CODE, ORG_CODE, PORT)));
+        }
+
         [HttpGet("GetBLSurrenderedList")]
         public ActionResult<Response<List<BL>>> GetBLSurrenderedList(string POD, string ORG_CODE)
         {
