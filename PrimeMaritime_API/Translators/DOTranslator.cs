@@ -156,6 +156,9 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("DO_STATUS"))
                 item.DO_STATUS = SqlHelper.GetNullableString(reader, "DO_STATUS");
 
+            if (reader.IsColumnExists("SURVEYOR_NAME"))
+                item.SURVEYOR_NAME = SqlHelper.GetNullableString(reader, "SURVEYOR_NAME");
+
             return item;
         }
     }

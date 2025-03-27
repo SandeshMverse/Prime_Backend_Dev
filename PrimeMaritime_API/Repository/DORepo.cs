@@ -43,6 +43,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@LETTER_VALIDITY",SqlDbType.DateTime) { Value = request.LETTER_VALIDITY },
                   new SqlParameter("@SHIPPING_TERMS", SqlDbType.VarChar, 50) { Value = request.SHIPPING_TERMS },
                   new SqlParameter("@LINE_NO", SqlDbType.VarChar, 50) { Value = request.LINE_NO },
+                  new SqlParameter("@SURVEYOR_NAME", SqlDbType.VarChar, 50) { Value = request.SURVEYOR_NAME },
                   new SqlParameter("@CFS_DETAILS", SqlDbType.VarChar, 50) { Value = request.CFS_DETAILS },
                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 50) { Value = request.AGENT_CODE },
                   new SqlParameter("@AGENT_NAME", SqlDbType.VarChar, 255) { Value = request.AGENT_NAME },
@@ -78,6 +79,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@LETTER_VALIDITY",SqlDbType.DateTime) { Value = request.LETTER_VALIDITY },
                   new SqlParameter("@SHIPPING_TERMS", SqlDbType.VarChar, 50) { Value = request.SHIPPING_TERMS },
                   new SqlParameter("@LINE_NO", SqlDbType.VarChar, 50) { Value = request.LINE_NO },
+                  new SqlParameter("@SURVEYOR_NAME", SqlDbType.VarChar, 50) { Value = request.SURVEYOR_NAME },
                   new SqlParameter("@CFS_DETAILS", SqlDbType.VarChar, 50) { Value = request.CFS_DETAILS },
                   new SqlParameter("@DO_STATUS", SqlDbType.VarChar, 50) { Value = request.DO_STATUS },
 

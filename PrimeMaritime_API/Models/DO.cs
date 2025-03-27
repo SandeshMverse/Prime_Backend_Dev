@@ -49,6 +49,8 @@ namespace PrimeMaritime_API.Models
         public string CFS_DETAILS { get; set; }
         public string DO_STATUS { get; set; }
         public bool EDIT_EMPTY_LETTER { get; set; }
+
+        public string? SURVEYOR_NAME { get; set; }
         
 
     }
@@ -80,6 +82,7 @@ namespace PrimeMaritime_API.Models
         public string CFS_DETAILS { get; set; }
         public string DO_STATUS { get; set; }
 
+        public string? SURVEYOR_NAME { get; set; }
 
 
     }
