@@ -310,12 +310,12 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<List<INVOICE_MASTER>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string BL_NO)
+        public Response<List<INVOICE_MASTER>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string BL_NO, string PAYMENT_TERM)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<List<INVOICE_MASTER>> response = new Response<List<INVOICE_MASTER>>();
-            var data = DbClientFactory<InvoiceRepo>.Instance.GetInvoiceList(dbConn, FROM_DATE, TO_DATE, ORG_CODE, PORT, BL_NO);
+            var data = DbClientFactory<InvoiceRepo>.Instance.GetInvoiceList(dbConn, FROM_DATE, TO_DATE, ORG_CODE, PORT, BL_NO, PAYMENT_TERM);
 
             if (data.Count > 0)
             {

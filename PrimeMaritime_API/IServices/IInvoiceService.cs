@@ -17,7 +17,7 @@ namespace PrimeMaritime_API.IServices
         Response<CommonResponse> InsertCreditNote(List<CREDIT_NOTE> request);
         Response<CommonResponse> FinalizeInvoice(INVOICE_FINALIZE request);
         Response<List<CREDIT_NOTE>> GetCreditList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string CREDIT_NO);
-        Response<List<INVOICE_MASTER>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string BL_NO);
+        Response<List<INVOICE_MASTER>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string BL_NO, string PAYMENT_TERM);
         Response<INVOICE_MASTER> GetInvoiceDetails(int INVOICE_ID,string INVOICE_NO, string PORT, string ORG_CODE);
         Response<List<INVOICE_BL_CHECK>> GetBLExists(string INVOICE_TYPE, string BL_NO);
         Response<List<INVOICE_PAYMENT_TERM_CHECK>> PaymentTerm(string BL_NO);

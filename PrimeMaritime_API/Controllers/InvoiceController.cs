@@ -64,9 +64,9 @@ namespace PrimeMaritime_API.Controllers
 
 
         [HttpGet("GetInvoiceList")]
-        public ActionResult<Response<List<INVOICE_MASTER>>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE,string BL_NO)
+        public ActionResult<Response<List<INVOICE_MASTER>>> GetInvoiceList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE,string BL_NO,string PAYMENT_TERM)
         {
-            return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoiceList(FROM_DATE, TO_DATE, PORT, ORG_CODE,BL_NO)));
+            return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoiceList(FROM_DATE, TO_DATE, PORT, ORG_CODE,BL_NO, PAYMENT_TERM)));
         }
 
         [HttpGet("GetCreditList")]

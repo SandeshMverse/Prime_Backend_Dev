@@ -328,7 +328,7 @@ namespace PrimeMaritime_API.Repository
             return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_INVOICE", parameters);
         }
 
-        public List<INVOICE_MASTER> GetInvoiceList(string connstring, string FROM_DATE, string TO_DATE, string ORG_CODE, string PORT, string BL_NO)
+        public List<INVOICE_MASTER> GetInvoiceList(string connstring, string FROM_DATE, string TO_DATE, string ORG_CODE, string PORT, string BL_NO ,string PAYMENT_TERM)
         {
             try
             {
@@ -340,6 +340,8 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@ORG_CODE", SqlDbType.VarChar, 50) { Value = ORG_CODE },
                   new SqlParameter("@PORT", SqlDbType.VarChar, 100) { Value = PORT },
                   new SqlParameter("@BL_NO", SqlDbType.VarChar, 100) { Value = BL_NO },
+                  new SqlParameter("@PAYMENT_TERM", SqlDbType.VarChar, 100) { Value = PAYMENT_TERM },
+
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_INVOICE", parameters);
