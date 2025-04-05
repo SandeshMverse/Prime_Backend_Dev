@@ -71,6 +71,7 @@ namespace PrimeMaritime_API.Models
 
         public int NO_OF_PACKAGES { get; set; }
 
+        public int POD_FREE_DAYS { get; set; }
 
     }
 
