@@ -118,6 +118,7 @@ namespace PrimeMaritime_API.Repository
                   new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
                   new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
                   new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+                  new SqlParameter("COMMODITY",SqlDbType.VarChar, 500) {Value = request.COMMODITY},
                   new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
                   new SqlParameter("@IS_SWITCHBL",SqlDbType.VarChar, 50) {Value = request.IS_SWITCHBL},  //SWITCHBL
                   new SqlParameter("@SWITCHBL_AGENT_CODE",SqlDbType.VarChar, 50) {Value = request.SWITCHBL_AGENT_CODE},  //SWITCHBL
@@ -229,6 +230,7 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
               new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
               new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+              new SqlParameter("@COMMODITY",SqlDbType.VarChar, 500) {Value = request.COMMODITY},
               new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,100) { Value = request.AGENT_CODE }
             };
 
@@ -578,6 +580,7 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
               new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
               new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+              new SqlParameter("COMMODITY",SqlDbType.VarChar, 500) {Value = request.COMMODITY},
               new SqlParameter("@SWITCHBL_STATUS",SqlDbType.Bit) {Value = request.SWITCHBL_STATUS},
               new SqlParameter("@IS_POL",SqlDbType.Bit) {Value = request.IS_POL},
 
@@ -708,6 +711,7 @@ namespace PrimeMaritime_API.Repository
               new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
               new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
               new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+              new SqlParameter("COMMODITY",SqlDbType.VarChar, 500) {Value = request.COMMODITY},
               new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,100) { Value = request.AGENT_CODE }
             };
 
