@@ -236,7 +236,7 @@ namespace PrimeMaritime_API.Repository
 
         }
 
-        public DETENTION_MASTER GetDetentionCharges(string connstring, string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE)
+        public DETENTION_MASTER GetDetentionCharges(string connstring, string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE, string IS_JUMPING,int FREEDAYS)
         {
             try
             {
@@ -247,6 +247,8 @@ namespace PrimeMaritime_API.Repository
                    new SqlParameter("@DAYS", SqlDbType.Int) { Value = DAYS },
                    new SqlParameter("@CURRENCY_CODE", SqlDbType.VarChar, 50) { Value = CURRENCY_CODE },
                    new SqlParameter("@CONTAINER_TYPE", SqlDbType.VarChar, 100) { Value = CONTAINER_TYPE },
+                   new SqlParameter("@IS_JUMPING", SqlDbType.VarChar, 50) { Value = IS_JUMPING },
+                   new SqlParameter("@FREEDAYS", SqlDbType.VarChar, 50) { Value = FREEDAYS },
                    new SqlParameter("@OUTPUT", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output },
                 };
 

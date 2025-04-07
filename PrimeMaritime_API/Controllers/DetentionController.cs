@@ -67,11 +67,9 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetDetentionCharges")]
-        public ActionResult<Response<DETENTION_MASTER>> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE)
+        public ActionResult<Response<DETENTION_MASTER>> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE, string IS_JUMPING,int FREEDAYS)
         {
-            return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionCharges(ACCEPTANCE_LOCATION, DAYS, CURRENCY_CODE, CONTAINER_TYPE)));
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionCharges(ACCEPTANCE_LOCATION, DAYS, CURRENCY_CODE, CONTAINER_TYPE, IS_JUMPING, FREEDAYS)));
         }
-
-
     }
 }

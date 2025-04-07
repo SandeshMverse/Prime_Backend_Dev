@@ -178,12 +178,12 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<DETENTION_MASTER> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE)
+        public Response<DETENTION_MASTER> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE , string IS_JUMPING, int FREEDAYS)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
             Response<DETENTION_MASTER> response = new Response<DETENTION_MASTER>();
-            var data = DbClientFactory<DetentionRepo>.Instance.GetDetentionCharges(dbConn, ACCEPTANCE_LOCATION, DAYS, CURRENCY_CODE, CONTAINER_TYPE);
+            var data = DbClientFactory<DetentionRepo>.Instance.GetDetentionCharges(dbConn, ACCEPTANCE_LOCATION, DAYS, CURRENCY_CODE, CONTAINER_TYPE, IS_JUMPING, FREEDAYS);
 
             if (data != null)
             {
