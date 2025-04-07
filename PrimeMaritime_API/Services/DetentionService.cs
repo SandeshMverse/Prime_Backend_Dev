@@ -45,6 +45,30 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<List<DETENTION_WAIVER_REQUEST>> GetDetentionListByLocation(string location)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<DETENTION_WAIVER_REQUEST>> response = new Response<List<DETENTION_WAIVER_REQUEST>>();
+            var data = DbClientFactory<DetentionRepo>.Instance.GetDetentionListByLocation(dbConn, location);
+
+            if (data.Count > 0)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
         public Response<decimal> GetTotalDetentionCost(string CONTAINER_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -73,7 +97,6 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-
         public Response<List<CONTAINER_DETENTION>> GetContainerDetentionList()
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
@@ -97,7 +120,6 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-
         public Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

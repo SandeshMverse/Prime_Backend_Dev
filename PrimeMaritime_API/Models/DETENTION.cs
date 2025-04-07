@@ -17,9 +17,12 @@ namespace PrimeMaritime_API.Models
         public decimal DETENTION_RATE { get; set; }
         public string CURRENCY { get; set; }
         public string  REMARK { get; set; }
+        public DateTime? return_date { get; set; }
+        public string IS_JUMPING { get; set; }
         public string CREATED_BY { get; set; }
         public int POD_FREE_DAYS { get; set; }
         public string BL_NO { get; set; }
+        public string DO_NO { get; set; }
 
     }
 

@@ -12,6 +12,8 @@ namespace PrimeMaritime_API.IServices
     public interface IDetentionService
     {
         Response<List<DETENTION_WAIVER_REQUEST>> GetDetentionListByDO(string DO_NO);
+        Response<List<DETENTION_WAIVER_REQUEST>> GetDetentionListByLocation(string location);
+
         Response<string> InsertDetention(DETENTION Request);
         Response<decimal> GetTotalDetentionCost(string CONTAINER_NO);
         Response<List<CONTAINER_DETENTION>> GetContainerDetentionList();

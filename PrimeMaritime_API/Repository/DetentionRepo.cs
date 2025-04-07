@@ -1,4 +1,5 @@
 ﻿using IdentityModel.Client;
+using Microsoft.AspNetCore.Mvc;
 using PrimeMaritime_API.Helpers;
 using PrimeMaritime_API.Models;
 using PrimeMaritime_API.Translators;
@@ -43,6 +44,27 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public List<DETENTION_WAIVER_REQUEST> GetDetentionListByLocation(string dbConn, string location)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_LIST_BYLOCATION" },
+                   new SqlParameter("@LOCATION", SqlDbType.VarChar,100) { Value = location},
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
+                List<DETENTION_WAIVER_REQUEST> detention_Request = SqlHelper.CreateListFromTable<DETENTION_WAIVER_REQUEST>(dataTable);
+
+                return detention_Request;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
         public void InsertDetention(string connstr, DETENTION request)
         {
             try
@@ -58,6 +80,8 @@ namespace PrimeMaritime_API.Repository
                 tbl.Columns.Add(new DataColumn("CURRENCY", typeof(string)));
                 tbl.Columns.Add(new DataColumn("REMARKS", typeof(string)));
                 tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
+                tbl.Columns.Add(new DataColumn("return_date", typeof(string)));
+                tbl.Columns.Add(new DataColumn("IS_JUMPING", typeof(string)));
 
                 foreach (var i in request.DETENTION_LIST)
                 {
@@ -73,11 +97,13 @@ namespace PrimeMaritime_API.Repository
                     dr["CURRENCY"] = i.CURRENCY;
                     dr["REMARKS"] = i.REMARK;
                     dr["CREATED_BY"] = i.CREATED_BY;
+                    dr["return_date"] = i.return_date;
+                    dr["IS_JUMPING"] = i.IS_JUMPING;
 
                     tbl.Rows.Add(dr);
                 }
 
-                string[] columns = new string[10];
+                string[] columns = new string[12];
                 columns[0] = "DO_NO";
                 columns[1] = "CONTAINER_NO";
                 columns[2] = "LOCATION";
@@ -88,6 +114,8 @@ namespace PrimeMaritime_API.Repository
                 columns[7] = "CURRENCY";
                 columns[8] = "REMARKS";
                 columns[9] = "CREATED_BY";
+                columns[10] = "return_date";
+                columns[11] = "IS_JUMPING";
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstr, tbl, "TB_DETENTION", columns);
             }
@@ -169,9 +197,11 @@ namespace PrimeMaritime_API.Repository
                    new SqlParameter("@DAYS", SqlDbType.Int) { Value = DAYS },
                    new SqlParameter("@CURRENCY_CODE", SqlDbType.VarChar, 50) { Value = CURRENCY_CODE },
                    new SqlParameter("@CONTAINER_TYPE", SqlDbType.VarChar, 100) { Value = CONTAINER_TYPE },
+                   new SqlParameter("@OUTPUT", SqlDbType.VarChar, 100) { Direction = ParameterDirection.Output },
                 };
 
-                return SqlHelper.ExtecuteProcedureReturnData<DETENTION_MASTER>(connstring, "SP_CRUD_DETENTION", r => r.TranslateAsDetentionMaster(), parameters);
+                var result = SqlHelper.ExtecuteProcedureReturnData<DETENTION_MASTER>(connstring, "SP_CRUD_DETENTION", r => r.TranslateAsDetentionMaster(), parameters);
+                return result;
             }
             catch (Exception)
             {
