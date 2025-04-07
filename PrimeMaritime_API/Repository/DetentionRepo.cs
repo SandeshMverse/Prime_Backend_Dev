@@ -125,6 +125,56 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public void UpdateDetention(string connstr, DETENTION request)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connstr))
+                {
+                    conn.Open();
+
+                    foreach (var i in request.DETENTION_LIST)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(@"
+                    UPDATE TB_DETENTION 
+                    SET 
+                        LOCATION = @LOCATION,
+                        IMPORTER = @IMPORTER,
+                        CLEARING_PARTY = @CLEARING_PARTY,
+                        DETENTION_DAYS = @DETENTION_DAYS,
+                        DETENTION_RATE = @DETENTION_RATE,
+                        CURRENCY = @CURRENCY,
+                        REMARKS = @REMARKS,
+                        CREATED_BY = @CREATED_BY,
+                        return_date = @return_date,
+                        IS_JUMPING = @IS_JUMPING,
+                        STATUS = 'Finalized'
+                    WHERE DO_NO = @DO_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@DO_NO", request.DO_NO);
+                            cmd.Parameters.AddWithValue("@CONTAINER_NO", i.CONTAINER_NO);
+                            cmd.Parameters.AddWithValue("@LOCATION", i.PORT_OF_DISCHARGE);
+                            cmd.Parameters.AddWithValue("@IMPORTER", i.CONSIGNEE);
+                            cmd.Parameters.AddWithValue("@CLEARING_PARTY", i.CLEARING_PARTY);
+                            cmd.Parameters.AddWithValue("@DETENTION_DAYS", i.DETENTION_DAYS);
+                            cmd.Parameters.AddWithValue("@DETENTION_RATE", i.DETENTION_RATE);
+                            cmd.Parameters.AddWithValue("@CURRENCY", i.CURRENCY);
+                            cmd.Parameters.AddWithValue("@REMARKS", i.REMARK);
+                            cmd.Parameters.AddWithValue("@CREATED_BY", i.CREATED_BY);
+                            cmd.Parameters.AddWithValue("@return_date", i.return_date);
+                            cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
+
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public string GetTotalDetentionCost(string connstring, string CONTAINER_NO)
         {
             try

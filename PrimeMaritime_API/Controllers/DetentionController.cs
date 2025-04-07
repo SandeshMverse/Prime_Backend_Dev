@@ -42,6 +42,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_detentionService.InsertDetention(request));
         }
 
+        [HttpPost("UpdateDetention")]
+        public ActionResult<Response<DETENTION_WAIVER_REQUEST>> UpdateDetention(DETENTION request)
+        {
+            return Ok(_detentionService.UpdateDetention(request));
+        }
+
         [HttpGet("GetTotalDetentionCost")]
         public ActionResult<Response<decimal>> GetTotalDetentionCost(string CONTAINER_NO)
         {

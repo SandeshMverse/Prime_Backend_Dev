@@ -97,6 +97,21 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<string> UpdateDetention(DETENTION Request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            DbClientFactory<DetentionRepo>.Instance.UpdateDetention(dbConn, Request);
+
+            Response<string> response = new Response<string>();
+            response.Succeeded = true;
+            response.ResponseMessage = "Updated Successfully.";
+            response.ResponseCode = 200;
+
+            return response;
+        }
+
         public Response<List<CONTAINER_DETENTION>> GetContainerDetentionList()
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

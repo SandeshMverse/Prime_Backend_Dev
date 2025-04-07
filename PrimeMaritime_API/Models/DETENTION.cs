@@ -23,6 +23,7 @@ namespace PrimeMaritime_API.Models
         public int POD_FREE_DAYS { get; set; }
         public string BL_NO { get; set; }
         public string DO_NO { get; set; }
+        public string STATUS { get; set; }
 
     }
 

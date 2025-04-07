@@ -15,6 +15,7 @@ namespace PrimeMaritime_API.IServices
         Response<List<DETENTION_WAIVER_REQUEST>> GetDetentionListByLocation(string location);
 
         Response<string> InsertDetention(DETENTION Request);
+        Response<string> UpdateDetention(DETENTION Request);
         Response<decimal> GetTotalDetentionCost(string CONTAINER_NO);
         Response<List<CONTAINER_DETENTION>> GetContainerDetentionList();
         Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO);
