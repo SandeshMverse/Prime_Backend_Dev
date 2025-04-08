@@ -24,6 +24,8 @@ namespace PrimeMaritime_API.Models
         public string BL_NO { get; set; }
         public string DO_NO { get; set; }
         public string STATUS { get; set; }
+        public string discount { get; set; }
+        public string CONTAINER_TYPE { get; set; }
 
     }
 
@@ -59,6 +61,10 @@ namespace PrimeMaritime_API.Models
         public DateTime LETTER_VALIDITY { get; set; }
         public string ACCEPTANCE_LOCATION { get; set; }
         public Boolean is_detention { get; set; }
+        public string PORT_OF_LOADING { get; set; }
+        public string VOYAGE_NO { get; set; }
+        public string VESSEL_NAME { get; set; }
+
         public List<CONTAINERS> CONTAINER_LIST { get; set; } = new List<CONTAINERS>();
 
     }

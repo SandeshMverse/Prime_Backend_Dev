@@ -82,6 +82,9 @@ namespace PrimeMaritime_API.Repository
                 tbl.Columns.Add(new DataColumn("CREATED_BY", typeof(string)));
                 tbl.Columns.Add(new DataColumn("return_date", typeof(string)));
                 tbl.Columns.Add(new DataColumn("IS_JUMPING", typeof(string)));
+                tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
+                tbl.Columns.Add(new DataColumn("discount", typeof(string)));
+                tbl.Columns.Add(new DataColumn("CONTAINER_TYPE", typeof(string)));
 
                 foreach (var i in request.DETENTION_LIST)
                 {
@@ -99,11 +102,14 @@ namespace PrimeMaritime_API.Repository
                     dr["CREATED_BY"] = i.CREATED_BY;
                     dr["return_date"] = i.return_date;
                     dr["IS_JUMPING"] = i.IS_JUMPING;
+                    dr["STATUS"] = null;
+                    dr["discount"] = i.discount;
+                    dr["CONTAINER_TYPE"] = i.CONTAINER_TYPE;
 
                     tbl.Rows.Add(dr);
                 }
 
-                string[] columns = new string[12];
+                string[] columns = new string[15];
                 columns[0] = "DO_NO";
                 columns[1] = "CONTAINER_NO";
                 columns[2] = "LOCATION";
@@ -116,6 +122,9 @@ namespace PrimeMaritime_API.Repository
                 columns[9] = "CREATED_BY";
                 columns[10] = "return_date";
                 columns[11] = "IS_JUMPING";
+                columns[12] = "STATUS";
+                columns[13] = "discount";
+                columns[14] = "CONTAINER_TYPE";
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstr, tbl, "TB_DETENTION", columns);
             }
@@ -148,6 +157,8 @@ namespace PrimeMaritime_API.Repository
                         CREATED_BY = @CREATED_BY,
                         return_date = @return_date,
                         IS_JUMPING = @IS_JUMPING,
+                        discount = @discount,
+                        CONTAINER_TYPE = @CONTAINER_TYPE,
                         STATUS = 'Finalized'
                     WHERE DO_NO = @DO_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
                         {
@@ -163,6 +174,8 @@ namespace PrimeMaritime_API.Repository
                             cmd.Parameters.AddWithValue("@CREATED_BY", i.CREATED_BY);
                             cmd.Parameters.AddWithValue("@return_date", i.return_date);
                             cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
+                            cmd.Parameters.AddWithValue("@discount", i.discount);
+                            cmd.Parameters.AddWithValue("@CONTAINER_TYPE", i.CONTAINER_TYPE);
 
                             cmd.ExecuteNonQuery();
                         }
