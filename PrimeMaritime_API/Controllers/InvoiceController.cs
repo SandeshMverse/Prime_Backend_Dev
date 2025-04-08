@@ -69,6 +69,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoiceList(FROM_DATE, TO_DATE, PORT, ORG_CODE,BL_NO, PAYMENT_TERM)));
         }
 
+        [HttpGet("GetInvoiceListImport")]
+        public ActionResult<Response<List<INVOICE_MASTER>>> GetInvoiceListImport(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string BL_NO, string PAYMENT_TERM)
+        {
+            return Ok(JsonConvert.SerializeObject(_invoiceService.GetInvoiceListImport(FROM_DATE, TO_DATE, PORT, ORG_CODE, BL_NO, PAYMENT_TERM)));
+        }
+
         [HttpGet("GetCreditList")]
         public ActionResult<Response<List<CREDIT_NOTE>>> GetCreditList(string FROM_DATE, string TO_DATE, string PORT, string ORG_CODE, string CREDIT_NO)
         {
