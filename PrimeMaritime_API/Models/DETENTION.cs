@@ -58,7 +58,7 @@ namespace PrimeMaritime_API.Models
         public DateTime DO_VALIDITY { get; set; }
         public DateTime LETTER_VALIDITY { get; set; }
         public string ACCEPTANCE_LOCATION { get; set; }
-
+        public Boolean is_detention { get; set; }
         public List<CONTAINERS> CONTAINER_LIST { get; set; } = new List<CONTAINERS>();
 
     }
