@@ -156,6 +156,206 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public string MergeBL(string connstring, BL request)
+
+        {
+
+            string ExistingPOL;
+            string ExistingPOD;
+            string ExistingVESSEL;
+            string ExistingVOYAGE;
+
+            SqlParameter[] parameters4 =
+                  {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_EXISTINGDATA" },
+                              new SqlParameter("@RETURNCONTAINERNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNPOL", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNPOD", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNVESSEL", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@RETURNVOYAGE", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+                              new SqlParameter("@SRR_NO", SqlDbType.VarChar, 100) { Value = request.SRR_NO },
+
+                             };
+
+
+            SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters4);
+            ExistingPOL = Convert.ToString(parameters4[2].Value);
+            ExistingPOD = Convert.ToString(parameters4[3].Value);
+            ExistingVESSEL = Convert.ToString(parameters4[4].Value);
+            ExistingVOYAGE = Convert.ToString(parameters4[5].Value);
+
+            // Split the PORT_OF_LOADING and PORT_OF_DISCHARGE strings and handle empty entries
+            string[] POLParts = request.PORT_OF_LOADING.Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] PODParts = request.PORT_OF_DISCHARGE.Split(new[] { '(', ')' }, StringSplitOptions.RemoveEmptyEntries);
+
+            // Extract the desired values (the part inside the parentheses)
+            string POL = POLParts.Length > 1 ? POLParts[1] : string.Empty;
+            string POD = PODParts.Length > 1 ? PODParts[1] : string.Empty;
+
+            if (ExistingPOL != POL || ExistingPOD != POD || ExistingVESSEL != request.VESSEL_NAME || ExistingVOYAGE != request.VOYAGE_NO)
+            {
+                return "failer";
+            }
+
+
+
+            //string ContainerNoExists;
+            //foreach (var item in request.CONTAINER_LIST)
+            //{
+            //    SqlParameter[] parameters3 =
+            //         {
+            //                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CHECK_CRO" },
+            //                  new SqlParameter("@RETURNCONTAINERNO", SqlDbType.VarChar,100) { Direction = ParameterDirection.Output },
+            //                  new SqlParameter("@CRO_NO", SqlDbType.VarChar, 100) { Value = request.CRO_NO },
+            //                  new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 50) { Value = item.CONTAINER_NO },
+
+            //                 };
+
+
+            //    SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters3);
+            //    ContainerNoExists = Convert.ToString(parameters3[1].Value);
+            //    if (ContainerNoExists != item.CONTAINER_NO)
+            //    {
+            //        return "failer";
+            //    }
+            //}
+
+
+            SqlParameter[] parameters =
+            {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "CREATE_BL" },
+                  new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = request.BL_NO },
+                  new SqlParameter("@SRR_ID", SqlDbType.Int) { Value = request.SRR_ID },
+                  new SqlParameter("@SRR_NO", SqlDbType.VarChar, 50) { Value = request.SRR_NO },
+                  new SqlParameter("@SHIPPER", SqlDbType.VarChar, 50) { Value = request.SHIPPER },
+                  new SqlParameter("@SHIPPER_ADDRESS", SqlDbType.VarChar, 255) { Value = request.SHIPPER_ADDRESS },
+                  new SqlParameter("@CONSIGNEE", SqlDbType.VarChar, 50) { Value = request.CONSIGNEE },
+                  new SqlParameter("@CONSIGNEE_ADDRESS", SqlDbType.VarChar, 255) { Value = request.CONSIGNEE_ADDRESS },
+                  new SqlParameter("@NOTIFY_PARTY", SqlDbType.VarChar, 50) { Value = request.NOTIFY_PARTY },
+                  new SqlParameter("@NOTIFY_PARTY_ADDRESS", SqlDbType.VarChar,255) { Value = request.NOTIFY_PARTY_ADDRESS },
+                  new SqlParameter("@PRE_CARRIAGE_BY", SqlDbType.VarChar,50) { Value = request.PRE_CARRIAGE_BY },
+                  new SqlParameter("@PLACE_OF_RECEIPT", SqlDbType.VarChar,255) { Value = request.PLACE_OF_RECEIPT },
+                  new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,255) { Value = request.VESSEL_NAME },
+                  new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,50) { Value = request.VOYAGE_NO },
+                  new SqlParameter("@PORT_OF_LOADING", SqlDbType.VarChar,255) { Value = request.PORT_OF_LOADING },
+                  new SqlParameter("@PORT_OF_DISCHARGE", SqlDbType.VarChar,255) { Value = request.PORT_OF_DISCHARGE },
+                  new SqlParameter("@PLACE_OF_DELIVERY", SqlDbType.VarChar,255) { Value = request.PLACE_OF_DELIVERY },
+                  new SqlParameter("@BL_ISSUE_PLACE", SqlDbType.VarChar,100) { Value = request.BL_ISSUE_PLACE },
+                  new SqlParameter("@BL_ISSUE_DATE", SqlDbType.DateTime) { Value = request.BL_ISSUE_DATE },
+                  new SqlParameter("@NO_OF_ORIGINAL_BL", SqlDbType.Int) { Value = request.NO_OF_ORIGINAL_BL },
+                  new SqlParameter("@BL_STATUS", SqlDbType.VarChar,20) { Value = request.BL_STATUS },
+                  new SqlParameter("@FINAL_DESTINATION", SqlDbType.VarChar, 255) { Value = request.FINAL_DESTINATION },
+                  new SqlParameter("@PREPAID_AT", SqlDbType.VarChar, 255) { Value = request.PREPAID_AT },
+                  new SqlParameter("@PAYABLE_AT", SqlDbType.VarChar, 255) { Value = request.PAYABLE_AT },
+                  new SqlParameter("@TOTAL_PREPAID", SqlDbType.Decimal) { Value = request.TOTAL_PREPAID },
+                  new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,20) { Value = request.AGENT_CODE },
+                  new SqlParameter("@AGENT_NAME", SqlDbType.VarChar,255) { Value = request.AGENT_NAME },
+                  new SqlParameter("@CREATED_BY", SqlDbType.VarChar,255) { Value = request.CREATED_BY },
+                  new SqlParameter("@DESTINATION_AGENT_CODE", SqlDbType.VarChar,20) { Value = request.DESTINATION_AGENT_CODE },
+                  new SqlParameter("@ISGROSSCOMBINED",SqlDbType.Bit) {Value = request.ISGROSSCOMBINED},
+                  new SqlParameter("@POL1",SqlDbType.VarChar, 50) {Value = request.POL1},
+                  new SqlParameter("@POD1",SqlDbType.VarChar, 50) {Value = request.POD1},
+                  new SqlParameter("COMMODITY",SqlDbType.VarChar, 500) {Value = request.COMMODITY},
+                  new SqlParameter("@CARGO_MOVEMENT",SqlDbType.VarChar, 10) {Value = request.CARGO_MOVEMENT},
+                  new SqlParameter("@IS_SWITCHBL",SqlDbType.VarChar, 50) {Value = request.IS_SWITCHBL},  //SWITCHBL
+                  new SqlParameter("@SWITCHBL_AGENT_CODE",SqlDbType.VarChar, 50) {Value = request.SWITCHBL_AGENT_CODE},  //SWITCHBL
+              };
+
+            var BLNO = SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters);
+
+
+            foreach (var i in request.CONTAINER_LIST)
+            {
+                SqlParameter[] parameters2 =
+                     {
+                              new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "UPDATE_CONTAINER_FOR_Merge" },
+                              new SqlParameter("@BL_NO", SqlDbType.VarChar, 50) { Value = BLNO },
+                              new SqlParameter("@CRO_NO", SqlDbType.VarChar, 100) { Value = request.CRO_NO },
+                              new SqlParameter("@BOOKING_NO", SqlDbType.VarChar, 50) { Value = request.BOOKING_NO },
+                              new SqlParameter("@CONTAINER_NO", SqlDbType.VarChar, 50) { Value = i.CONTAINER_NO },
+                              new SqlParameter("@CONTAINER_TYPE", SqlDbType.VarChar, 50) { Value = i.CONTAINER_TYPE },
+                               new SqlParameter("@CRO_NO_MERGE", SqlDbType.VarChar, 50) { Value = i.CRO_NO_MERGE },
+                              new SqlParameter("@CONTAINER_SIZE", SqlDbType.Int) { Value = 0 },
+                              new SqlParameter("@SEAL_NO", SqlDbType.VarChar, 50) { Value = i.SEAL_NO },
+                              new SqlParameter("@MARKS_NOS", SqlDbType.VarChar, 200) { Value = request.MARKS_NOS },
+                              new SqlParameter("@DESC_OF_GOODS", SqlDbType.VarChar, 200) { Value = request.DESC_OF_GOODS },
+                              new SqlParameter("@PKG_COUNT", SqlDbType.Int) { Value = i.PKG_COUNT },
+                              new SqlParameter("@PKG_DESC", SqlDbType.VarChar, 200) { Value = i.PKG_DESC },
+                              new SqlParameter("@GROSS_WEIGHT", SqlDbType.Decimal) { Value = i.GROSS_WEIGHT },
+                              new SqlParameter("@NET_WEIGHT", SqlDbType.Decimal) { Value = i.NET_WEIGHT },
+                              new SqlParameter("@MEASUREMENT", SqlDbType.VarChar,100) { Value = i.MEASUREMENT },
+                              new SqlParameter("@AGENT_SEAL_NO", SqlDbType.VarChar,100) { Value = i.AGENT_SEAL_NO }
+                             };
+
+                SqlHelper.ExecuteProcedureReturnString(connstring, "SP_CRUD_BL", parameters2);
+
+            }
+            return "sucess";
+
+        }
+
+        public string MergeBLBYBLNO(string connstring, BL request)
+        {
+            using (SqlConnection conn = new SqlConnection(connstring))
+            {
+                conn.Open();
+
+                // Get the values of BOOKING_NO and CRO_NO for the main BL_NO
+                string selectQuery = @"
+            SELECT TOP 1 BOOKING_NO, CRO_NO 
+            FROM TB_CONTAINER 
+            WHERE BL_NO = @MainBL";
+
+                string bookingNo = null;
+                string croNo = null;
+
+                using (SqlCommand cmd = new SqlCommand(selectQuery, conn))
+                {
+                    cmd.Parameters.AddWithValue("@MainBL", request.BL_NO);
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            bookingNo = reader["BOOKING_NO"].ToString();
+                            croNo = reader["CRO_NO"].ToString();
+                        }
+                    }
+                }
+
+                // Exit early if main BL_NO not found
+                if (bookingNo == null || croNo == null)
+                    return "Main BL_NO not found";
+
+                // Loop through each BL in the list
+                foreach (var bl in request.BL_LIST)
+                {
+                    if (bl.BL_NO == request.BL_NO) continue; // skip main BL
+
+                    string updateQuery = @"
+                UPDATE TB_CONTAINER
+                SET 
+                    BOOKING_NO = @BookingNo,
+                    CRO_NO = @CRONo,
+                    BL_NO = @MainBL
+                WHERE BL_NO = @MergeBL";
+
+                    using (SqlCommand updateCmd = new SqlCommand(updateQuery, conn))
+                    {
+                        updateCmd.Parameters.AddWithValue("@BookingNo", bookingNo);
+                        updateCmd.Parameters.AddWithValue("@CRONo", croNo);
+                        updateCmd.Parameters.AddWithValue("@MainBL", request.BL_NO);
+                        updateCmd.Parameters.AddWithValue("@MergeBL", bl.BL_NO);
+                        updateCmd.ExecuteNonQuery();
+                    }
+                }
+
+                conn.Close();
+            }
+
+            return "sucess";
+        }
+
+
 
         public void InsertSurrender(string connstring, string BL_NO)
         {

@@ -44,6 +44,60 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<string> MergeBL(BL request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            var returnvalue = DbClientFactory<BLRepo>.Instance.MergeBL(dbConn, request);
+
+            Response<string> response = new Response<string>();
+
+
+            if (returnvalue == "sucess")
+            {
+                response.Succeeded = true;
+                response.ResponseMessage = "BL Created Successfully";
+                response.ResponseCode = 200;
+            }
+            else
+            {
+
+                response.Succeeded = false;
+                response.ResponseMessage = "Container Number not found.";
+                response.ResponseCode = 500;
+            }
+
+            return response;
+        }
+
+
+        public Response<string> MergeBLBYBLNO(BL request)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            var returnvalue = DbClientFactory<BLRepo>.Instance.MergeBLBYBLNO(dbConn, request);
+
+            Response<string> response = new Response<string>();
+
+
+            if (returnvalue == "sucess")
+            {
+                response.Succeeded = true;
+                response.ResponseMessage = "BL Created Successfully";
+                response.ResponseCode = 200;
+            }
+            else
+            {
+
+                response.Succeeded = false;
+                response.ResponseMessage = "Container Number not found.";
+                response.ResponseCode = 500;
+            }
+
+            return response;
+        }
+
         public void InsertSurrender(string BL_NO)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

@@ -44,6 +44,28 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public List<DETENTION_WAIVER_REQUEST> GetDetentionListBL(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_WAIVER_BY_BL_NO" },
+                   new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = BL_NO},
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
+                List<DETENTION_WAIVER_REQUEST> detention_Request = SqlHelper.CreateListFromTable<DETENTION_WAIVER_REQUEST>(dataTable);
+
+                return detention_Request;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
         public List<DETENTION_WAIVER_REQUEST> GetDetentionListByLocation(string dbConn, string location)
         {
             try
@@ -52,6 +74,29 @@ namespace PrimeMaritime_API.Repository
                 {
                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_LIST_BYLOCATION" },
                    new SqlParameter("@LOCATION", SqlDbType.VarChar,100) { Value = location},
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
+                List<DETENTION_WAIVER_REQUEST> detention_Request = SqlHelper.CreateListFromTable<DETENTION_WAIVER_REQUEST>(dataTable);
+
+                return detention_Request;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public List<DETENTION_WAIVER_REQUEST> GetDetentionListByLocationAndDetentionType(string dbConn, string location, string DETENTION_TYPE)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DETENTION_LIST_BYLOCATION_BYDETENTIONTYPE" },
+                   new SqlParameter("@LOCATION", SqlDbType.VarChar,100) { Value = location},
+                   new SqlParameter("@DETENTION_TYPE", SqlDbType.VarChar,100) { Value = DETENTION_TYPE},
                 };
 
                 DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_DETENTION", parameters);
@@ -85,6 +130,9 @@ namespace PrimeMaritime_API.Repository
                 tbl.Columns.Add(new DataColumn("STATUS", typeof(string)));
                 tbl.Columns.Add(new DataColumn("discount", typeof(string)));
                 tbl.Columns.Add(new DataColumn("CONTAINER_TYPE", typeof(string)));
+                tbl.Columns.Add(new DataColumn("DETENTION_TYPE", typeof(string)));
+                tbl.Columns.Add(new DataColumn("BL_NO", typeof(string)));
+
 
                 foreach (var i in request.DETENTION_LIST)
                 {
@@ -105,11 +153,14 @@ namespace PrimeMaritime_API.Repository
                     dr["STATUS"] = null;
                     dr["discount"] = i.discount;
                     dr["CONTAINER_TYPE"] = i.CONTAINER_TYPE;
+                    dr["DETENTION_TYPE"] = i.DETENTION_TYPE;
+                    dr["BL_NO"] = request.BL_NO;
+
 
                     tbl.Rows.Add(dr);
                 }
 
-                string[] columns = new string[15];
+                string[] columns = new string[16];
                 columns[0] = "DO_NO";
                 columns[1] = "CONTAINER_NO";
                 columns[2] = "LOCATION";
@@ -125,6 +176,8 @@ namespace PrimeMaritime_API.Repository
                 columns[12] = "STATUS";
                 columns[13] = "discount";
                 columns[14] = "CONTAINER_TYPE";
+                columns[14] = "DETENTION_TYPE";
+                columns[15] = "BL_NO";
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstr, tbl, "TB_DETENTION", columns);
             }
@@ -188,6 +241,45 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public void UpdateDetentionByBL(string connstr, DETENTION request)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connstr))
+                {
+                    conn.Open();
+
+                    foreach (var i in request.DETENTION_LIST)
+                    {
+                        using (SqlCommand cmd = new SqlCommand(@"
+                    UPDATE TB_DETENTION 
+                    SET 
+                        DETENTION_DAYS = @DETENTION_DAYS,
+                        DETENTION_RATE = @DETENTION_RATE,
+                        return_date = @return_date,
+                        IS_JUMPING = @IS_JUMPING,
+                        discount = @discount,
+                        STATUS = 'Finalized'
+                    WHERE BL_NO = @BL_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
+                        {
+                            cmd.Parameters.AddWithValue("@BL_NO", request.BL_NO);
+                            cmd.Parameters.AddWithValue("@DETENTION_DAYS", i.DETENTION_DAYS);
+                            cmd.Parameters.AddWithValue("@CONTAINER_NO", i.CONTAINER_NO);
+                            cmd.Parameters.AddWithValue("@DETENTION_RATE", i.DETENTION_RATE);
+                            cmd.Parameters.AddWithValue("@return_date", i.return_date);
+                            cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
+                            cmd.Parameters.AddWithValue("@discount", i.discount);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public string GetTotalDetentionCost(string connstring, string CONTAINER_NO)
         {
             try
@@ -237,6 +329,26 @@ namespace PrimeMaritime_API.Repository
                 {
                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DO_DETAILS_FOR_DETEINTION" },
                    new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = DO_NO},
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public DataSet GetBLDetailsForDetention(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_BL_DETAILS_FOR_DETEINTION" },
+                   new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = BL_NO},
                 };
 
                 return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);

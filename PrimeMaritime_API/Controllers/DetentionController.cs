@@ -30,10 +30,23 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionListByDO(DO_NO)));
         }
 
+        [HttpGet("GetDetentionListByBL")]
+        public ActionResult<Response<List<DETENTION_WAIVER_REQUEST>>> GetDetentionListByBL(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionListByBL(BL_NO)));
+        }
+
         [HttpGet("GetDetentionListByLocation")]
         public ActionResult<Response<List<DETENTION_WAIVER_REQUEST>>> GetDetentionListByLocation(string location)
         {
             return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionListByLocation(location)));
+        }
+
+
+        [HttpGet("GetDetentionListByLocationAndDetentionType")]
+        public ActionResult<Response<List<DETENTION_WAIVER_REQUEST>>> GetDetentionListByLocationAndDetentionType(string location,string DETENTION_TYPE)
+        {
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetDetentionListByLocationAndDetentionType(location, DETENTION_TYPE)));
         }
 
         [HttpPost("InsertDetention")]
@@ -46,6 +59,12 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<DETENTION_WAIVER_REQUEST>> UpdateDetention(DETENTION request)
         {
             return Ok(_detentionService.UpdateDetention(request));
+        }
+
+        [HttpPost("UpdateDetentionByBL")]
+        public ActionResult<Response<DETENTION_WAIVER_REQUEST>> UpdateDetentionByBL(DETENTION request)
+        {
+            return Ok(_detentionService.UpdateDetentionByBL(request));
         }
 
         [HttpGet("GetTotalDetentionCost")]
@@ -64,6 +83,12 @@ namespace PrimeMaritime_API.Controllers
         public ActionResult<Response<DO_DETENTION_DETAILS>> GetDODetailsForDetention(string DO_NO)
         {
             return Ok(JsonConvert.SerializeObject(_detentionService.GetDODetailsForDetention(DO_NO)));
+        }
+
+        [HttpGet("GetBLDetailsForDetention")]
+        public ActionResult<Response<DO_DETENTION_DETAILS>> GetBLDetailsForDetention(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetBLDetailsForDetention(BL_NO)));
         }
 
         [HttpGet("GetDetentionCharges")]

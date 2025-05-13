@@ -37,6 +37,18 @@ namespace PrimeMaritime_API.Controllers
             return Ok(_blService.InsertBL(request));
         }
 
+        [HttpPost("MergeBL")]
+        public ActionResult<Response<string>> MergeBL(BL request)
+        {
+            return Ok(_blService.MergeBL(request));
+        }
+
+        [HttpPost("MergeBLBYBLNO")]
+        public ActionResult<Response<string>> MergeBLBYBLNO(BL request)
+        {
+            return Ok(_blService.MergeBLBYBLNO(request));
+        }
+
         [HttpGet("GetBLDetails")]
         public ActionResult<Response<BL>> GetBLDetails(string BL_NO, string BOOKING_NO, string AGENT_CODE)
         {

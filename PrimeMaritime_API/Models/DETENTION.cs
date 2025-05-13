@@ -26,12 +26,14 @@ namespace PrimeMaritime_API.Models
         public string STATUS { get; set; }
         public string discount { get; set; }
         public string CONTAINER_TYPE { get; set; }
+        public string DETENTION_TYPE { get; set; }
 
     }
 
     public class DETENTION
     {
         public string DO_NO { get; set; }
+        public string BL_NO { get; set; }
         public List<DETENTION_WAIVER_REQUEST> DETENTION_LIST { get; set; } = new List<DETENTION_WAIVER_REQUEST>();
     }
 
@@ -57,6 +59,7 @@ namespace PrimeMaritime_API.Models
         public string CONSIGNEE { get; set; }
         public string CLEARING_PARTY { get; set; }
         public int POD_FREE_DAYS { get; set; }
+        public int POL_FREE_DAYS { get; set; }
         public DateTime DO_VALIDITY { get; set; }
         public DateTime LETTER_VALIDITY { get; set; }
         public string ACCEPTANCE_LOCATION { get; set; }

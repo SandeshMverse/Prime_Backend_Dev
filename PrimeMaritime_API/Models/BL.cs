@@ -51,6 +51,7 @@ namespace PrimeMaritime_API.Models
         public string CREATED_BY { get; set; }
         public DateTime? CREATED_DATE { get; set; }
         public List<CONTAINERS> CONTAINER_LIST { get; set; } = new List<CONTAINERS>();
+        public List<BL> BL_LIST { get; set; } = new List<BL>();
         public List<CONTAINERS> CONTAINER_LIST2 { get; set; } = new List<CONTAINERS>();
         public string CONTAINERS { get; set; }
         public string COMMODITY { get; set; }
@@ -80,6 +81,8 @@ namespace PrimeMaritime_API.Models
         public int ID { get; set; }
         public string BOOKING_NO { get; set; }
         public string CRO_NO { get; set; }
+
+        public string? CRO_NO_MERGE { get; set; }
         public string BL_NO { get; set; }
         public string DO_NO { get; set; }
         public string CONTAINER_NO { get; set; }

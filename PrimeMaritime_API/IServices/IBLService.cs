@@ -11,6 +11,8 @@ namespace PrimeMaritime_API.IServices
     public interface IBLService
     {
         Response<string> InsertBL(BL request);
+        Response<string> MergeBL(BL request);
+        Response<string> MergeBLBYBLNO(BL request);
         Response<string> UpdateBL(BL request);
         Response<BL> GetBLDetails(string BL_NO, string BOOKING_NO, string AGENT_CODE);
         Response<List<BL>> GetBLHistory(string AGENT_CODE, string ORG_CODE, string PORT);
