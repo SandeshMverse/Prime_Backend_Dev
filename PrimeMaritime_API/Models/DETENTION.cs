@@ -27,6 +27,7 @@ namespace PrimeMaritime_API.Models
         public string discount { get; set; }
         public string CONTAINER_TYPE { get; set; }
         public string DETENTION_TYPE { get; set; }
+        public string LOCATION { get; set; }
 
     }
 
