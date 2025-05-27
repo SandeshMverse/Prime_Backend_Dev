@@ -156,6 +156,8 @@ namespace PrimeMaritime_API.Repository
                 tbl.Columns.Add(new DataColumn("CONTAINER_TYPE", typeof(string)));
                 tbl.Columns.Add(new DataColumn("DETENTION_TYPE", typeof(string)));
                 tbl.Columns.Add(new DataColumn("BL_NO", typeof(string)));
+                tbl.Columns.Add(new DataColumn("discharge_date", typeof(string)));
+
 
 
                 foreach (var i in request.DETENTION_LIST)
@@ -179,12 +181,13 @@ namespace PrimeMaritime_API.Repository
                     dr["CONTAINER_TYPE"] = i.CONTAINER_TYPE;
                     dr["DETENTION_TYPE"] = i.DETENTION_TYPE;
                     dr["BL_NO"] = request.BL_NO;
+                    dr["discharge_date"] = i.discharge_date;
 
 
                     tbl.Rows.Add(dr);
                 }
 
-                string[] columns = new string[16];
+                string[] columns = new string[17];
                 columns[0] = "DO_NO";
                 columns[1] = "CONTAINER_NO";
                 columns[2] = "LOCATION";
@@ -202,6 +205,7 @@ namespace PrimeMaritime_API.Repository
                 columns[14] = "CONTAINER_TYPE";
                 columns[14] = "DETENTION_TYPE";
                 columns[15] = "BL_NO";
+                columns[16] = "discharge_date";
 
                 SqlHelper.ExecuteProcedureBulkInsert(connstr, tbl, "TB_DETENTION", columns);
             }
