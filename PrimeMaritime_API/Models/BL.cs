@@ -100,6 +100,7 @@ namespace PrimeMaritime_API.Models
         public string TO_LOCATION { get; set; }
         public DateTime MOVEMENT_DATE { get; set; }
         public DateTime RCFL_ACTIVITY_DATE { get; set; }
+        public DateTime DCHF_ACTIVITY_DATE { get; set; }
         public DateTime SNTS_ACTIVITY_DATE { get; set; }
         public int PKG_COUNT { get; set; }
         public string PKG_DESC { get; set; }

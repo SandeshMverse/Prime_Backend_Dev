@@ -210,6 +210,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_blService.getcargoBL(AGENT_CODE, VESSEL_NAME, VOYAGE_NO, BL_NO)));
         }
 
+        [HttpGet("GetCargoBLSOA")]
+        public ActionResult<Response<CargoManifest>> GetCargoBLSOA(string AGENT_CODE, string VESSEL_NAME, string VOYAGE_NO, string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_blService.GetCargoBLSOA(AGENT_CODE, VESSEL_NAME, VOYAGE_NO, BL_NO)));
+        }
+
         //SWITCHBL TESTING
         [HttpPost("InsertSWITCHBL")]
         public ActionResult<Response<string>> InsertSWITCHBL(BL request)

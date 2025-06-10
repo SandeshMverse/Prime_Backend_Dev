@@ -700,6 +700,27 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public DataSet GetCargoBLSOA(string connstring, string AGENT_CODE, string VESSEL_NAME, string VOYAGE_NO, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+{
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_CARGO_MANIFEST_BL_SOA" },
+                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar,50) { Value = AGENT_CODE },
+                   new SqlParameter("@VESSEL_NAME", SqlDbType.VarChar,50) { Value = VESSEL_NAME },
+                   new SqlParameter("@VOYAGE_NO", SqlDbType.VarChar,50) { Value = VOYAGE_NO },
+                   new SqlParameter("@BL_NO", SqlDbType.VarChar,500) { Value = BL_NO }
+                 };
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(connstring, "SP_CRUD_BL", parameters);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
 
         #region "Invoice"
         //public List<INVOICE_MASTER>GetBL(string dbConn)

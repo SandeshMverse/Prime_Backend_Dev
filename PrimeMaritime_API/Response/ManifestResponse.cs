@@ -32,6 +32,7 @@ namespace PrimeMaritime_API.Response
         public int KEY13 { get; set; } // 40FT
         public int ID { get; set; }
         public string CUSTOMER_NAME { get; set; }
+        public DateTime? BL_ISSUE_DATE { get; set; }
         public string CONSIGNEE_ADDRESS { get; set; }
         public string VESSEL_NAME { get; set; }
         public string VOYAGE_NO { get; set; }
@@ -86,6 +87,7 @@ namespace PrimeMaritime_API.Response
         public string KEY11 { get; set; } // TEMPERATURE
         public string KEY12 { get; set; } // EMPTY VALUE(SOC)
         public string KEY13 { get; set; } // EMPTY VALUE
+        public decimal RATE20 { get; set; } // EMPTY VALUE
         public int ID { get; set; }
         public string BL_NO { get; set; }
         public string STATUS { get; set; }

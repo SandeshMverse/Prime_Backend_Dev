@@ -28,6 +28,7 @@ namespace PrimeMaritime_API.IServices
         void InsertUploadedSurrender(string BL_NO);
         //added new 
         Response<CargoManifest> getcargoBL(string AGENT_CODE, string VESSEL_NAME, string VOYAGE_NO, string BL_NO);
+        Response<CargoManifest> GetCargoBLSOA(string AGENT_CODE, string VESSEL_NAME, string VOYAGE_NO, string BL_NO);
 
         #region "Invoice"
         //Response<INVOICE_MASTER> GetBL();

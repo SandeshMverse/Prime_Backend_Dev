@@ -240,6 +240,7 @@ namespace PrimeMaritime_API.Repository
                         IS_JUMPING = @IS_JUMPING,
                         discount = @discount,
                         CONTAINER_TYPE = @CONTAINER_TYPE,
+                        invoice_no = @invoice_no,
                         STATUS = 'Finalized'
                     WHERE DO_NO = @DO_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
                         {
@@ -257,6 +258,7 @@ namespace PrimeMaritime_API.Repository
                             cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
                             cmd.Parameters.AddWithValue("@discount", i.discount);
                             cmd.Parameters.AddWithValue("@CONTAINER_TYPE", i.CONTAINER_TYPE);
+                            cmd.Parameters.AddWithValue("@invoice_no", request.invoice_no);
 
                             cmd.ExecuteNonQuery();
                         }
@@ -287,7 +289,8 @@ namespace PrimeMaritime_API.Repository
                         return_date = @return_date,
                         IS_JUMPING = @IS_JUMPING,
                         discount = @discount,
-                        STATUS = 'Finalized'
+                        STATUS = 'Finalized',
+                        invoice_no = @invoice_no
                     WHERE BL_NO = @BL_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
                         {
                             cmd.Parameters.AddWithValue("@BL_NO", request.BL_NO);
@@ -297,6 +300,7 @@ namespace PrimeMaritime_API.Repository
                             cmd.Parameters.AddWithValue("@return_date", i.return_date);
                             cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
                             cmd.Parameters.AddWithValue("@discount", i.discount);
+                            cmd.Parameters.AddWithValue("@invoice_no", request.invoice_no);
                             cmd.ExecuteNonQuery();
                         }
                     }

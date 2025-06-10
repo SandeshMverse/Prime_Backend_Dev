@@ -511,6 +511,71 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
+        public Response<CargoManifest> GetCargoBLSOA(string AgentCode, string VESSEL_NAME, string VOYAGE_NO, string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<CargoManifest> response = new Response<CargoManifest>();
+
+            if ((VESSEL_NAME == "") || (VESSEL_NAME == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide Vessel Name";
+                return response;
+            }
+
+            if ((VOYAGE_NO == "") || (VOYAGE_NO == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide Voyage No";
+                return response;
+            }
+
+            if ((BL_NO == "") || (BL_NO == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide BL_No";
+                return response;
+            }
+
+            var data = DbClientFactory<BLRepo>.Instance.GetCargoBLSOA(dbConn, AgentCode, VESSEL_NAME, VOYAGE_NO, BL_NO);
+
+            if ((data != null) && (data.Tables[0].Rows.Count > 0))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                CargoManifest cargoManifest = new CargoManifest();
+
+                if (data.Tables.Contains("Table"))
+                {
+                    cargoManifest.CUSTOMER_LIST = BLRepo.GetListFromDataSet<BL_CUSTOMERLIST>(data.Tables[0]);
+                }
+
+                if (data.Tables.Contains("Table1"))
+                {
+                    cargoManifest.CONTAINER_LIST = BLRepo.GetListFromDataSet<BL_CONTAINERS>(data.Tables[1]);
+                }
+                if (data.Tables.Contains("Table2"))
+                {
+                    cargoManifest.FREIGHT_DETAILS = BLRepo.GetListFromDataSet<FREIGHT_DETAILS>(data.Tables[2]);
+                }
+                if (data.Tables.Contains("Table3"))
+                {
+                    cargoManifest.REPORT_SUMMARY = BLRepo.GetListFromDataSet<SUMMARY>(data.Tables[3]);
+                }
+                response.Data = cargoManifest;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
         //SWITCHBL TESTING
         public Response<string> InsertSWITCHBL(BL request)
         {

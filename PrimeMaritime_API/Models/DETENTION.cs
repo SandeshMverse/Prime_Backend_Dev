@@ -29,6 +29,10 @@ namespace PrimeMaritime_API.Models
         public string CONTAINER_TYPE { get; set; }
         public string DETENTION_TYPE { get; set; }
         public string LOCATION { get; set; }
+        public string invoice_no { get; set; }
+        public int PKG_COUNT { get; set; }
+        public decimal GROSS_WEIGHT { get; set; }
+        public decimal NET_WEIGHT { get; set; }
 
     }
 
@@ -36,6 +40,7 @@ namespace PrimeMaritime_API.Models
     {
         public string DO_NO { get; set; }
         public string BL_NO { get; set; }
+        public string invoice_no { get; set; }
         public List<DETENTION_WAIVER_REQUEST> DETENTION_LIST { get; set; } = new List<DETENTION_WAIVER_REQUEST>();
     }
 
@@ -59,11 +64,17 @@ namespace PrimeMaritime_API.Models
         public string DO_NO { get; set; }
         public string PORT_OF_DISCHARGE { get; set; }
         public string CONSIGNEE { get; set; }
+        public string invoice_no { get; set; }
         public string CLEARING_PARTY { get; set; }
+        public string STUFFING_TYPE { get; set; }
         public int POD_FREE_DAYS { get; set; }
         public int POL_FREE_DAYS { get; set; }
         public DateTime DO_VALIDITY { get; set; }
         public DateTime LETTER_VALIDITY { get; set; }
+        public DateTime ARRIVAL_DATE { get; set; }
+        public DateTime IGM_DATE { get; set; }
+        public string IGM_NO { get; set; }
+        public string IGM_ITEM_NO { get; set; }
         public string ACCEPTANCE_LOCATION { get; set; }
         public Boolean is_detention { get; set; }
         public string PORT_OF_LOADING { get; set; }
