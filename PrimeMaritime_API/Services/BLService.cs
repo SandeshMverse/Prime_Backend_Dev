@@ -333,6 +333,31 @@ namespace PrimeMaritime_API.Services
 
         }
 
+        public Response<List<BL>> GetBLHistoryMIS(string month, string year)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<BL>> response = new Response<List<BL>>();
+            var data = DbClientFactory<BLRepo>.Instance.GetBLHistoryMIS(dbConn,month,year);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+
+        }
+
         public Response<List<BL>> GetBLALLHistory(string AGENT_CODE, string ORG_CODE, string PORT)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

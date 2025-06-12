@@ -490,6 +490,28 @@ namespace PrimeMaritime_API.Repository
             }
         }
 
+        public List<BL> GetBLHistoryMIS(string connstring, string month, string year)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_All_BL_HISTORY_MIS" },
+                   new SqlParameter("@MONTH", SqlDbType.VarChar, 20) { Value = month },
+                   new SqlParameter("@YEAR", SqlDbType.VarChar, 20) { Value = year }
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_BL", parameters);
+                List<BL> blList = SqlHelper.CreateListFromTable<BL>(dataTable);
+                return blList;
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public List<BL> GetBLALLHistory(string connstring, string AGENT_CODE, string ORG_CODE, string PORT)
         {
             try
