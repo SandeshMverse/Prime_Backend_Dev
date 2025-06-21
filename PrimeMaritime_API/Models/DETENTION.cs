@@ -64,6 +64,7 @@ namespace PrimeMaritime_API.Models
         public string DO_NO { get; set; }
         public string PORT_OF_DISCHARGE { get; set; }
         public string CONSIGNEE { get; set; }
+        public string SHIPPER { get; set; }
         public string invoice_no { get; set; }
         public string CLEARING_PARTY { get; set; }
         public string STUFFING_TYPE { get; set; }

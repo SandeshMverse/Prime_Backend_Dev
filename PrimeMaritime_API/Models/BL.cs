@@ -68,12 +68,13 @@ namespace PrimeMaritime_API.Models
         public decimal TOTAL_RATE20 { get; set; }
         public decimal EXPORT_DRY20 { get; set; }
         public decimal IMPORT_DRY20 { get; set; }
+        public decimal IMPORT_DRY20_BGT20 { get; set; }
         public decimal PODCOM { get; set; }
         public decimal POLCOM { get; set; }
+        public decimal Monitor_Charge { get; set; }
+        public decimal Export_Detention_Charges { get; set; }
         public string POD_COM_TYPE { get; set; }
         public string POL_COM_TYPE { get; set; }
-
-
         public int BL_ID { get; set; } //SWITCHBL ADDED
         public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDED
 
