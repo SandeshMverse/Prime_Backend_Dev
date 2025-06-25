@@ -75,6 +75,7 @@ namespace PrimeMaritime_API.Models
         public decimal Export_Detention_Charges { get; set; }
         public string POD_COM_TYPE { get; set; }
         public string POL_COM_TYPE { get; set; }
+        public string CurrencyRatePairs { get; set; }
         public int BL_ID { get; set; } //SWITCHBL ADDED
         public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDED
 
@@ -115,6 +116,7 @@ namespace PrimeMaritime_API.Models
         public int PKG_COUNT { get; set; }
         public string PKG_DESC { get; set; }
         public decimal NET_WEIGHT { get; set; }
+        public DateTime BL_ISSUE_DATE { get; set; }
     }
     public class Organisation
     {

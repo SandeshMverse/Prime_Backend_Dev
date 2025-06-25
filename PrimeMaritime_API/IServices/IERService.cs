@@ -14,6 +14,7 @@ namespace PrimeMaritime_API.IServices
         Response<List<EMPTY_REPO>> GetERList(string AGENT_CODE, string DEPO_CODE, string ORG_CODE, string PORT);
 
         Response<EMPTY_REPO> GetERDetails(string REPO_NO, string ORG_CODE ,string PORT);
+        Response<List<EMPTY_REPO>> GetERDetailsBYMonthYear(string MONTH, string YEAR);
 
         Response<List<ER_CONTAINER>> GetERContainerDetails(string REPO_NO, string AGENT_CODE, string DEPO_CODE);
 

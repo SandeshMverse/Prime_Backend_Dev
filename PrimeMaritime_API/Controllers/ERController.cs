@@ -41,6 +41,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_erService.GetERDetails(REPO_NO, ORG_CODE, PORT)));
         }
 
+        [HttpGet("GetERDetailsBYMonthYear")]
+        public ActionResult<Response<List<EMPTY_REPO>>> GetERDetails(string MONTH, string YEAR)
+        {
+            return Ok(JsonConvert.SerializeObject(_erService.GetERDetailsBYMonthYear(MONTH,YEAR)));
+        }
+
         [HttpGet("GetERContainerDetails")]
         public ActionResult<Response<ER_CONTAINER>> GetERContainerDetails(string REPO_NO, string AGENT_CODE, string DEPO_CODE)
         {

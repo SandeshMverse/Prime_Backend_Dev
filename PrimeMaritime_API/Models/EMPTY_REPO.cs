@@ -39,7 +39,11 @@ namespace PrimeMaritime_API.Models
 		public DateTime ETD { get; set; }
 		public string POL { get; set; }
 		public string POD { get; set; }
-		public string FINAL_DESTINATION { get; set; }
+        public decimal EXPORT_DRY20 { get; set; }
+        public decimal IMPORT_DRY20 { get; set; }
+
+        public decimal Monitor_Charge { get; set; }
+        public string FINAL_DESTINATION { get; set; }
 		public int REQ_QUANTITY { get; set; }
 		public List<SLOT_DETAILS> SLOT_LIST { get; set; }
 		public List<ER_CONTAINER> CONTAINER_LIST { get; set; } = new List<ER_CONTAINER>();

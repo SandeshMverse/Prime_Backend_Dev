@@ -253,6 +253,28 @@ namespace PrimeMaritime_API.Repository
 
         }
 
+        public List<EMPTY_REPO> GetERDetailsBYMonthYear(string connstring, string MONTH, string YEAR)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_EMPTY_REPO_LIST_BY_MONTH_YEAR" },
+                new SqlParameter("@MONTH", SqlDbType.VarChar, 100) { Value = MONTH },
+                new SqlParameter("@YEAR", SqlDbType.VarChar, 20) { Value = YEAR }
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(connstring, "SP_CRUD_EMPTY_REPO", parameters);
+                List<EMPTY_REPO> emptyRepoList = SqlHelper.CreateListFromTable<EMPTY_REPO>(dataTable);
+
+                return emptyRepoList;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
         public List<ER_CONTAINER> GetERContainerDetails(string connstring, string REPO_NO, string AGENT_CODE, string DEPO_CODE)
         {
             try
