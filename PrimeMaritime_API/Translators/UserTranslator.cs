@@ -61,6 +61,11 @@ namespace PrimeMaritime_API.Translators
             if (reader.IsColumnExists("LOCATION"))
                 item.LOCATION = SqlHelper.GetNullableString(reader, "LOCATION");
 
+            if (reader.IsColumnExists("LOC_CURR"))
+                item.LOC_CURR = SqlHelper.GetNullableString(reader, "LOC_CURR");
+
+            if (reader.IsColumnExists("EXCHANGE_RATE"))
+                item.EXCHANGE_RATE = SqlHelper.GetNullableDecimal(reader, "EXCHANGE_RATE");
             return item;
         }
 

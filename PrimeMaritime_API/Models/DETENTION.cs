@@ -33,6 +33,10 @@ namespace PrimeMaritime_API.Models
         public int PKG_COUNT { get; set; }
         public decimal GROSS_WEIGHT { get; set; }
         public decimal NET_WEIGHT { get; set; }
+        public DateTime? invoice_date { get; set; }
+        public decimal LOCAL_DETENTION_RATE { get; set; }
+        public string LOC_CURR { get; set; }
+
 
     }
 
@@ -41,6 +45,8 @@ namespace PrimeMaritime_API.Models
         public string DO_NO { get; set; }
         public string BL_NO { get; set; }
         public string invoice_no { get; set; }
+        public decimal LOCAL_DETENTION_RATE { get; set; }
+        public string LOC_CURR { get; set; }
         public List<DETENTION_WAIVER_REQUEST> DETENTION_LIST { get; set; } = new List<DETENTION_WAIVER_REQUEST>();
     }
 

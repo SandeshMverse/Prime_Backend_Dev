@@ -241,7 +241,10 @@ namespace PrimeMaritime_API.Repository
                         discount = @discount,
                         CONTAINER_TYPE = @CONTAINER_TYPE,
                         invoice_no = @invoice_no,
-                        STATUS = 'Finalized'
+                        LOC_CURR = @LOC_CURR,
+                        LOCAL_DETENTION_RATE = @LOCAL_DETENTION_RATE,
+                        STATUS = 'Finalized',
+                        invoice_date = GETDATE() 
                     WHERE DO_NO = @DO_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
                         {
                             cmd.Parameters.AddWithValue("@DO_NO", request.DO_NO);
@@ -259,6 +262,8 @@ namespace PrimeMaritime_API.Repository
                             cmd.Parameters.AddWithValue("@discount", i.discount);
                             cmd.Parameters.AddWithValue("@CONTAINER_TYPE", i.CONTAINER_TYPE);
                             cmd.Parameters.AddWithValue("@invoice_no", request.invoice_no);
+                            cmd.Parameters.AddWithValue("@LOC_CURR", request.LOC_CURR);
+                            cmd.Parameters.AddWithValue("@LOCAL_DETENTION_RATE", request.LOCAL_DETENTION_RATE);
 
                             cmd.ExecuteNonQuery();
                         }
@@ -290,7 +295,10 @@ namespace PrimeMaritime_API.Repository
                         IS_JUMPING = @IS_JUMPING,
                         discount = @discount,
                         STATUS = 'Finalized',
-                        invoice_no = @invoice_no
+                        invoice_no = @invoice_no,
+                        LOC_CURR = @LOC_CURR,
+                        LOCAL_DETENTION_RATE = @LOCAL_DETENTION_RATE,
+                        invoice_date = GETDATE() 
                     WHERE BL_NO = @BL_NO AND CONTAINER_NO = @CONTAINER_NO", conn))
                         {
                             cmd.Parameters.AddWithValue("@BL_NO", request.BL_NO);
@@ -301,6 +309,8 @@ namespace PrimeMaritime_API.Repository
                             cmd.Parameters.AddWithValue("@IS_JUMPING", i.IS_JUMPING);
                             cmd.Parameters.AddWithValue("@discount", i.discount);
                             cmd.Parameters.AddWithValue("@invoice_no", request.invoice_no);
+                            cmd.Parameters.AddWithValue("@LOC_CURR", request.LOC_CURR);
+                            cmd.Parameters.AddWithValue("@LOCAL_DETENTION_RATE", request.LOCAL_DETENTION_RATE);
                             cmd.ExecuteNonQuery();
                         }
                     }
@@ -353,7 +363,7 @@ namespace PrimeMaritime_API.Repository
 
         }
 
-        public DataSet GetDODetailsForDetention(string dbConn, string DO_NO)
+        public DataSet GetDODetailsForDetention(string dbConn, string DO_NO, string AGENT_CODE)
         {
             try
             {
@@ -361,6 +371,8 @@ namespace PrimeMaritime_API.Repository
                 {
                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_DO_DETAILS_FOR_DETEINTION" },
                    new SqlParameter("@DO_NO", SqlDbType.VarChar,100) { Value = DO_NO},
+                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 20) { Value = AGENT_CODE },
+
                 };
 
                 return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);
@@ -373,7 +385,7 @@ namespace PrimeMaritime_API.Repository
 
         }
 
-        public DataSet GetBLDetailsForDetention(string dbConn, string BL_NO)
+        public DataSet GetBLDetailsForDetention(string dbConn, string BL_NO,string AGENT_CODE, string ORG_CODE, string PORT)
         {
             try
             {
@@ -381,6 +393,29 @@ namespace PrimeMaritime_API.Repository
                 {
                    new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_BL_DETAILS_FOR_DETEINTION" },
                    new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = BL_NO},
+                   new SqlParameter("@AGENT_CODE", SqlDbType.VarChar, 20) { Value = AGENT_CODE },
+                   new SqlParameter("@ORG_CODE", SqlDbType.VarChar, 20) { Value = ORG_CODE },
+                   new SqlParameter("@PORT", SqlDbType.VarChar, 100) { Value = PORT }
+                };
+
+                return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
+        }
+
+        public DataSet GetBLDetailsForImportDetention(string dbConn, string BL_NO)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                   new SqlParameter("@OPERATION", SqlDbType.VarChar,50) { Value = "GET_BL_DETAILS_FOR_IMPORT_DETEINTION" },
+                   new SqlParameter("@BL_NO", SqlDbType.VarChar,100) { Value = BL_NO}
                 };
 
                 return SqlHelper.ExtecuteProcedureReturnDataSet(dbConn, "SP_CRUD_DETENTION", parameters);

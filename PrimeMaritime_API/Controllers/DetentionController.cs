@@ -80,15 +80,20 @@ namespace PrimeMaritime_API.Controllers
         }
 
         [HttpGet("GetDODetailsForDetention")]
-        public ActionResult<Response<DO_DETENTION_DETAILS>> GetDODetailsForDetention(string DO_NO)
+        public ActionResult<Response<DO_DETENTION_DETAILS>> GetDODetailsForDetention(string DO_NO, string AGENT_CODE)
         {
-            return Ok(JsonConvert.SerializeObject(_detentionService.GetDODetailsForDetention(DO_NO)));
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetDODetailsForDetention(DO_NO, AGENT_CODE)));
         }
 
         [HttpGet("GetBLDetailsForDetention")]
-        public ActionResult<Response<DO_DETENTION_DETAILS>> GetBLDetailsForDetention(string BL_NO)
+        public ActionResult<Response<DO_DETENTION_DETAILS>> GetBLDetailsForDetention(string BL_NO, string AGENT_CODE, string ORG_CODE, string PORT)
         {
-            return Ok(JsonConvert.SerializeObject(_detentionService.GetBLDetailsForDetention(BL_NO)));
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetBLDetailsForDetention(BL_NO, AGENT_CODE, ORG_CODE, PORT)));
+        }
+        [HttpGet("GetBLDetailsForImportDetention")]
+        public ActionResult<Response<DO_DETENTION_DETAILS>> GetBLDetailsForImportDetention(string BL_NO)
+        {
+            return Ok(JsonConvert.SerializeObject(_detentionService.GetBLDetailsForImportDetention(BL_NO)));
         }
 
         [HttpGet("GetDetentionCharges")]

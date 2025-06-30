@@ -221,7 +221,7 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
-        public Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO)
+        public Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO, string AGENT_CODE)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -235,7 +235,7 @@ namespace PrimeMaritime_API.Services
                 return response;
             }
 
-            var data = DbClientFactory<DetentionRepo>.Instance.GetDODetailsForDetention(dbConn, DO_NO);
+            var data = DbClientFactory<DetentionRepo>.Instance.GetDODetailsForDetention(dbConn, DO_NO, AGENT_CODE);
 
             if ((data != null) && (data.Tables[0].Rows.Count > 0))
             {
@@ -264,7 +264,7 @@ namespace PrimeMaritime_API.Services
             return response;
         }
 
-        public Response<DO_DETENTION_DETAILS> GetBLDetailsForDetention(string BL_NO)
+        public Response<DO_DETENTION_DETAILS> GetBLDetailsForDetention(string BL_NO, string AGENT_CODE, string ORG_CODE, string PORT)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");
 
@@ -278,7 +278,50 @@ namespace PrimeMaritime_API.Services
                 return response;
             }
 
-            var data = DbClientFactory<DetentionRepo>.Instance.GetBLDetailsForDetention(dbConn, BL_NO);
+            var data = DbClientFactory<DetentionRepo>.Instance.GetBLDetailsForDetention(dbConn, BL_NO, AGENT_CODE, ORG_CODE, PORT);
+
+            if ((data != null) && (data.Tables[0].Rows.Count > 0))
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+
+                DO_DETENTION_DETAILS doDetails = new DO_DETENTION_DETAILS();
+
+                doDetails = DetentionRepo.GetSingleDataFromDataSet<DO_DETENTION_DETAILS>(data.Tables[0]);
+
+                if (data.Tables.Contains("Table1"))
+                {
+                    doDetails.CONTAINER_LIST = DORepo.GetListFromDataSet<CONTAINERS>(data.Tables[1]);
+                }
+
+                response.Data = doDetails;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+        public Response<DO_DETENTION_DETAILS> GetBLDetailsForImportDetention(string BL_NO)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<DO_DETENTION_DETAILS> response = new Response<DO_DETENTION_DETAILS>();
+
+
+            if ((BL_NO == "") || (BL_NO == null))
+            {
+                response.ResponseCode = 500;
+                response.ResponseMessage = "Please provide DO No";
+                return response;
+            }
+
+            var data = DbClientFactory<DetentionRepo>.Instance.GetBLDetailsForImportDetention(dbConn, BL_NO);
 
             if ((data != null) && (data.Tables[0].Rows.Count > 0))
             {

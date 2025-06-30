@@ -23,6 +23,8 @@ namespace PrimeMaritime_API.Response
         public string RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiration { get; set; }
         public string location { get; set; }
-        
+        public string LOC_CURR { get; set; }
+        public decimal? EXCHANGE_RATE { get; set; }
+
     }
 }

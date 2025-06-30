@@ -117,6 +117,8 @@ namespace PrimeMaritime_API.Models
         public string PKG_DESC { get; set; }
         public decimal NET_WEIGHT { get; set; }
         public DateTime BL_ISSUE_DATE { get; set; }
+        public decimal LOCAL_DETENTION_RATE { get; set; }
+        public string LOC_CURR { get; set; }
     }
     public class Organisation
     {

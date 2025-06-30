@@ -23,8 +23,9 @@ namespace PrimeMaritime_API.IServices
         Response<string> UpdateDetentionByBL(DETENTION Request);
         Response<decimal> GetTotalDetentionCost(string CONTAINER_NO);
         Response<List<CONTAINER_DETENTION>> GetContainerDetentionList();
-        Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO);
-        Response<DO_DETENTION_DETAILS> GetBLDetailsForDetention(string BL_NO);
+        Response<DO_DETENTION_DETAILS> GetDODetailsForDetention(string DO_NO, string AGENT_CODE);
+        Response<DO_DETENTION_DETAILS> GetBLDetailsForDetention(string BL_NO,string AGENT_CODE, string ORG_CODE, string PORT);
+        Response<DO_DETENTION_DETAILS> GetBLDetailsForImportDetention(string BL_NO);
         Response<DETENTION_MASTER> GetDetentionCharges(string ACCEPTANCE_LOCATION, int DAYS, string CURRENCY_CODE, string CONTAINER_TYPE, string IS_JUMPING,int FREEDAYS);
     }
 }

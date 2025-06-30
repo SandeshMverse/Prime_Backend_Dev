@@ -29,7 +29,8 @@ namespace PrimeMaritime_API.Models
         public DateTime RESET_PASSWORD_EXPIRY { get; set; }
         public List<RefreshToken> RefreshTokens { get; set; } = new List<RefreshToken>();
         public string LOCATION { get; set; }
-
+        public string LOC_CURR { get; set; }
+        public decimal? EXCHANGE_RATE { get; set; }
     }
     public class USERLIST
     {
@@ -52,5 +53,8 @@ namespace PrimeMaritime_API.Models
         public bool STATUS { get; set; }
         public string CREATED_BY { get; set; }
         public string CREATED_DATE { get; set; }
+        public decimal EXCHANGE_RATE { get; set; }
+        public string LOC_CURR { get; set; }
+
     }
 }

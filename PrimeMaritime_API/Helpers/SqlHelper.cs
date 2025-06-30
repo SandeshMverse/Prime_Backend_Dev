@@ -977,6 +977,14 @@ namespace PrimeMaritime_API.Helpers
         {
             return reader.IsDBNull(reader.GetOrdinal(colName)) ? (DateTime?)null : reader.GetDateTime(reader.GetOrdinal(colName));
         }
+        public static decimal? GetNullableDecimal(SqlDataReader reader, string colName)
+        {
+            int ordinal = reader.GetOrdinal(colName);
+            return reader.IsDBNull(ordinal) ? (decimal?)null : (decimal?)reader[ordinal];
+        }
+
+
+
 
         //this method is to check wheater column exists or not in data reader
         public static bool IsColumnExists(this System.Data.IDataRecord dr, string colName)
