@@ -76,6 +76,7 @@ namespace PrimeMaritime_API.Models
         public string POD_COM_TYPE { get; set; }
         public string POL_COM_TYPE { get; set; }
         public string CurrencyRatePairs { get; set; }
+        public string DestinationCurrencyRatePairs { get; set; }
         public int BL_ID { get; set; } //SWITCHBL ADDED
         public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDED
 
