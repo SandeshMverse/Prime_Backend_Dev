@@ -75,16 +75,16 @@ namespace PrimeMaritime_API.Models
         public decimal Export_Detention_Charges { get; set; }
         public string POD_COM_TYPE { get; set; }
         public string POL_COM_TYPE { get; set; }
+        public string POL_LOC_CURR { get; set; }
+        public string POD_LOC_CURR { get; set; }
         public string CurrencyRatePairs { get; set; }
         public string DestinationCurrencyRatePairs { get; set; }
         public int BL_ID { get; set; } //SWITCHBL ADDED
-        public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDED
-
+        public bool PARENTBL_STATUS { get; set; } //SWITCHBL ADDE
         public DateTime ARRIVAL_DATE { get; set; }
-
         public int NO_OF_PACKAGES { get; set; }
-
         public int POD_FREE_DAYS { get; set; }
+        public string AGENT_ORG_NAME { get; set; }
 
     }
 

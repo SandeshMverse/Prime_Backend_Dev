@@ -191,6 +191,7 @@ namespace PrimeMaritime_API.IServices
 
         #region "CHARGE MASTER"
         Response<List<CHARGE_MASTER>> GetChargeMasterList();
+        Response<List<CHARGE_MASTER>> GetChargeMasterListByPort(string PORT);
         Response<CHARGE_MASTER> GetChargeMasterDetails(int ID);
         Response<CommonResponse> UpdateChargeMasterList(CHARGE_MASTER request);
         Response<CommonResponse> DeleteChargeMasterList(int ID);

@@ -1612,6 +1612,32 @@ namespace PrimeMaritime_API.Services
 
             return response;
         }
+
+        public Response<List<CHARGE_MASTER>> GetChargeMasterListByPort(string PORT)
+        {
+            string dbConn = _config.GetConnectionString("ConnectionString");
+
+            Response<List<CHARGE_MASTER>> response = new Response<List<CHARGE_MASTER>>();
+            var data = DbClientFactory<MasterRepo>.Instance.GetChargeMasterListByPort(dbConn, PORT);
+
+            if (data != null)
+            {
+                response.Succeeded = true;
+                response.ResponseCode = 200;
+                response.ResponseMessage = "Success";
+                response.Data = data;
+            }
+            else
+            {
+                response.Succeeded = false;
+                response.ResponseCode = 500;
+                response.ResponseMessage = "No Data";
+            }
+
+            return response;
+        }
+
+
         public Response<CHARGE_MASTER> GetChargeMasterDetails(int ID)
         {
             string dbConn = _config.GetConnectionString("ConnectionString");

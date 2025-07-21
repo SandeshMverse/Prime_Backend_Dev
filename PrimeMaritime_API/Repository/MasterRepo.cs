@@ -2337,6 +2337,27 @@ namespace PrimeMaritime_API.Repository
                 throw;
             }
         }
+
+        public List<CHARGE_MASTER> GetChargeMasterListByPort(string dbConn, string PORT)
+        {
+            try
+            {
+                SqlParameter[] parameters =
+                {
+                  new SqlParameter("@PORT_CODE",SqlDbType.VarChar, 50) { Value = PORT },
+                  new SqlParameter("@OPERATION", SqlDbType.VarChar, 50) { Value = "GET_CHARGELIST_BY_PORT" },
+                };
+
+                DataTable dataTable = SqlHelper.ExtecuteProcedureReturnDataTable(dbConn, "SP_CRUD_CHARGE_MASTER", parameters);
+                List<CHARGE_MASTER> master = SqlHelper.CreateListFromTable<CHARGE_MASTER>(dataTable);
+
+                return master;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public CHARGE_MASTER GetChargeMasterDetails(string connstring, int ID)
         {
             try

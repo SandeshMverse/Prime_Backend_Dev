@@ -544,6 +544,12 @@ namespace PrimeMaritime_API.Controllers
             return Ok(JsonConvert.SerializeObject(_masterService.GetChargeMasterList()));
         }
 
+        [HttpGet("GetChargeMasterListByPort")]
+        public ActionResult<Response<List<CHARGE_MASTER>>> GetChargeMasterListByPort(string PORT)
+        {
+            return Ok(JsonConvert.SerializeObject(_masterService.GetChargeMasterListByPort(PORT)));
+        }
+
         [HttpGet("GetChargeMasterDetails")]
         public ActionResult<Response<CHARGE_MASTER>> GetChargeMasterDetails(int ID)
         {
