@@ -68,7 +68,10 @@ namespace PrimeMaritime_API.Models
         public decimal TOTAL_RATE20 { get; set; }
         public decimal EXPORT_DRY20 { get; set; }
         public decimal IMPORT_DRY20 { get; set; }
+        public string EXPORT_DRY20_CURRENCY { get; set; }
+        public string IMPORT_DRY20_CURRENCY { get; set; }
         public decimal IMPORT_DRY20_BGT20 { get; set; }
+        public string M2_IMPORT_BGT20_CURRENCY { get; set; }
         public decimal PODCOM { get; set; }
         public decimal POLCOM { get; set; }
         public decimal Monitor_Charge { get; set; }
@@ -77,6 +80,8 @@ namespace PrimeMaritime_API.Models
         public string POL_COM_TYPE { get; set; }
         public string POL_LOC_CURR { get; set; }
         public string POD_LOC_CURR { get; set; }
+        public decimal PODCOMTAX { get; set; }
+        public decimal POLCOMTAX { get; set; }
         public string CurrencyRatePairs { get; set; }
         public string DestinationCurrencyRatePairs { get; set; }
         public int BL_ID { get; set; } //SWITCHBL ADDED
@@ -85,6 +90,10 @@ namespace PrimeMaritime_API.Models
         public int NO_OF_PACKAGES { get; set; }
         public int POD_FREE_DAYS { get; set; }
         public string AGENT_ORG_NAME { get; set; }
+        public string isActivity { get; set; }
+        public string activity { get; set; }
+        public string CONTAINER_NO_ACTIVITY { get; set; }
+        public string isEXC { get; set; }
 
     }
 

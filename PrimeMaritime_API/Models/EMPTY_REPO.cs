@@ -40,7 +40,11 @@ namespace PrimeMaritime_API.Models
 		public string POL { get; set; }
 		public string POD { get; set; }
         public decimal EXPORT_DRY20 { get; set; }
-        public decimal IMPORT_DRY20 { get; set; }
+		public decimal IMPORT_DRY20 { get; set; }
+        public string EXPORT_DRY20_CURRENCY { get; set; }
+        public string IMPORT_DRY20_CURRENCY { get; set; }
+        public decimal POL_EXC_RATE { get; set; }
+        public decimal POD_EXC_RATE { get; set; }
 
         public decimal Monitor_Charge { get; set; }
         public string FINAL_DESTINATION { get; set; }
